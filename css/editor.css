@@ -23,12 +23,12 @@ div {
     top: 0;
 }
 
-#vex-compoment, #vex-toolbar, #vex-page, #vex-left-top-project-list {
+#vex-component, #vex-toolbar, #vex-page, #vex-left-top-project-list {
     top: 50px;
     bottom: 0;
 }
 
-#vex-compoment, #vex-toolbar, #vex-left-top-project-list {
+#vex-component, #vex-toolbar, #vex-left-top-project-list {
     width: 300px;
 }
 
@@ -37,9 +37,10 @@ div {
     left: 0;
 }
 
-#vex-compoment {
+#vex-component {
     top: 350px;
     left: 0;
+    overflow: auto;
 }
 
 #vex-toolbar {
@@ -49,4 +50,13 @@ div {
 #vex-page {
     left: 300px;
     right: 300px;
+}
+
+.component img, .component p {
+    position: fixed;
+    width: 150px;
+    padding: 5px 10px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    background-color: #eaeaea;
 }
