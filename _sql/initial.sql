@@ -1,32 +1,37 @@
 -- User table
+-- User type: 0 for Admin User, 1 for Normal User
 CREATE TABLE public.vex_user
 (
-    "user_id" numeric(10,0)[] NOT NULL,
-    "username" character(255) COLLATE pg_catalog."default" NOT NULL,
-    "password" character(255) COLLATE pg_catalog."default",
-    "name" character(255) COLLATE pg_catalog."default",
-    "email" character(255) COLLATE pg_catalog."default",
-    "type" character(255) COLLATE pg_catalog."default",
-    "icon" character(255) COLLATE pg_catalog."default",
-    "creat_time" date,
-    "is_enable" character(255) COLLATE pg_catalog."default",
-    CONSTRAINT vex_user_pkey PRIMARY KEY ("user_id")
+    user_id serial NOT NULL PRIMARY KEY,
+    username character(255) NOT NULL UNIQUE,
+    password character(255) NOT NULL,
+    name character(255),
+    email character(255),
+    type integer DEFAULT 1,
+    icon text,
+    creat_time timestamp,
+    is_enable boolean DEFAULT true
 )
 WITH (
     OIDS = FALSE
 )
 TABLESPACE pg_default;
 
+-- Admin user
+-- Password(SHA256): 123456
+INSERT INTO public.vex_user(
+    username, password, name, email, type, creat_time)
+    VALUES ( 'admin', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'admin', 'admin@vex.com', 0, '2020-02-20 20:20:20');
+
 -- Component table
 CREATE TABLE public.vex_component
 (
-    "component_id" numeric(10,0) NOT NULL,
-    "component_name" character(255) COLLATE pg_catalog."default",
-    "icon" character(255) COLLATE pg_catalog."default",
-    "code" character(255) COLLATE pg_catalog."default",
-    "is_enable" character(255) COLLATE pg_catalog."default",
-    "is_delete" numeric(2,0),
-    CONSTRAINT "component_pkey" PRIMARY KEY ("component_id")
+    component_id serial NOT NULL PRIMARY KEY,
+    component_name character(255),
+    icon text,
+    code text,
+    is_enable boolean DEFAULT true,
+    is_delete boolean DEFAULT false
 )
 WITH (
     OIDS = FALSE
@@ -36,18 +41,13 @@ TABLESPACE pg_default;
 -- Product Table
 CREATE TABLE public.vex_product
 (
-    "product_id" numeric(10,0) NOT NULL,
-    "user_id" numeric(10,0)[] NOT NULL,
-    "product_name" character(255) COLLATE pg_catalog."default",
-    "code" character(255) COLLATE pg_catalog."default",
-    "create_time" date,
-    "is_live" numeric(2,0),
-    "is_delete" numeric(2,0),
-    CONSTRAINT "PKey" PRIMARY KEY ("product_id"),
-    CONSTRAINT "Foreign Key" FOREIGN KEY ("user_id")
-        REFERENCES public.vex_user ("user_id") MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+    product_id serial NOT NULL PRIMARY KEY,
+    user_id integer NOT NULL,
+    product_name character(255),
+    code text,
+    create_time timestamp,
+    is_live boolean DEFAULT false,
+    is_delete boolean DEFAULT false
 )
 WITH (
     OIDS = FALSE
