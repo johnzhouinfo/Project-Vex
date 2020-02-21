@@ -8,6 +8,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
     <base href="">
     <title>Vex</title>
 
@@ -60,13 +63,16 @@
     </div>
 
     <div id="vex-page">
-        <iframe class="drop" style="width:100%;height:100%" src="https://johnzhou.info"></iframe>
+        <iframe class="drop" style="width:100%;height:100%" src="index.php"></iframe>
     </div>
     <div id="vex-toolbar">Toolbar</div>
 </div>
 
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script src="js/editor.js"></script>
+
 <script>
     $(function () {
         $(".component").draggable({
@@ -89,6 +95,5 @@
     });
 
 </script>
-
 </body>
 </html>
