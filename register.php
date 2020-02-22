@@ -4,7 +4,7 @@ require_once "lib/config.php";
 
 // Define variables and initialize with empty values
 $username = $password = $confirm_password = $email = $email_err = "";
-$username_err = $password_err = $confirm_password_err = "";
+$username_err = $password_err = $confirm_password_err = $captcha = $captcha_err = "";
 
 // Processing form data when form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -60,11 +60,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $email_err = "Incorrect email format.";
     }
 
+    // Validate captcha
+    if (isset($_REQUEST['captcha'])) {
+        session_start();
+
+        if (empty($_REQUEST['captcha'])) {
+            $captcha_err = "Please enter captcha";
+        } else {
+            if (strtolower($_REQUEST['captcha']) != $_SESSION['authcode']) {
+                $captcha_err = "Incorrect captcha";
+            }
+        }
+
+    }
+
     // Check input errors before inserting in database
     if (empty($username_err) && empty($email_err) && empty($password_err) && empty($confirm_password_err)) {
 
         // Prepare an insert statement
-        $sql = "INSERT INTO vex_user (username, password, name, email, creat_time) VALUES ($1, $2, $3, $4, $5)";
+        $sql = "INSERT INTO vex_user (username, password, name, email, create_time) VALUES ($1, $2, $3, $4, $5)";
 
         if ($stmt = pg_prepare($link, "insert_user", $sql)) {
             // Bind variables to the prepared statement as parameters
@@ -134,6 +148,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="password" name="confirm_password" class="form-control"
                    value="<?php echo $confirm_password; ?>">
             <span class="help-block"><?php echo $confirm_password_err; ?></span>
+        </div>
+
+        <div class="form-group <?php echo (!empty($captcha_err)) ? 'has-error' : ''; ?>">
+            <label>Captcha</label>
+            <img id="captcha_img" border="1" src="model/captcha.php?r=<?php echo rand(); ?>" alt="" width="100"
+                 height="30">
+            <input type="text" name="captcha" class="form-control"
+                   value="<?php echo $captcha; ?>">
+            <span class="help-block"><?php echo $captcha_err; ?></span>
         </div>
         <div class="form-group">
             <input type="submit" class="btn btn-primary" value="Submit">
