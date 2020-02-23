@@ -3,8 +3,8 @@
 require_once "lib/config.php";
 
 // Define variables and initialize with empty values
-$username = $password = $confirm_password = $email = $email_err = "";
-$username_err = $password_err = $confirm_password_err = $captcha = $captcha_err = "";
+$username = $password = $confirm_password = $email = $captcha = "";
+$username_err = $password_err = $confirm_password_err = $email_err = $captcha_err = "";
 
 // Processing form data when form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -81,13 +81,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "INSERT INTO vex_user (username, password, name, email, create_time) VALUES ($1, $2, $3, $4, $5)";
 
         if ($stmt = pg_prepare($link, "insert_user", $sql)) {
-            // Bind variables to the prepared statement as parameters
-//            mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password);
-//
-//            // Set parameters
-//            $param_username = $username;
-//            $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
-//            $result = pg_execute()
             // Attempt to execute the prepared statement
             if ($result = pg_execute($link, "insert_user", array($username, hash("sha256", trim($_POST["password"])), $username, trim($_POST["email"]), date('Y-m-d h:i:s')))) {
                 // Redirect to login page
@@ -98,7 +91,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     }
-
     // Close connection
     pg_close($link);
 }

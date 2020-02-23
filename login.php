@@ -4,31 +4,30 @@
 require_once "lib/config.php";
 session_start();
 
-// Check if the user is already logged in, if yes then redirect him to welcome page
-if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-//    header("location: welcome.php");
-//    exit;
+// Check if the user is already logged in, if yes then redirect him to specific page
+if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+    if (isset($_SESSION["admin"]) && isset($_SESSION["admin"]) === true)
+        header("location: admin.php");
+    else
+        header("location: editor.php");
+    exit;
 }
 
-
-
 // Define variables and initialize with empty values
-$username = $password = "";
-$username_err = $password_err =$captcha=$captcha_err= "";
+$username = $password = $captcha = "";
+$username_err = $password_err = $captcha_err = "";
 
 // Processing form data when form is submitted
-if($_SERVER["REQUEST_METHOD"] == "POST"){
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Check if username is empty
-    if(empty(trim($_POST["username"]))){
+    if (empty(trim($_POST["username"]))) {
         $username_err = "Please enter username.";
-    } else{
+    } else {
         $username = trim($_POST["username"]);
     }
     // Validate captcha
     if (isset($_REQUEST['captcha'])) {
-
-
         if (empty($_REQUEST['captcha'])) {
             $captcha_err = "Please enter captcha";
         } else {
@@ -36,56 +35,56 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $captcha_err = "Incorrect captcha";
             }
         }
-
     }
     // Check if password is empty
-    if(empty(trim($_POST["password"]))){
+    if (empty(trim($_POST["password"]))) {
         $password_err = "Please enter your password.";
-    } else{
+    } else {
         $password = trim($_POST["password"]);
     }
 
     // Validate credentials
-    if(empty($username_err) && empty($password_err)){
+    if (empty($username_err) && empty($password_err) && empty($captcha_err)) {
         // Prepare a select statement
         $sql = "select * from vex_user where username = $1";
-
-        if($stmt = pg_prepare($link,"find_user" ,$sql)){
-
+        if ($stmt = pg_prepare($link, "find_user", $sql)) {
+            // Execute sql
             if ($result = pg_execute($link, "find_user", array($username))) {
-
                 $result_array = pg_fetch_row($result);
-                if ( hash_equals(hash("sha256", $password),trim($result_array[2]))) {
-
-                        // Store data in session variables
-                        $_SESSION["loggedin"] = true;
-                        $_SESSION["username"] = $username;
-                        echo "success";
-                        // Redirect user to welcome page
-//                                header("location: welcome.php");
+                if (trim($result_array[1]) == $username) {
+                    if (hash_equals(hash("sha256", $password), trim($result_array[2]))) {
+                        // Checking the user who has been blocked or not
+                        if (trim($result_array[8]) == 't') {
+                            // If the user is administrator or not
+                            if ($result_array[5] == 0) {
+                                $_SESSION["loggedin"] = true;
+                                $_SESSION["username"] = $username;
+                                $_SESSION["admin"] = true;
+                                header("location: admin.php");
+                            } else {
+                                $_SESSION["loggedin"] = true;
+                                $_SESSION["username"] = $username;
+                                header("location: editor.php");
+                            }
+                        } else {
+                            echo '<script language="javascript">';
+                            echo "alert('This account has been blocked')";
+                            echo '</script>';
+                        }
                     } else {
                         // Display an error message if password is not valid
-                    echo hash("sha256", trim($_POST["password"]));
-                    echo "<br/>";
-                    echo  $result_array[2];
                         $password_err = "The password you entered was not valid.";
                     }
-//                }
-
-
-                }
-            }
-            // Bind variables to the prepared statement as parameters
-//            if ($result = pg_execute($link, "insert_user", array($username)) {
-//                $result_row = pg_fetch_row($result);}
-                } else{
+                } else {
                     // Display an error message if username doesn't exist
                     $username_err = "No account found with that username.";
                 }
-
+            }
+        }
     }
-            // Close statement
-            pg_close($link);
+}
+// Close statement
+pg_close($link);
 
 
 ?>
@@ -97,8 +96,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <title>Login</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
-        body{ font: 14px sans-serif; }
-        .wrapper{ width: 350px; padding: 20px; }
+        body {
+            font: 14px sans-serif;
+        }
+
+        .wrapper {
+            width: 350px;
+            padding: 20px;
+        }
     </style>
 </head>
 <body>
