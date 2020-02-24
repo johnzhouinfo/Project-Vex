@@ -65,10 +65,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         session_start();
 
         if (empty($_REQUEST['captcha'])) {
-            $captcha_err = "Please enter captcha";
+            $captcha_err = "Please enter captcha.";
         } else {
             if (strtolower($_REQUEST['captcha']) != $_SESSION['authcode']) {
-                $captcha_err = "Incorrect captcha";
+                $captcha_err = "Please enter correct captcha.";
             }
         }
 
@@ -85,7 +85,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($result = pg_execute($link, "insert_user", array($username, hash("sha256", trim($_POST["password"])), $username, trim($_POST["email"]), date('Y-m-d h:i:s')))) {
                 // Redirect to login page
                 header("location: login.php");
-
             } else {
                 echo "Something went wrong. Please try again later.";
             }

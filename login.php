@@ -1,15 +1,16 @@
 <?php
-// Initialize the session
 // Include config file
 require_once "lib/config.php";
+// Initialize the session
 session_start();
 
 // Check if the user is already logged in, if yes then redirect him to specific page
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-    if (isset($_SESSION["admin"]) && isset($_SESSION["admin"]) === true)
+    if (isset($_SESSION["admin"]) && isset($_SESSION["admin"]) === true) {
         header("location: admin.php");
-    else
+    } else {
         header("location: editor.php");
+    }
     exit;
 }
 
@@ -29,10 +30,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate captcha
     if (isset($_REQUEST['captcha'])) {
         if (empty($_REQUEST['captcha'])) {
-            $captcha_err = "Please enter captcha";
+            $captcha_err = "Please enter captcha.";
         } else {
             if (strtolower($_REQUEST['captcha']) != $_SESSION['authcode']) {
-                $captcha_err = "Incorrect captcha";
+                $captcha_err = "Please enter correct captcha.";
             }
         }
     }
@@ -51,19 +52,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Execute sql
             if ($result = pg_execute($link, "find_user", array($username))) {
                 $result_array = pg_fetch_row($result);
-                if (trim($result_array[1]) == $username) {
+                $user_id = trim($result_array[0]);
+                if (pg_num_rows($result) == 1) {
                     if (hash_equals(hash("sha256", $password), trim($result_array[2]))) {
                         // Checking the user who has been blocked or not
                         if (trim($result_array[8]) == 't') {
                             // If the user is administrator or not
+                            $_SESSION["loggedin"] = true;
+                            $_SESSION["username"] = $username;
+                            $_SESSION["id"] = $user_id;
                             if ($result_array[5] == 0) {
-                                $_SESSION["loggedin"] = true;
-                                $_SESSION["username"] = $username;
                                 $_SESSION["admin"] = true;
                                 header("location: admin.php");
                             } else {
-                                $_SESSION["loggedin"] = true;
-                                $_SESSION["username"] = $username;
                                 header("location: editor.php");
                             }
                         } else {
