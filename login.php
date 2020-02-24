@@ -95,6 +95,8 @@ pg_close($link);
     <meta charset="UTF-8">
     <title>Login</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <style type="text/css">
         body {
             font: 14px sans-serif;
@@ -123,8 +125,10 @@ pg_close($link);
         </div>
         <div class="form-group <?php echo (!empty($captcha_err)) ? 'has-error' : ''; ?>">
             <label>Captcha</label>
-            <img id="captcha_img" border="1" src="model/captcha.php?r=<?php echo rand(); ?>" alt="" width="100"
-                 height="30">
+            <a id="captcha_change" href="javascript:void(0)">
+                <img id="captcha_img" border="1" src="model/captcha.php?r=<?php echo rand(); ?>" alt="" width="100"
+                     height="30">
+            </a>
             <input type="text" name="captcha" class="form-control"
                    value="<?php echo $captcha; ?>">
             <span class="help-block"><?php echo $captcha_err; ?></span>
@@ -134,6 +138,11 @@ pg_close($link);
         </div>
         <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
     </form>
+    <script>
+        $("#captcha_change").on("click", function () {
+            $('#captcha_img').attr('src', 'model/captcha.php?r=' + Math.random());
+        });
+    </script>
 </div>
 </body>
 </html>
