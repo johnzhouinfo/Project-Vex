@@ -1,6 +1,6 @@
 <?php
 // Include config file
-require_once "lib/config.php";
+require_once "./lib/config.php";
 
 // Define variables and initialize with empty values
 $username = $password = $confirm_password = $email = $captcha = "";
@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty(trim($_POST["password"]))) {
         $password_err = "Please enter a password.";
     } elseif (strlen(trim($_POST["password"])) < 6) {
-        $password_err = "Password must have atleast 6 characters.";
+        $password_err = "Password must have at least 6 characters.";
     } else {
         $password = trim($_POST["password"]);
     }
@@ -84,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Attempt to execute the prepared statement
             if ($result = pg_execute($link, "insert_user", array($username, hash("sha256", trim($_POST["password"])), $username, trim($_POST["email"]), date('Y-m-d h:i:s')))) {
                 // Redirect to login page
-                header("location: login.php");
+                header("location: ./login.php");
             } else {
                 echo "Something went wrong. Please try again later.";
             }
@@ -146,7 +146,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="form-group <?php echo (!empty($captcha_err)) ? 'has-error' : ''; ?>">
             <label>Captcha</label>
             <a id="captcha_change" href="javascript:void(0)">
-                <img id="captcha_img" border="1" src="model/captcha.php?r=<?php echo rand(); ?>" alt="" width="100"
+                <img id="captcha_img" border="1" src="./model/captcha.php?r=<?php echo rand(); ?>" alt="" width="100"
                      height="30">
             </a>
             <input type="text" name="captcha" class="form-control"
@@ -157,11 +157,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="submit" class="btn btn-primary" value="Submit">
             <input type="reset" class="btn btn-default" value="Reset">
         </div>
-        <p>Already have an account? <a href="login.php">Login here</a>.</p>
+        <p>Already have an account? <a href="./login.php">Login here</a>.</p>
     </form>
     <script>
         $("#captcha_change").on("click", function () {
-            $('#captcha_img').attr('src', 'model/captcha.php?r=' + Math.random());
+            $('#captcha_img').attr('src', './model/captcha.php?r=' + Math.random());
         });
     </script>
 </div>

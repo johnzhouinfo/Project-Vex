@@ -1,15 +1,15 @@
 <?php
 // Include config file
-require_once "lib/config.php";
+require_once "./lib/config.php";
 // Initialize the session
 session_start();
 
 // Check if the user is already logged in, if yes then redirect him to specific page
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     if (isset($_SESSION["admin"]) && isset($_SESSION["admin"]) === true) {
-        header("location: admin.php");
+        header("location: ./web_manage/admin.php");
     } else {
-        header("location: editor.php");
+        header("location: ./editor.php");
     }
     exit;
 }
@@ -63,9 +63,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $_SESSION["id"] = $user_id;
                             if ($result_array[5] == 0) {
                                 $_SESSION["admin"] = true;
-                                header("location: admin.php");
+                                header("location: ./web_manage/admin.php");
                             } else {
-                                header("location: editor.php");
+                                header("location: ./editor.php");
                             }
                         } else {
                             echo '<script language="javascript">';
@@ -127,7 +127,7 @@ pg_close($link);
         <div class="form-group <?php echo (!empty($captcha_err)) ? 'has-error' : ''; ?>">
             <label>Captcha</label>
             <a id="captcha_change" href="javascript:void(0)">
-                <img id="captcha_img" border="1" src="model/captcha.php?r=<?php echo rand(); ?>" alt="" width="100"
+                <img id="captcha_img" border="1" src="./model/captcha.php?r=<?php echo rand(); ?>" alt="" width="100"
                      height="30">
             </a>
             <input type="text" name="captcha" class="form-control"
@@ -137,11 +137,11 @@ pg_close($link);
         <div class="form-group">
             <input type="submit" class="btn btn-primary" value="Login">
         </div>
-        <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
+        <p>Don't have an account? <a href="./register.php">Sign up now</a>.</p>
     </form>
     <script>
         $("#captcha_change").on("click", function () {
-            $('#captcha_img').attr('src', 'model/captcha.php?r=' + Math.random());
+            $('#captcha_img').attr('src', './model/captcha.php?r=' + Math.random());
         });
     </script>
 </div>
