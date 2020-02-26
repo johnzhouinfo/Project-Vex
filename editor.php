@@ -44,8 +44,7 @@
                 <div id="select-box" style="display: none; pointer-events:none;">
 
                     <div id="wysiwyg-editor" style="pointer-events:auto;">
-                        <a id="bold-btn" draggable="true" href="" title="Bold"><i id="drag-content" draggable="true"
-                                                                                  data-insert-html="">AA</i> </a>
+                        <ul id="bold-btn" href="" title="Bold"></ul>
                         <a id="bold-btn" href="" title="Bold"><i><strong>B</strong></i></a>
                         <a id="italic-btn" href="" title="Italic"><i>I</i></a>
                         <a id="underline-btn" href="" title="Underline"><u>u</u></a>
@@ -75,19 +74,9 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+
 <script src="js/editor.js"></script>
 <script src="lib/js/dragdrop.js"></script>
-<script>
-    function changeFrameHeight() {
-        var ifm = document.getElementsByClassName("drop");
-        ifm.height = document.documentElement.clientHeight;
 
-    }
-
-    window.οnresize = function () {
-        changeFrameHeight();
-
-    }
-</script>
 </body>
 </html>

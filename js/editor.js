@@ -7,80 +7,47 @@ $('.drop').load(function () {
     var frameWindow = $(this).prop('contentWindow');
     var prev;
     var selectTarget;
-    //insert the style for marker and
+    // Insert the style for marker and
     $(frameWindow.document.head).append(style);
-    //define marker tag
+    // Define marker tag
     $contextMarker = $("<div data-dragcontext-marker><span data-dragcontext-marker-text></span></div>");
-    //add mouse listener
+
+    // Add draggable element into the select-box
+    $('#wysiwyg-editor').prepend('<li id="drag-content" draggable="true" data-insert-html=" "><p>AAA</p></li>');
+    // Add mouse listener
     frameWindow.document.body.onmouseover = handler;
 
-    //override mouse click
-    $(frameWindow.document.body).contents().on("mousedown, mouseup, click", function (event) {
+    // Once click the element in the frame, show the highlight the element, show the control panel
+    $(frameWindow.document).contents().on("click", function (event) {
         event.preventDefault();
         selectTarget = event.target;
-        $('#drag-content').attr('data-insert-html', event.target.outerHTML);
-
         prev = event.target;
         console.log("Inner click");
 
-        var rect = prev.getBoundingClientRect();
-        $selectBox = $('#select-box');
-        $selectBox.css({
-            height: (rect.height + 4) + "px",
-            width: (rect.width + 4) + "px",
-            top: (rect.top - 2) + "px",
-            left: (rect.left - 2) + "px",
-            display: 'block',
-        });
-
-        var x = parseInt($selectBox.css('top'));
-        var y = parseInt($selectBox.css('left'));
-        var topPosition = $($(".drop").get(1).contentWindow).scrollTop();
-        var leftPosition = $($(".drop").get(1).contentWindow).scrollLeft();
-        $($(".drop").get(1).contentWindow).scroll(function () {
+        // Show the select-box
+        // Prevent user move element before/after body, html tags
+        if (event.target.tagName.toLocaleLowerCase() !== 'body' && event.target.tagName.toLocaleLowerCase() !== 'html') {
+            var rect = prev.getBoundingClientRect();
+            $selectBox = $('#select-box');
             $selectBox.css({
-                top: (x + (topPosition - $($(".drop").get(1).contentWindow).scrollTop())) + "px",
-                left: (y + (leftPosition - $($(".drop").get(1).contentWindow).scrollLeft())) + "px",
+                height: (rect.height + 4) + "px",
+                width: (rect.width + 4) + "px",
+                top: (rect.top - 2) + "px",
+                left: (rect.left - 2) + "px",
+                display: 'block',
+            });
+            //Adding offset value to the select-box when scroll event happened
+            var x = parseInt($selectBox.css('top'));
+            var y = parseInt($selectBox.css('left'));
+            var topPosition = $($(".drop").get(1).contentWindow).scrollTop();
+            var leftPosition = $($(".drop").get(1).contentWindow).scrollLeft();
+            $($(".drop").get(1).contentWindow).scroll(function () {
+                $selectBox.css({
+                    top: (x + (topPosition - $($(".drop").get(1).contentWindow).scrollTop())) + "px",
+                    left: (y + (leftPosition - $($(".drop").get(1).contentWindow).scrollLeft())) + "px",
+                })
             })
-        })
-
-    });
-
-
-    $("#select-box #drag-content").draggable();
-
-    $("#drag-content").on('dragstart', function (event) {
-        console.log("Inner Drag Started");
-        $('#select-box').css({
-
-            visibility: 'hidden',
-        });
-        $('#select-box #drag-content').css({
-
-            visibility: 'visible',
-        });
-
-        $(selectTarget).css({
-            display: 'none',
-        });
-    });
-
-    $("#drag-content").on('dragend', function (event) {
-        console.log("Inner Drag End");
-        console.log(event);
-        $(selectTarget).css({
-            display: 'block',
-        })
-
-
-    });
-    $(frameWindow.document).find('body,html').on('drop', function () {
-        console.log("Inner Drop");
-        $('#select-box').css({
-            display: 'none',
-            visibility: 'visible',
-        });
-        $(selectTarget).remove();
+        }
     });
 
     /**
