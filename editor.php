@@ -26,44 +26,48 @@
         <div class="drop">Place Here</div>
     </div>
     <div id="vex-component">
-        <table>
-            <tr>
-                <td>
-                    <div class="component">
-                        <img src="img/empty-avatar.png" alt="avatar"/>
-                    </div>
-                </td>
-            </tr>
-            <!--            <tr>-->
-            <!--                <td>-->
-            <!--                    <div class = "component">-->
-            <!--                        <p>Item2</p>-->
-            <!--                    </div>-->
-            <!--                </td>-->
-            <!--            </tr>-->
-            <!--            <tr>-->
-            <!--                <td>row 3</td>-->
-            <!--            </tr>-->
-            <!--            <tr>-->
-            <!--                <td>row 4</td>-->
-            <!--            </tr>-->
-            <!--            <tr>-->
-            <!--                <td>row 5</td>-->
-            <!--            </tr>-->
-            <!--            <tr>-->
-            <!--                <td>row 6</td>-->
-            <!--            </tr>-->
-            <!--            <tr>-->
-            <!--                <td>row 7</td>-->
-            <!--            </tr>-->
-            <!--            <tr>-->
-            <!--                <td>row 8</td>-->
-            <!--            </tr>-->
-        </table>
+
+        <ul id="drag-list-container">
+            <li draggable="true" data-insert-html="<h1>HEADER H1</h1>"><i class="fa fa-header"></i>
+                <p>Header</p></li>
+            <li draggable="true"><img src="./img/empty-avatar.png">
+                <p>Chart</p></li>
+            <li draggable="true"><i class="fa fa-envelope"></i>
+                <p>Contact</p></li>
+        </ul>
+
     </div>
 
     <div id="vex-page">
-        <iframe class="drop" style="width:100%;height:100%" src="index.php"></iframe>
+        <div id="iframe-wapper" style="width:100%;height:100%">
+            <div id="iframe-layer">
+                <div id="select-box" style="display: none; pointer-events:none;">
+
+                    <div id="wysiwyg-editor" style="pointer-events:auto;">
+                        <a id="bold-btn" draggable="true" href="" title="Bold"><i id="drag-content" draggable="true"
+                                                                                  data-insert-html="">AA</i> </a>
+                        <a id="bold-btn" href="" title="Bold"><i><strong>B</strong></i></a>
+                        <a id="italic-btn" href="" title="Italic"><i>I</i></a>
+                        <a id="underline-btn" href="" title="Underline"><u>u</u></a>
+                        <a id="strike-btn" href="" title="Strikeout">
+                            <del>S</del>
+                        </a>
+                        <a id="link-btn" href="" title="Create link"><strong>a</strong></a>
+                    </div>
+
+                    <div id="select-actions">
+                        <a id="drag-btn" href="" title="Drag element"><i class="la la-arrows"></i></a>
+                        <a id="parent-btn" href="" title="Select parent"><i class="la la-level-down la-rotate-180"></i></a>
+
+                        <a id="up-btn" href="" title="Move element up"><i class="la la-arrow-up"></i></a>
+                        <a id="down-btn" href="" title="Move element down"><i class="la la-arrow-down"></i></a>
+                        <a id="clone-btn" href="" title="Clone element"><i class="la la-copy"></i></a>
+                        <a id="delete-btn" href="" title="Remove element"><i class="la la-trash"></i></a>
+                    </div>
+                </div>
+            </div>
+            <iframe class="drop" style="width:100%;height:100%;" src="index.php"></iframe>
+        </div>
     </div>
     <div id="vex-toolbar">Toolbar</div>
 </div>
@@ -72,28 +76,18 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <script src="js/editor.js"></script>
-
+<script src="lib/js/dragdrop.js"></script>
 <script>
-    $(function () {
-        $(".component").draggable({
-            appendTo: "body",
-            cursor: "move",
-            helper: 'clone',
-            revert: "true",
+    function changeFrameHeight() {
+        var ifm = document.getElementsByClassName("drop");
+        ifm.height = document.documentElement.clientHeight;
 
-        });
-        $(".drop, iframe html div span").droppable({
-            tolerance: "intersect",
-            accept: ".component",
-            activeClass: "ui-state-default",
-            hoverClass: "ui-state-hover",
-            drop: function (event, ui) {
-                //$(this).append($(ui.draggable).clone());
-                $(ui.draggable).clone().insertAfter($(this));
-            }
-        });
-    });
+    }
 
+    window.οnresize = function () {
+        changeFrameHeight();
+
+    }
 </script>
 </body>
 </html>
