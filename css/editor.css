@@ -102,3 +102,20 @@ div {
 #drag-content {
     cursor: move;
 }
+
+.undo-container {
+    margin: 40px 0;
+}
+.undo-redo {
+    display: inline-block;
+    color: #3331;
+    text-decoration: none;
+    size: 40px;
+
+}
+
+.undo-redo.disable {
+    background: #eee;
+    color: #aaa;
+    pointer-events: none;
+}
