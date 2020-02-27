@@ -127,7 +127,7 @@ pg_close($link);
         <div class="form-group <?php echo (!empty($captcha_err)) ? 'has-error' : ''; ?>">
             <label>Captcha</label>
             <a id="captcha_change" href="javascript:void(0)">
-                <img id="captcha_img" border="1" src="./model/captcha.php?r=<?php echo rand(); ?>" alt="" width="100"
+                <img id="captcha_img" border="1" src="./lib/captcha.php?r=<?php echo rand(); ?>" alt="" width="100"
                      height="30">
             </a>
             <input type="text" name="captcha" class="form-control"
@@ -139,11 +139,7 @@ pg_close($link);
         </div>
         <p>Don't have an account? <a href="./register.php">Sign up now</a>.</p>
     </form>
-    <script>
-        $("#captcha_change").on("click", function () {
-            $('#captcha_img').attr('src', './model/captcha.php?r=' + Math.random());
-        });
-    </script>
+    <script src="./js/common.js"></script>
 </div>
 </body>
 </html>
