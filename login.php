@@ -22,10 +22,9 @@ $username_err = $password_err = $captcha_err = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Check if username is empty
-    if (empty(trim($_POST["username"]))) {
+    $username = trim($_POST["username"]);
+    if (empty($username)) {
         $username_err = "Please enter username.";
-    } else {
-        $username = trim($_POST["username"]);
     }
     // Validate captcha
     if (isset($_REQUEST['captcha'])) {
@@ -38,10 +37,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
     // Check if password is empty
-    if (empty(trim($_POST["password"]))) {
+    $password = trim($_POST["password"]);
+    if (empty($password)) {
         $password_err = "Please enter your password.";
-    } else {
-        $password = trim($_POST["password"]);
     }
 
     // Validate credentials
@@ -83,10 +81,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     }
-}
 // Close statement
-pg_close($link);
-
+    pg_close($link);
+}
 
 ?>
 

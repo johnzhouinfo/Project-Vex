@@ -34,28 +34,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Validate password
-    if (empty(trim($_POST["password"]))) {
+    $password = trim($_POST["password"]);
+    if (empty($password)) {
         $password_err = "Please enter a password.";
     } elseif (strlen(trim($_POST["password"])) < 6) {
         $password_err = "Password must have at least 6 characters.";
     } else {
-        $password = trim($_POST["password"]);
+
     }
 
     // Validate confirm password
-    if (empty(trim($_POST["confirm_password"]))) {
+    $confirm_password = trim($_POST["confirm_password"]);
+    if (empty($confirm_password)) {
         $confirm_password_err = "Please confirm password.";
     } else {
-        $confirm_password = trim($_POST["confirm_password"]);
+
         if (empty($password_err) && ($password != $confirm_password)) {
             $confirm_password_err = "Password did not match.";
         }
     }
     // Validate email
-    if (empty(trim($_POST["email"]))) {
+    $email = trim($_POST["email"]);
+    if (empty($email)) {
         $email_err = "Please enter email.";
     } else {
-        $email = trim($_POST["email"]);
+
         if (!filter_var($email, FILTER_VALIDATE_EMAIL))
             $email_err = "Incorrect email format.";
     }
