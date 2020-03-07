@@ -10,7 +10,8 @@ $username_err = $password_err = $confirm_password_err = $email_err = $captcha_er
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Validate username
-    if (empty(trim($_POST["username"]))) {
+    $username_err = trim($_POST["username"]);
+    if (empty($username)) {
         $username_err = "Please enter a username.";
     } else {
         // Prepare a select statement
