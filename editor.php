@@ -76,32 +76,36 @@
             <div class="tab-content">
                 <div class="tab-pane active" role="tabpanel" id="tab-1">
                     <div role="tablist" id="accordion-1">
-                        <div class="card">
+                        <div class="card default-tab" id="general-tab">
                             <div class="card-header" role="tab">
-                                <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false"
+                                <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="true"
                                                     aria-controls="accordion-1 .item-1" href="div#accordion-1 .item-1">General</a>
                                 </h5>
                             </div>
-                            <div class="collapse item-1" role="tabpanel" data-parent="#accordion-1">
+                            <div class="collapse show item-1" role="tabpanel" data-parent="#accordion-1">
                                 <div class="card-body">
                                     <div class="d-flex">
-                                        <form class="form-horizontal">
+                                        <form class="form-horizontal" action="#">
                                             <div class="form-group"><label
-                                                        class="text-nowrap d-inline col-sm-2">Id</label>
-                                                <div class="col-sm-10"><input class="form-control" type="text"></div>
+                                                    class="text-nowrap d-inline col-sm-2">Id</label>
+                                                <div class="col-sm-10"><input class="form-control element-attribute"
+                                                                              type="text" id="attribute-id"
+                                                                              attr-data-type="id"></div>
                                             </div>
                                         </form>
-                                        <form class="form-horizontal">
+                                        <form class="form-horizontal" action="#">
                                             <div class="form-group"><label
-                                                        class="text-nowrap d-inline col-sm-2">Class</label>
-                                                <div class="col-sm-10"><input class="form-control" type="text"></div>
+                                                    class="text-nowrap d-inline col-sm-2">Class</label>
+                                                <div class="col-sm-10"><input class="form-control element-attribute"
+                                                                              type="text" id="attribute-class"
+                                                                              attr-data-type="class"></div>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card default-hide-tab" id="button-tab">
                             <div class="card-header" role="tab">
                                 <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false"
                                                     aria-controls="accordion-1 .item-2" href="div#accordion-1 .item-2">Button</a>
@@ -109,20 +113,26 @@
                             </div>
                             <div class="collapse item-2" role="tabpanel" data-parent="#accordion-1">
                                 <div class="card-body">
-                                    <form class="form-horizontal">
+                                    <form class="form-horizontal" action="#">
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Name </label>
-                                            <div class="col-sm-10"><input class="form-control" type="text"></div>
+                                            <div class="col-sm-10"><input class="form-control element-attribute"
+                                                                          type="text" id="attribute-button-name"
+                                                                          attr-data-type="name"></div>
                                         </div>
                                     </form>
-                                    <form class="form-horizontal">
+                                    <form class="form-horizontal" action="#">
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Text</label>
-                                            <div class="col-sm-10"><input class="form-control" type="text"></div>
+                                            <div class="col-sm-10"><input class="form-control element-attribute"
+                                                                          type="text" id="attribute-button-text"
+                                                                          attr-data-type="text"></div>
                                         </div>
                                     </form>
                                     <form class="form-horizontal">
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Type</label>
-                                            <div class="col-sm-10"><select class="form-control"
-                                                                           style="padding: 6px 15px;">
+                                            <div class="col-sm-10"><select class="form-control element-attribute"
+                                                                           id="attribute-button-type"
+                                                                           style="padding: 6px 15px;"
+                                                                           attr-data-type="type">
                                                     <option value="" selected="">Default</option>
                                                     <option value="button">Button</option>
                                                     <option value="reset">Reset</option>
@@ -132,15 +142,16 @@
                                     </form>
                                     <form class="form-horizontal">
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Disabled<br><label
-                                                        class="switch">
-                                                    <input type="checkbox" id="checkbox">
+                                                    class="switch">
+                                                    <input id="attribute-button-disabled" class="element-attribute"
+                                                           type="checkbox" attr-data-type="disabled">
                                                     <span class="slider round"></span>
                                                 </label></label></div>
                                     </form>
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card default-hide-tab" id="link-tab">
                             <div class="card-header" role="tab">
                                 <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false"
                                                     aria-controls="accordion-1 .item-3" href="div#accordion-1 .item-3">Link</a>
@@ -150,18 +161,22 @@
                                 <div class="card-body">
                                     <form class="form-horizontal">
                                         <div class="form-group"><label class="text-nowrap col-sm-2">URL</label>
-                                            <div class="col-sm-10"><input class="form-control" type="text"></div>
+                                            <div class="col-sm-10"><input class="form-control element-attribute"
+                                                                          type="text" id="attribute-a-href"
+                                                                          attr-data-type="href"></div>
                                         </div>
                                     </form>
                                     <form class="form-horizontal">
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Target</label>
-                                            <div class="col-sm-10"><input class="form-control" type="text"></div>
+                                            <div class="col-sm-10"><input class="form-control element-attribute"
+                                                                          type="text" id="attribute-a-target"
+                                                                          attr-data-type="target"></div>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card default-hide-tab" id="heading-tab">
                             <div class="card-header" role="tab">
                                 <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false"
                                                     aria-controls="accordion-1 .item-4" href="div#accordion-1 .item-4">Heading</a>
@@ -171,7 +186,9 @@
                                 <div class="card-body">
                                     <form class="form-horizontal">
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Size</label>
-                                            <div class="col-sm-10"><select class="form-control">
+                                            <div class="col-sm-10"><select class="form-control element-attribute"
+                                                                           id="attribute-size"
+                                                                           attr-data-type="heading-size">
                                                     <option value="1" selected="">1</option>
                                                     <option value="2">2</option>
                                                     <option value="3">3</option>
@@ -187,7 +204,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card default-hide-tab" id="video-tab">
                             <div class="card-header" role="tab">
                                 <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false"
                                                     aria-controls="accordion-1 .item-5" href="div#accordion-1 .item-5">Video</a>
@@ -195,43 +212,53 @@
                             </div>
                             <div class="collapse item-5" role="tabpanel" data-parent="#accordion-1">
                                 <div class="card-body">
-                                    <form class="form-horizontal">
+                                    <form class="form-horizontal" action="#">
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Src</label>
-                                            <div class="col-sm-10"><input class="form-control" type="text"><input
-                                                        type="file" accept="video/*"></div>
+                                            <div class="col-sm-10"><input class="form-control element-attribute"
+                                                                          type="text" id="attribute-video-src"
+                                                                          attr-data-type="src"><input type="file"
+                                                                                                      accept="video/*">
+                                            </div>
                                         </div>
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Width</label>
-                                            <div class="col-sm-10"><input class="form-control" type="text"></div>
+                                            <div class="col-sm-10"><input class="form-control element-attribute"
+                                                                          type="text" id="attribute-video-width"
+                                                                          attr-data-type="width"></div>
                                         </div>
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Height</label>
-                                            <div class="col-sm-10"><input class="form-control" type="text"></div>
+                                            <div class="col-sm-10"><input class="form-control element-attribute"
+                                                                          type="text" id="attribute-video-height"
+                                                                          attr-data-type="height"></div>
                                         </div>
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Muted<br><label
-                                                        class="switch">
-                                                    <input type="checkbox" id="checkbox">
+                                                    class="switch">
+                                                    <input id="attribute-video-muted" class="element-attribute"
+                                                           type="checkbox" attr-data-type="muted">
                                                     <span class="slider round"></span>
                                                 </label></label></div>
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Loop<br><label
-                                                        class="switch">
-                                                    <input type="checkbox" id="checkbox">
+                                                    class="switch">
+                                                    <input id="attribute-video-loop" class="element-attribute"
+                                                           type="checkbox" attr-data-type="loop">
                                                     <span class="slider round"></span>
                                                 </label></label></div>
                                         <div class="form-group"><label
-                                                    class="text-nowrap col-sm-2">AutoPlay&nbsp;<br><label
-                                                        class="switch">
-                                                    <input type="checkbox" id="checkbox">
+                                                class="text-nowrap col-sm-2">AutoPlay&nbsp;<br><label class="switch">
+                                                    <input id="attribute-video-autoplay" class="element-attribute"
+                                                           type="checkbox" attr-data-type="autoplay">
                                                     <span class="slider round"></span>
                                                 </label></label></div>
-                                        <div class="form-group"><label class="text-nowrap col-sm-2">Control<br><label
-                                                        class="switch">
-                                                    <input type="checkbox" id="checkbox">
+                                        <div class="form-group"><label class="text-nowrap col-sm-2">Controls<br><label
+                                                    class="switch">
+                                                    <input id="attribute-video-controls" class="element-attribute"
+                                                           type="checkbox" attr-data-type="controls">
                                                     <span class="slider round"></span>
                                                 </label></label></div>
                                     </form>
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card default-hide-tab" id="image-tab">
                             <div class="card-header" role="tab">
                                 <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false"
                                                     aria-controls="accordion-1 .item-6" href="div#accordion-1 .item-6">Image</a>
@@ -239,46 +266,59 @@
                             </div>
                             <div class="collapse item-6" role="tabpanel" data-parent="#accordion-1">
                                 <div class="card-body">
-                                    <form class="form-horizontal">
+                                    <form class="form-horizontal" action="#">
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Image</label>
-                                            <div class="col-sm-10"><input class="form-control" type="text"><input
-                                                        type="file" accept="image/*" multiple=""></div>
+                                            <div class="col-sm-10"><input class="form-control element-attribute"
+                                                                          type="text" id="attribute-img-src"
+                                                                          attr-data-type="src"><input type="file"
+                                                                                                      accept="image/*">
+                                            </div>
                                         </div>
                                     </form>
-                                    <form class="form-horizontal">
+                                    <form class="form-horizontal" action="#">
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Width</label>
-                                            <div class="col-sm-10"><input class="form-control" type="text"></div>
+                                            <div class="col-sm-10"><input class="form-control element-attribute"
+                                                                          type="text" id="attribute-img-width"
+                                                                          attr-data-type="width"></div>
                                         </div>
                                     </form>
-                                    <form class="form-horizontal">
+                                    <form class="form-horizontal" action="#">
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Height</label>
-                                            <div class="col-sm-10"><input class="form-control" type="text"></div>
+                                            <div class="col-sm-10"><input class="form-control element-attribute"
+                                                                          type="text" id="attribute-img-height"
+                                                                          attr-data-type="height"></div>
                                         </div>
                                     </form>
-                                    <form class="form-horizontal">
+                                    <form class="form-horizontal" action="#">
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Alt</label>
-                                            <div class="col-sm-10"><input class="form-control" type="text"></div>
+                                            <div class="col-sm-10"><input class="form-control element-attribute"
+                                                                          type="text" id="attribute-img-alt"
+                                                                          attr-data-type="alt"></div>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card default-hide-tab" id="form-tab">
                             <div class="card-header" role="tab">
-                                <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="true"
+                                <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false"
                                                     aria-controls="accordion-1 .item-7" href="div#accordion-1 .item-7">Form</a>
                                 </h5>
                             </div>
-                            <div class="collapse show item-7" role="tabpanel" data-parent="#accordion-1">
+                            <div class="collapse item-7" role="tabpanel" data-parent="#accordion-1">
                                 <div class="card-body">
-                                    <form class="form-horizontal">
+                                    <form class="form-horizontal" action="#">
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Action</label>
-                                            <div class="col-sm-10"><input class="form-control" type="text"></div>
+                                            <div class="col-sm-10"><input class="form-control element-attribute"
+                                                                          type="text" id="attribute-form-action"
+                                                                          attr-data-type="action"></div>
                                         </div>
                                     </form>
-                                    <form class="form-horizontal">
+                                    <form class="form-horizontal" action="#">
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Method</label>
-                                            <div class="col-sm-10"><input class="form-control" type="text"></div>
+                                            <div class="col-sm-10"><input class="form-control element-attribute"
+                                                                          type="text" id="attribute-form-method"
+                                                                          attr-data-type="method"></div>
                                         </div>
                                     </form>
                                 </div>
@@ -288,19 +328,20 @@
                 </div>
                 <div class="tab-pane" role="tabpanel" id="tab-2">
                     <div role="tablist" id="accordion-2">
-                        <div class="card">
+                        <div class="card default-tab">
                             <div class="card-header" role="tab">
-                                <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false"
+                                <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="true"
                                                     aria-controls="accordion-2 .item-1" href="div#accordion-2 .item-1">Display</a>
                                 </h5>
                             </div>
-                            <div class="collapse item-1" role="tabpanel" data-parent="#accordion-2">
+                            <div class="collapse show item-1" role="tabpanel" data-parent="#accordion-2">
                                 <div class="card-body">
                                     <div class="d-flex">
                                         <form class="form-horizontal">
                                             <div class="form-group"><label
-                                                        class="text-nowrap d-inline col-sm-2">Display</label>
-                                                <div class="col-sm-10"><select class="form-control">
+                                                    class="text-nowrap d-inline col-sm-2">Display</label>
+                                                <div class="col-sm-10"><select class="form-control element-style"
+                                                                               id="display" style-data-type="display">
                                                         <option value="" selected="">Default</option>
                                                         <option value="block">Block</option>
                                                         <option value="inline">Inline</option>
@@ -309,16 +350,21 @@
                                                     </select></div>
                                             </div>
                                             <div class="form-group"><label
-                                                        class="text-nowrap d-inline col-sm-2">Top</label>
-                                                <div class="col-sm-10"><input class="form-control" type="text"></div>
+                                                    class="text-nowrap d-inline col-sm-2">Left</label>
+                                                <div class="col-sm-10"><input class="form-control element-style"
+                                                                              type="text" id="left"
+                                                                              style-data-type="left"></div>
                                             </div>
                                             <div class="form-group"><label
-                                                        class="text-nowrap d-inline col-sm-2">Bottom</label>
-                                                <div class="col-sm-10"><input class="form-control" type="text"></div>
+                                                    class="text-nowrap d-inline col-sm-2">Top</label>
+                                                <div class="col-sm-10"><input class="form-control element-style"
+                                                                              type="text" id="style-top"
+                                                                              style-data-type="top"></div>
                                             </div>
                                             <div class="form-group"><label
-                                                        class="text-nowrap d-inline col-sm-2">Float</label>
-                                                <div class="col-sm-10"><select class="form-control">
+                                                    class="text-nowrap d-inline col-sm-2">Float</label>
+                                                <div class="col-sm-10"><select class="form-control element-style"
+                                                                               id="style-float" style-data-type="float">
                                                         <option value="none">None</option>
                                                         <option value="left">Left</option>
                                                         <option value="right">Right</option>
@@ -327,7 +373,8 @@
                                         </form>
                                         <form class="form-horizontal">
                                             <div class="form-group"><label class="text-nowrap d-inline col-sm-2">Position</label>
-                                                <div class="col-sm-10"><select class="form-control">
+                                                <div class="col-sm-10"><select class="form-control element-style"
+                                                                               id="position" style-data-type="position">
                                                         <option value="" selected="">Default</option>
                                                         <option value="static">Static</option>
                                                         <option value="fixed">Fixed</option>
@@ -336,39 +383,49 @@
                                                     </select></div>
                                             </div>
                                             <div class="form-group"><label
-                                                        class="text-nowrap d-inline col-sm-2">Left</label>
-                                                <div class="col-sm-10"><input class="form-control" type="text"></div>
+                                                    class="text-nowrap d-inline col-sm-2">Right</label>
+                                                <div class="col-sm-10"><input class="form-control element-style"
+                                                                              type="text" id="style-right"
+                                                                              style-data-type="right"></div>
                                             </div>
                                             <div class="form-group"><label
-                                                        class="text-nowrap d-inline col-sm-2">Right</label>
-                                                <div class="col-sm-10"><input class="form-control" type="text"></div>
+                                                    class="text-nowrap d-inline col-sm-2">Bottom</label>
+                                                <div class="col-sm-10"><input class="form-control element-style"
+                                                                              type="text" id="bottom"
+                                                                              style-data-type="bottom"></div>
                                             </div>
                                         </form>
                                     </div>
                                     <form class="form-horizontal">
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Opacity</label>
-                                            <div class="col-sm-10"><input class="form-control-range" type="range"
-                                                                          step="0.1" min="0" max="1" value="1"></div>
+                                            <div class="col-sm-10"><input class="form-control-range element-style"
+                                                                          type="range" id="style-opacity" step="0.1"
+                                                                          min="0" max="1" value="1"
+                                                                          style-data-type="opacity"></div>
                                         </div>
                                     </form>
                                     <div class="d-flex">
                                         <form class="form-horizontal">
                                             <div class="form-group"><label class="text-nowrap d-inline col-sm-2">BackGround
                                                     Colour</label>
-                                                <div class="col-sm-10"><input type="color" value="#ffffff"></div>
+                                                <div class="col-sm-10"><input type="color" id="style-background-color"
+                                                                              class="element-style" value="#ffffff"
+                                                                              style-data-type="background-color"></div>
                                             </div>
                                         </form>
                                         <form class="form-horizontal">
                                             <div class="form-group"><label class="text-nowrap d-inline col-sm-2">Text
                                                     Colour</label>
-                                                <div class="col-sm-10"><input type="color"></div>
+                                                <div class="col-sm-10"><input type="color" id="style-color"
+                                                                              class="element-style"
+                                                                              style-data-type="color"></div>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card default-tab">
                             <div class="card-header" role="tab">
                                 <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false"
                                                     aria-controls="accordion-2 .item-2" href="div#accordion-2 .item-2">Typography</a>
@@ -377,10 +434,12 @@
                             <div class="collapse item-2" role="tabpanel" data-parent="#accordion-2">
                                 <div class="card-body">
                                     <div class="d-flex">
-                                        <form class="form-horizontal">
+                                        <form class="form-horizontal" action="#">
                                             <div class="form-group"><label class="text-nowrap d-inline col-sm-2">Font
                                                     family</label>
-                                                <div class="col-sm-10"><select class="form-control">
+                                                <div class="col-sm-10"><select class="form-control element-style"
+                                                                               id="style-font-family"
+                                                                               style-data-type="font-family">
                                                         <option value="">Default</option>
                                                         <option value="Arial, Helvetica, sans-serif">Arial</option>
                                                         <option value="Lucida Sans Unicode">Lucida Grande</option>
@@ -404,11 +463,15 @@
                                             </div>
                                             <div class="form-group"><label class="text-nowrap d-inline col-sm-2">Line
                                                     height</label>
-                                                <div class="col-sm-10"><input class="form-control" type="text"></div>
+                                                <div class="col-sm-10"><input class="form-control element-style"
+                                                                              type="text" id="style-line-height"
+                                                                              style-data-type="line-height"></div>
                                             </div>
                                             <div class="form-group"><label class="text-nowrap col-sm-2">Text
                                                     align</label>
-                                                <div class="col-sm-10"><select class="form-control">
+                                                <div class="col-sm-10"><select class="form-control element-style"
+                                                                               id="style-text-align"
+                                                                               style-data-type="text-align">
                                                         <option value="">None</option>
                                                         <option value="left">Left</option>
                                                         <option value="center">Centre</option>
@@ -418,7 +481,9 @@
                                             </div>
                                             <div class="form-group"><label class="text-nowrap d-inline col-sm-2">Decoration
                                                     style</label>
-                                                <div class="col-sm-10"><select class="form-control">
+                                                <div class="col-sm-10"><select class="form-control element-style"
+                                                                               id="style-text-decoration-style"
+                                                                               style-data-type="text-decoration-style">
                                                         <option value="">Default</option>
                                                         <option value="solid">Solid</option>
                                                         <option value="wavy">Wavy</option>
@@ -428,10 +493,12 @@
                                                     </select></div>
                                             </div>
                                         </form>
-                                        <form class="form-horizontal">
+                                        <form class="form-horizontal" action="#">
                                             <div class="form-group"><label class="text-nowrap d-inline col-sm-2">Font
                                                     weight</label>
-                                                <div class="col-sm-10"><select class="form-control">
+                                                <div class="col-sm-10"><select class="form-control element-style"
+                                                                               id="style-font-weight"
+                                                                               style-data-type="font-weight">
                                                         <option value="" selected="">Default</option>
                                                         <option value="100">Thin</option>
                                                         <option value="200">Extra-Light</option>
@@ -446,11 +513,15 @@
                                             </div>
                                             <div class="form-group"><label class="text-nowrap d-inline col-sm-2">Letter
                                                     spacing</label>
-                                                <div class="col-sm-10"><input class="form-control" type="text"></div>
+                                                <div class="col-sm-10"><input class="form-control element-style"
+                                                                              type="text" id="style-letter-spacing"
+                                                                              style-data-type="letter-spacing"></div>
                                             </div>
                                             <div class="form-group"><label class="text-nowrap col-sm-2">Text
                                                     decoration</label>
-                                                <div class="col-sm-10"><select class="form-control">
+                                                <div class="col-sm-10"><select class="form-control element-style"
+                                                                               id="style-text-decoration-line"
+                                                                               style-data-type="text-decoration-line">
                                                         <option value="">None</option>
                                                         <option value="uderline">Underline</option>
                                                         <option value="overline">Overline</option>
@@ -460,14 +531,18 @@
                                             </div>
                                             <div class="form-group"><label class="text-nowrap col-sm-2">Decoration
                                                     colour</label>
-                                                <div class="col-sm-10"><input type="color" value="#ffffff"></div>
+                                                <div class="col-sm-10"><input type="color"
+                                                                              id="style-text-decoration-color"
+                                                                              class="element-style" value="#ffffff"
+                                                                              style-data-type="text-decoration-color">
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card default-tab">
                             <div class="card-header" role="tab">
                                 <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false"
                                                     aria-controls="accordion-2 .item-3" href="div#accordion-2 .item-3">Size</a>
@@ -475,96 +550,68 @@
                             </div>
                             <div class="collapse item-3" role="tabpanel" data-parent="#accordion-2">
                                 <div class="card-body">
-                                    <form class="form-horizontal">
-                                        <div class="form-group"><label class="text-nowrap col-sm-2">Width</label>
-                                            <div class="col-sm-10">
-                                                <div class="d-flex"><input class="form-control" type="text"
-                                                                           style="height: 31px;width: 300%;"><select
-                                                            class="custom-select custom-select-sm d-flex"
-                                                            style="filter: saturate(148%);">
-                                                        <option value="px">px</option>
-                                                        <option value="em">em</option>
-                                                        <option value="%">%</option>
-                                                        <option value="rem">rem</option>
-                                                        <option value="auto">auto</option>
-                                                    </select></div>
+                                    <div class="d-flex">
+                                        <form class="form-horizontal">
+                                            <div class="form-group"><label class="text-nowrap col-sm-2">Width</label>
+                                                <div class="col-sm-10">
+                                                    <div class="d-flex"><input class="form-control element-style"
+                                                                               type="text" id="style-width"
+                                                                               style="height: 31px;width: 300%;"
+                                                                               style-data-type="width"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group"><label class="text-nowrap col-sm-2">Height</label>
-                                            <div class="col-sm-10">
-                                                <div class="d-flex"><input class="form-control" type="text"
-                                                                           style="height: 31px;width: 300%;"><select
-                                                            class="custom-select custom-select-sm d-flex"
-                                                            style="filter: saturate(148%);">
-                                                        <option value="px">px</option>
-                                                        <option value="em">em</option>
-                                                        <option value="%">%</option>
-                                                        <option value="rem">rem</option>
-                                                        <option value="auto">auto</option>
-                                                    </select></div>
+                                            <div class="form-group"><label class="text-nowrap col-sm-2">Min
+                                                    Width</label>
+                                                <div class="col-sm-10">
+                                                    <div class="d-flex"><input class="form-control element-style"
+                                                                               type="text" id="style-min-width"
+                                                                               style="height: 31px;width: 300%;"
+                                                                               style-data-type="min-width"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group"><label class="text-nowrap col-sm-2">Min Width</label>
-                                            <div class="col-sm-10">
-                                                <div class="d-flex"><input class="form-control" type="text"
-                                                                           style="height: 31px;width: 300%;"><select
-                                                            class="custom-select custom-select-sm d-flex"
-                                                            style="filter: saturate(148%);">
-                                                        <option value="px">px</option>
-                                                        <option value="em">em</option>
-                                                        <option value="%">%</option>
-                                                        <option value="rem">rem</option>
-                                                        <option value="auto">auto</option>
-                                                    </select></div>
+                                            <div class="form-group"><label class="text-nowrap col-sm-2">Max
+                                                    Width</label>
+                                                <div class="col-sm-10">
+                                                    <div class="d-flex"><input class="form-control element-style"
+                                                                               type="text" id="style-max-width"
+                                                                               style="height: 31px;width: 300%;"
+                                                                               style-data-type="max-width"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group"><label class="text-nowrap col-sm-2">Min Height</label>
-                                            <div class="col-sm-10">
-                                                <div class="d-flex"><input class="form-control" type="text"
-                                                                           style="height: 31px;width: 300%;"><select
-                                                            class="custom-select custom-select-sm d-flex"
-                                                            style="filter: saturate(148%);">
-                                                        <option value="px">px</option>
-                                                        <option value="em">em</option>
-                                                        <option value="%">%</option>
-                                                        <option value="rem">rem</option>
-                                                        <option value="auto">auto</option>
-                                                    </select></div>
+                                        </form>
+                                        <form class="form-horizontal">
+                                            <div class="form-group"><label class="text-nowrap col-sm-2">Height</label>
+                                                <div class="col-sm-10">
+                                                    <div class="d-flex"><input class="form-control element-style"
+                                                                               type="text" id="style-height"
+                                                                               style="height: 31px;width: 300%;"
+                                                                               style-data-type="height"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group"><label class="text-nowrap col-sm-2">Max Width</label>
-                                            <div class="col-sm-10">
-                                                <div class="d-flex"><input class="form-control" type="text"
-                                                                           style="height: 31px;width: 300%;"><select
-                                                            class="custom-select custom-select-sm d-flex"
-                                                            style="filter: saturate(148%);">
-                                                        <option value="px">px</option>
-                                                        <option value="em">em</option>
-                                                        <option value="%">%</option>
-                                                        <option value="rem">rem</option>
-                                                        <option value="auto">auto</option>
-                                                    </select></div>
+                                            <div class="form-group"><label class="text-nowrap col-sm-2">Min
+                                                    Height</label>
+                                                <div class="col-sm-10">
+                                                    <div class="d-flex"><input class="form-control element-style"
+                                                                               type="text" id="style-min-height"
+                                                                               style="height: 31px;width: 300%;"
+                                                                               style-data-type="min-height"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group"><label class="text-nowrap col-sm-2">Max Height</label>
-                                            <div class="col-sm-10">
-                                                <div class="d-flex"><input class="form-control" type="text"
-                                                                           style="height: 31px;width: 300%;"><select
-                                                            class="custom-select custom-select-sm d-flex"
-                                                            style="filter: saturate(148%);">
-                                                        <option value="px">px</option>
-                                                        <option value="em">em</option>
-                                                        <option value="%">%</option>
-                                                        <option value="rem">rem</option>
-                                                        <option value="auto">auto</option>
-                                                    </select></div>
+                                            <div class="form-group"><label class="text-nowrap col-sm-2">Max
+                                                    Height</label>
+                                                <div class="col-sm-10">
+                                                    <div class="d-flex"><input class="form-control element-style"
+                                                                               type="text" id="style-max-height"
+                                                                               style="height: 31px;width: 300%;"
+                                                                               style-data-type="max-height"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card default-tab">
                             <div class="card-header" role="tab">
                                 <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false"
                                                     aria-controls="accordion-2 .item-4" href="div#accordion-2 .item-4">Margin</a>
@@ -572,68 +619,48 @@
                             </div>
                             <div class="collapse item-4" role="tabpanel" data-parent="#accordion-2">
                                 <div class="card-body">
-                                    <form class="form-horizontal">
-                                        <div class="form-group"><label class="text-nowrap col-sm-2">Top</label>
-                                            <div class="col-sm-10">
-                                                <div class="d-flex"><input class="form-control" type="text"
-                                                                           style="height: 31px;width: 300%;"><select
-                                                            class="custom-select custom-select-sm d-flex"
-                                                            style="filter: saturate(148%);">
-                                                        <option value="px">px</option>
-                                                        <option value="em">em</option>
-                                                        <option value="%">%</option>
-                                                        <option value="rem">rem</option>
-                                                        <option value="auto">auto</option>
-                                                    </select></div>
+                                    <div class="d-flex">
+                                        <form class="form-horizontal">
+                                            <div class="form-group"><label class="text-nowrap col-sm-2">Top</label>
+                                                <div class="col-sm-10">
+                                                    <div class="d-flex"><input class="form-control element-style"
+                                                                               type="text" id="style-margin-top"
+                                                                               style="height: 31px;width: 300%;"
+                                                                               style-data-type="margin-top"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group"><label class="text-nowrap col-sm-2">Right</label>
-                                            <div class="col-sm-10">
-                                                <div class="d-flex"><input class="form-control" type="text"
-                                                                           style="height: 31px;width: 300%;"><select
-                                                            class="custom-select custom-select-sm d-flex"
-                                                            style="filter: saturate(148%);">
-                                                        <option value="px">px</option>
-                                                        <option value="em">em</option>
-                                                        <option value="%">%</option>
-                                                        <option value="rem">rem</option>
-                                                        <option value="auto">auto</option>
-                                                    </select></div>
+                                            <div class="form-group"><label class="text-nowrap col-sm-2">Bottom</label>
+                                                <div class="col-sm-10">
+                                                    <div class="d-flex"><input class="form-control element-style"
+                                                                               type="text" id="style-margin-bottom"
+                                                                               style="height: 31px;width: 300%;"
+                                                                               style-data-type="margin-bottom"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group"><label class="text-nowrap col-sm-2">Bottom</label>
-                                            <div class="col-sm-10">
-                                                <div class="d-flex"><input class="form-control" type="text"
-                                                                           style="height: 31px;width: 300%;"><select
-                                                            class="custom-select custom-select-sm d-flex"
-                                                            style="filter: saturate(148%);">
-                                                        <option value="px">px</option>
-                                                        <option value="em">em</option>
-                                                        <option value="%">%</option>
-                                                        <option value="rem">rem</option>
-                                                        <option value="auto">auto</option>
-                                                    </select></div>
+                                        </form>
+                                        <form class="form-horizontal">
+                                            <div class="form-group"><label class="text-nowrap col-sm-2">Right</label>
+                                                <div class="col-sm-10">
+                                                    <div class="d-flex"><input class="form-control element-style"
+                                                                               type="text" id="style-margin-right"
+                                                                               style="height: 31px;width: 300%;"
+                                                                               style-data-type="margin-right"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group"><label class="text-nowrap col-sm-2">Left</label>
-                                            <div class="col-sm-10">
-                                                <div class="d-flex"><input class="form-control" type="text"
-                                                                           style="height: 31px;width: 300%;"><select
-                                                            class="custom-select custom-select-sm d-flex"
-                                                            style="filter: saturate(148%);">
-                                                        <option value="px">px</option>
-                                                        <option value="em">em</option>
-                                                        <option value="%">%</option>
-                                                        <option value="rem">rem</option>
-                                                        <option value="auto">auto</option>
-                                                    </select></div>
+                                            <div class="form-group"><label class="text-nowrap col-sm-2">Left</label>
+                                                <div class="col-sm-10">
+                                                    <div class="d-flex"><input class="form-control element-style"
+                                                                               type="text" id="style-margin-left"
+                                                                               style="height: 31px;width: 300%;"
+                                                                               style-data-type="margin-left"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card default-tab">
                             <div class="card-header" role="tab">
                                 <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false"
                                                     aria-controls="accordion-2 .item-5" href="div#accordion-2 .item-5">Padding</a>
@@ -641,68 +668,48 @@
                             </div>
                             <div class="collapse item-5" role="tabpanel" data-parent="#accordion-2">
                                 <div class="card-body">
-                                    <form class="form-horizontal">
-                                        <div class="form-group"><label class="text-nowrap col-sm-2">Top</label>
-                                            <div class="col-sm-10">
-                                                <div class="d-flex"><input class="form-control" type="text"
-                                                                           style="height: 31px;width: 300%;"><select
-                                                            class="custom-select custom-select-sm d-flex"
-                                                            style="filter: saturate(148%);">
-                                                        <option value="px">px</option>
-                                                        <option value="em">em</option>
-                                                        <option value="%">%</option>
-                                                        <option value="rem">rem</option>
-                                                        <option value="auto">auto</option>
-                                                    </select></div>
+                                    <div class="d-flex">
+                                        <form class="form-horizontal">
+                                            <div class="form-group"><label class="text-nowrap col-sm-2">Top</label>
+                                                <div class="col-sm-10">
+                                                    <div class="d-flex"><input class="form-control element-style"
+                                                                               type="text" id="style-padding-top"
+                                                                               style="height: 31px;width: 300%;"
+                                                                               style-data-type="padding-top"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group"><label class="text-nowrap col-sm-2">Right</label>
-                                            <div class="col-sm-10">
-                                                <div class="d-flex"><input class="form-control" type="text"
-                                                                           style="height: 31px;width: 300%;"><select
-                                                            class="custom-select custom-select-sm d-flex"
-                                                            style="filter: saturate(148%);">
-                                                        <option value="px">px</option>
-                                                        <option value="em">em</option>
-                                                        <option value="%">%</option>
-                                                        <option value="rem">rem</option>
-                                                        <option value="auto">auto</option>
-                                                    </select></div>
+                                            <div class="form-group"><label class="text-nowrap col-sm-2">Bottom</label>
+                                                <div class="col-sm-10">
+                                                    <div class="d-flex"><input class="form-control element-style"
+                                                                               type="text" id="style-padding-bottom"
+                                                                               style="height: 31px;width: 300%;"
+                                                                               style-data-type="padding-bottom"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group"><label class="text-nowrap col-sm-2">Bottom</label>
-                                            <div class="col-sm-10">
-                                                <div class="d-flex"><input class="form-control" type="text"
-                                                                           style="height: 31px;width: 300%;"><select
-                                                            class="custom-select custom-select-sm d-flex"
-                                                            style="filter: saturate(148%);">
-                                                        <option value="px">px</option>
-                                                        <option value="em">em</option>
-                                                        <option value="%">%</option>
-                                                        <option value="rem">rem</option>
-                                                        <option value="auto">auto</option>
-                                                    </select></div>
+                                        </form>
+                                        <form class="form-horizontal">
+                                            <div class="form-group"><label class="text-nowrap col-sm-2">Right</label>
+                                                <div class="col-sm-10">
+                                                    <div class="d-flex"><input class="form-control element-style"
+                                                                               type="text" id="style-padding-right"
+                                                                               style="height: 31px;width: 300%;"
+                                                                               style-data-type="padding-right"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group"><label class="text-nowrap col-sm-2">Left</label>
-                                            <div class="col-sm-10">
-                                                <div class="d-flex"><input class="form-control" type="text"
-                                                                           style="height: 31px;width: 300%;"><select
-                                                            class="custom-select custom-select-sm d-flex"
-                                                            style="filter: saturate(148%);">
-                                                        <option value="px">px</option>
-                                                        <option value="em">em</option>
-                                                        <option value="%">%</option>
-                                                        <option value="rem">rem</option>
-                                                        <option value="auto">auto</option>
-                                                    </select></div>
+                                            <div class="form-group"><label class="text-nowrap col-sm-2">Left</label>
+                                                <div class="col-sm-10">
+                                                    <div class="d-flex"><input class="form-control element-style"
+                                                                               type="text" id="style-padding-left"
+                                                                               style="height: 31px;width: 300%;"
+                                                                               style-data-type="padding-left"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card default-tab">
                             <div class="card-header" role="tab">
                                 <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false"
                                                     aria-controls="accordion-2 .item-6" href="div#accordion-2 .item-6">Border</a>
@@ -712,7 +719,9 @@
                                 <div class="card-body">
                                     <form class="form-horizontal">
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Style</label>
-                                            <div class="col-sm-10"><select class="form-control">
+                                            <div class="col-sm-10"><select class="form-control element-style"
+                                                                           id="style-border-style"
+                                                                           style-data-type="border-style">
                                                     <option value="">Default</option>
                                                     <option value="solid">Solid</option>
                                                     <option value="dotted">Dotted</option>
@@ -720,27 +729,30 @@
                                                 </select></div>
                                         </div>
                                     </form>
-                                    <div class="form-group"><label class="text-nowrap col-sm-2">Width</label>
-                                        <div class="col-sm-10">
-                                            <div class="d-flex"><input type="text"
-                                                                       style="height: 31px;width: 300%;"><select
-                                                        class="custom-select custom-select-sm d-flex"
-                                                        style="filter: saturate(148%);">
-                                                    <option value="px">px</option>
-                                                    <option value="em">em</option>
-                                                    <option value="%">%</option>
-                                                    <option value="rem">rem</option>
-                                                    <option value="auto">auto</option>
-                                                </select></div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group"><label class="text-nowrap d-inline col-sm-2">Colour</label>
-                                        <div class="col-sm-10"><input type="color" value="#ffffff"></div>
+                                    <div class="d-flex">
+                                        <form class="form-horizontal" action="#">
+                                            <div class="form-group"><label class="text-nowrap col-sm-2">Width</label>
+                                                <div class="col-sm-10">
+                                                    <div class="d-flex"><input class="form-control element-style"
+                                                                               type="text" id="style-border-width"
+                                                                               style="height: 31px;width: 300%;"
+                                                                               style-data-type="border-width"></div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <form class="form-horizontal">
+                                            <div class="form-group"><label
+                                                    class="text-nowrap d-inline col-sm-2">Colour</label>
+                                                <div class="col-sm-10"><input type="color" id="style-border-color"
+                                                                              class="element-style" value="#ffffff"
+                                                                              style-data-type="border-color"></div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card default-tab">
                             <div class="card-header" role="tab">
                                 <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false"
                                                     aria-controls="accordion-2 .item-7" href="div#accordion-2 .item-7">Border
@@ -748,84 +760,76 @@
                             </div>
                             <div class="collapse item-7" role="tabpanel" data-parent="#accordion-2">
                                 <div class="card-body">
-                                    <form class="form-horizontal">
-                                        <div class="form-group"><label class="text-nowrap col-sm-2">Top Left</label>
-                                            <div class="col-sm-10">
-                                                <div class="d-flex"><input class="form-control" type="text"
-                                                                           style="height: 31px;width: 300%;"><select
-                                                            class="custom-select custom-select-sm d-flex"
-                                                            style="filter: saturate(148%);">
-                                                        <option value="px">px</option>
-                                                        <option value="em">em</option>
-                                                        <option value="%">%</option>
-                                                        <option value="rem">rem</option>
-                                                        <option value="auto">auto</option>
-                                                    </select></div>
+                                    <div class="d-flex">
+                                        <form class="form-horizontal">
+                                            <div class="form-group"><label class="text-nowrap col-sm-2">Top Left</label>
+                                                <div class="col-sm-10">
+                                                    <div class="d-flex"><input class="form-control" type="text"
+                                                                               id="style-border-top-left-radius"
+                                                                               style="height: 31px;width: 300%;"
+                                                                               style-data-type="border-top-left-radius">
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group"><label class="text-nowrap col-sm-2">Top Right</label>
-                                            <div class="col-sm-10">
-                                                <div class="d-flex"><input class="form-control" type="text"
-                                                                           style="height: 31px;width: 300%;"><select
-                                                            class="custom-select custom-select-sm d-flex"
-                                                            style="filter: saturate(148%);">
-                                                        <option value="px">px</option>
-                                                        <option value="em">em</option>
-                                                        <option value="%">%</option>
-                                                        <option value="rem">rem</option>
-                                                        <option value="auto">auto</option>
-                                                    </select></div>
+                                            <div class="form-group"><label class="text-nowrap col-sm-2">Bottom
+                                                    Left</label>
+                                                <div class="col-sm-10">
+                                                    <div class="d-flex"><input class="form-control" type="text"
+                                                                               id="style-border-bottom-left-radius"
+                                                                               style="height: 31px;width: 300%;"
+                                                                               style-data-type="border-bottom-left-radius">
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group"><label class="text-nowrap col-sm-2">Bottom Left</label>
-                                            <div class="col-sm-10">
-                                                <div class="d-flex"><input class="form-control" type="text"
-                                                                           style="height: 31px;width: 300%;"><select
-                                                            class="custom-select custom-select-sm d-flex"
-                                                            style="filter: saturate(148%);">
-                                                        <option value="px">px</option>
-                                                        <option value="em">em</option>
-                                                        <option value="%">%</option>
-                                                        <option value="rem">rem</option>
-                                                        <option value="auto">auto</option>
-                                                    </select></div>
+                                        </form>
+                                        <form class="form-horizontal">
+                                            <div class="form-group"><label class="text-nowrap col-sm-2">Top
+                                                    Right</label>
+                                                <div class="col-sm-10">
+                                                    <div class="d-flex"><input class="form-control" type="text"
+                                                                               id="style-border-top-right-radius"
+                                                                               style="height: 31px;width: 300%;"
+                                                                               style-data-type="border-top-right-radius">
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group"><label class="text-nowrap col-sm-2">Bottom Right</label>
-                                            <div class="col-sm-10">
-                                                <div class="d-flex"><input class="form-control" type="text"
-                                                                           style="height: 31px;width: 300%;"><select
-                                                            class="custom-select custom-select-sm d-flex"
-                                                            style="filter: saturate(148%);">
-                                                        <option value="px">px</option>
-                                                        <option value="em">em</option>
-                                                        <option value="%">%</option>
-                                                        <option value="rem">rem</option>
-                                                        <option value="auto">auto</option>
-                                                    </select></div>
+                                            <div class="form-group"><label class="text-nowrap col-sm-2">Bottom
+                                                    Right</label>
+                                                <div class="col-sm-10">
+                                                    <div class="d-flex"><input class="form-control" type="text"
+                                                                               id="style-border-bottom-right-radius"
+                                                                               style="height: 31px;width: 300%;"
+                                                                               style-data-type="border-bottom-right-radius">
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card default-tab">
                             <div class="card-header" role="tab">
-                                <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="true"
+                                <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false"
                                                     aria-controls="accordion-2 .item-8" href="div#accordion-2 .item-8">Background
                                         Image</a></h5>
                             </div>
-                            <div class="collapse show item-8" role="tabpanel" data-parent="#accordion-2">
+                            <div class="collapse item-8" role="tabpanel" data-parent="#accordion-2">
                                 <div class="card-body">
-                                    <form class="form-horizontal">
+                                    <form class="form-horizontal" action="#">
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Image</label>
-                                            <div class="col-sm-10"><input class="form-control" type="text"><input
-                                                        type="file" accept="image/*"></div>
+                                            <div class="col-sm-10"><input class="form-control element-style image-class"
+                                                                          type="text" id="style-background-image"
+                                                                          style-data-type="background-image"><input
+                                                    type="file" class="style-upload-class" accept="image/*"
+                                                    style-data-type="background-image"></div>
                                         </div>
                                     </form>
                                     <form class="form-horizontal">
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Repeat</label>
-                                            <div class="col-sm-10"><select class="form-control">
+                                            <div class="col-sm-10"><select class="form-control element-style"
+                                                                           id="style-background-repeat"
+                                                                           style-data-type="background-repeat">
                                                     <option value="" selected="">Default</option>
                                                     <option value="repeat-x">Repeat-x</option>
                                                     <option value="repeat-y">Repeat-y</option>
@@ -833,7 +837,9 @@
                                                 </select></div>
                                         </div>
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Size</label>
-                                            <div class="col-sm-10"><select class="form-control">
+                                            <div class="col-sm-10"><select class="form-control element-style"
+                                                                           id="style-background-size"
+                                                                           style-data-type="background-size">
                                                     <option value="" selected="">Default</option>
                                                     <option value="contain">Contain</option>
                                                     <option value="cover">Cover</option>
@@ -843,8 +849,11 @@
                                     <div class="d-flex">
                                         <form class="form-horizontal">
                                             <div class="form-group"><label class="text-nowrap d-inline col-sm-2">Position
-                                                    x</label>
-                                                <div class="col-sm-10"><select class="form-control">
+                                                    x &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                                    &nbsp;&nbsp;</label>
+                                                <div class="col-sm-10"><select class="form-control element-style"
+                                                                               id="style-background-position-x"
+                                                                               style-data-type="background-position-x">
                                                         <option value="">Default</option>
                                                         <option value="50%">Centre</option>
                                                         <option value="100%">Right</option>
@@ -854,8 +863,11 @@
                                         </form>
                                         <form class="form-horizontal">
                                             <div class="form-group"><label class="text-nowrap d-inline col-sm-2">Position
-                                                    y</label>
-                                                <div class="col-sm-10"><select class="form-control">
+                                                    y<strong>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                                        &nbsp;</strong><br></label>
+                                                <div class="col-sm-10"><select class="form-control element-style"
+                                                                               id="style-background-position-x"
+                                                                               style-data-type="background-position-x">
                                                         <option value="">Default</option>
                                                         <option value="50%">Centre</option>
                                                         <option value="0%">Top</option>
@@ -882,7 +894,7 @@
 
     <script src="js/editor.js"></script>
     <script src="lib/js/dragdrop.js"></script>
-    <script src="lib/js/style-modify-mgnt.js"></script>
+    <script src="lib/js/attribute-management.js"></script>
 
 </body>
 </html>
