@@ -108,14 +108,17 @@ div {
 }
 .undo-redo {
     display: inline-block;
-    color: #3331;
-    text-decoration: none;
+    color: rgb(0, 0, 0);
+    /* text-decoration: none; */
     size: 40px;
 
 }
+.undo-redo:hover {
+    background: #ccc;
+  }
 
-/* .undo-redo.disable {
-    background: #eee;
+.undo-redo.disable {
+    background: rgba(238, 238, 238, 0.493);
     color: #aaa;
     pointer-events: none;
-} */
+}

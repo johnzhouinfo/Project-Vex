@@ -25,8 +25,8 @@
     <div id="vex-left-top-project-list">Project List
         <div class="drop">Place Here</div>
         <div class="undo-container">
-            <input id="undo" class="undo-redo" type="button" value="undo" >
-            <input id="redo" class="undo-redo" type="button" value="redo">
+            <input id="undo" class="undo-redo disable" value="undo" type="button">
+            <input id="redo" class="undo-redo disable" value="redo" type="button">
         </div>
     </div>
     <div id="vex-component">
