@@ -324,6 +324,101 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="card default-hide-tab" id="select-tab">
+                            <div class="card-header" role="tab">
+                                <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false"
+                                                    aria-controls="accordion-1 .item-8" href="div#accordion-1 .item-8">Select</a>
+                                </h5>
+                            </div>
+                            <div class="collapse item-8" role="tabpanel" data-parent="#accordion-1">
+                                <div class="card-body">
+                                    <div id="select-option"></div>
+                                    <br>
+                                    <form class="form-horizontal">
+                                        <div class="form-group">
+                                            <button class="btn btn-primary" id="select-add-button" type="button">+ Add
+                                                Option
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card default-hide-tab" id="radio-tab">
+                            <div class="card-header" role="tab">
+                                <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false"
+                                                    aria-controls="accordion-1 .item-9" href="div#accordion-1 .item-9">Radio
+                                        Button</a></h5>
+                            </div>
+                            <div class="collapse item-9" role="tabpanel" data-parent="#accordion-1">
+                                <div class="card-body">
+                                    <form class="form-horizontal">
+                                        <div class="form-group"><label class="col-sm-2">Name </label>
+                                            <div class="col-sm-10"><input class="form-control element-attribute"
+                                                                          type="text" id="attribute-radio-name"
+                                                                          attr-data-type="name"></div>
+                                        </div>
+                                    </form>
+                                    <form class="form-horizontal">
+                                        <div class="form-group"><label class="col-sm-2">Value</label>
+                                            <div class="col-sm-10"><input class="form-control element-attribute"
+                                                                          type="text" id="attribute-radio-value"
+                                                                          attr-data-type="value"></div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card default-hide-tab" id="checkbox-tab">
+                            <div class="card-header" role="tab">
+                                <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false"
+                                                    aria-controls="accordion-1 .item-10"
+                                                    href="div#accordion-1 .item-10">Checkbox</a></h5>
+                            </div>
+                            <div class="collapse item-10" role="tabpanel" data-parent="#accordion-1">
+                                <div class="card-body">
+                                    <form class="form-horizontal">
+                                        <div class="form-group"><label class="col-sm-2">Name </label>
+                                            <div class="col-sm-10"><input class="form-control element-attribute"
+                                                                          type="text" id="attribute-checkbox-name"
+                                                                          attr-data-type="name"></div>
+                                        </div>
+                                    </form>
+                                    <form class="form-horizontal">
+                                        <div class="form-group"><label class="col-sm-2">Value</label>
+                                            <div class="col-sm-10"><input class="form-control element-attribute"
+                                                                          type="text" id="attribute-checkbox-value"
+                                                                          attr-data-type="value"></div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card default-hide-tab" id="table">
+                            <div class="card-header" role="tab">
+                                <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false"
+                                                    aria-controls="accordion-1 .item-11"
+                                                    href="div#accordion-1 .item-11">Table</a></h5>
+                            </div>
+                            <div class="collapse item-11" role="tabpanel" data-parent="#accordion-1">
+                                <div class="card-body">
+                                    <form class="form-horizontal" action="#">
+                                        <div class="form-group"><label class="col-sm-2">Row</label>
+                                            <div class="col-sm-10"><input class="form-control" type="text"></div>
+                                        </div>
+                                    </form>
+                                    <form class="form-horizontal" action="#">
+                                        <div class="form-group"><label class="col-sm-2">Col</label>
+                                            <div class="col-sm-10"><input class="form-control" type="text"
+                                                                          id="table-col"><br>
+                                                <button class="btn btn-primary" id="table-resize" type="button">Resize
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="tab-pane" role="tabpanel" id="tab-2">

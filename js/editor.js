@@ -15,7 +15,7 @@ $('.drop').load(function () {
     // Add draggable element into the select-box
     $('#wysiwyg-editor').prepend('<li id="drag-content" draggable="true" data-insert-html=" "><p>AAA</p></li>');
     // Add mouse listener
-    frameWindow.document.body.onmouseover = handler;
+    $(frameWindow.document).contents().on("mouseover", handler);
 
     // Once click the element in the frame, show the highlight the element, show the control panel
     $(frameWindow.document).contents().on("click", function (event) {
