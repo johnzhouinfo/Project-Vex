@@ -114,8 +114,8 @@ div {
 
 }
 
-.undo-redo.disable {
+/* .undo-redo.disable {
     background: #eee;
     color: #aaa;
     pointer-events: none;
-}
+} */

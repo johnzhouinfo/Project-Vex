@@ -25,15 +25,15 @@
     <div id="vex-left-top-project-list">Project List
         <div class="drop">Place Here</div>
         <div class="undo-container">
-            <input id="undo" class="undo-redo disable" type="button" value="undo" >
-            <input id="redo" class="undo-redo disable" type="button" value="redo">
+            <input id="undo" class="undo-redo" type="button" value="undo" >
+            <input id="redo" class="undo-redo" type="button" value="redo">
         </div>
     </div>
     <div id="vex-component">
 
         <ul id="drag-list-container">
             <li draggable="true" data-insert-html="<h1>HEADER H1</h1>"><i class="fa fa-header"></i>
-                <p>Header</p></li>
+                <p >Header</p></li>
             <li draggable="true"><img src="./img/empty-avatar.png">
                 <p>Chart</p></li>
             <li draggable="true"><i class="fa fa-envelope"></i>
@@ -81,6 +81,7 @@
 
 <script src="js/editor.js"></script>
 <script src="lib/js/dragdrop.js"></script>
+<script src="lib/js/undo_redo.js"></script>
 
 </body>
 </html>
