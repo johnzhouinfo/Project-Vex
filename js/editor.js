@@ -25,7 +25,9 @@ $('.drop').load(function () {
             return;
         selectTarget = event.target;
         prev = event.target;
-        console.log("Inner click");
+        // console.log("Inner click");
+
+
         // Show the select-box
         // Prevent user move element before/after body, html tags
         if (event.target.tagName.toLocaleLowerCase() !== 'html') {

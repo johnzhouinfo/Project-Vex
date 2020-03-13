@@ -8,8 +8,13 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="favicon.ico">
+
+
+   
+
     <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="lib/css/styles.min.css">
+    <script src="https://rawgit.com/ArthurClemens/Javascript-Undo-Manager/master/lib/undomanager.js"></script>
 
     <base href="">
     <title>Vex</title>
@@ -22,18 +27,24 @@
 
 <div id="vex-builder">
     <div id="vex-nav">NAV</div>
-    <div id="vex-left-top-project-list">Project List</div>
-    <div id="vex-component">
 
+    <div id="vex-left-top-project-list">Project List
+        <div class="drop">Place Here</div>
+        <div class="undo-container">
+            <input id="undo" class="undo-redo disable" value="undo" type="button">
+            <input id="redo" class="undo-redo disable" value="redo" type="button">
+        </div>
+    </div>
+
+    <div id="vex-component">
         <ul id="drag-list-container">
             <li draggable="true" data-insert-html="<h1>HEADER H1</h1>"><i class="fa fa-header"></i>
-                <p>Header</p></li>
+                <p >Header</p></li>
             <li draggable="true"><img src="./img/empty-avatar.png">
                 <p>Chart</p></li>
             <li draggable="true"><i class="fa fa-envelope"></i>
                 <p>Contact</p></li>
         </ul>
-
     </div>
     <div id="vex-page">
         <div id="iframe-wapper" style="width:100%;height:100%">
@@ -993,10 +1004,11 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-
     <script src="js/editor.js"></script>
     <script src="lib/js/dragdrop.js"></script>
     <script src="lib/js/attribute-management.js"></script>
+    <script src="lib/js/undo_redo.js"></script>
+
 
 </body>
 </html>

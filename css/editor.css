@@ -114,3 +114,23 @@ div {
 #drag-content {
     cursor: move;
 }
+
+.undo-container {
+    margin: 40px 0;
+}
+.undo-redo {
+    display: inline-block;
+    color: rgb(0, 0, 0);
+    /* text-decoration: none; */
+    size: 40px;
+
+}
+.undo-redo:hover {
+    background: #ccc;
+  }
+
+.undo-redo.disable {
+    background: rgba(238, 238, 238, 0.493);
+    color: #aaa;
+    pointer-events: none;
+}
