@@ -635,7 +635,7 @@
                                                                                id="style-text-decoration-line"
                                                                                style-data-type="text-decoration-line">
                                                         <option value="">None</option>
-                                                        <option value="uderline">Underline</option>
+                                                        <option value="underline">Underline</option>
                                                         <option value="overline">Overline</option>
                                                         <option value="line-through">Line Through</option>
                                                         <option value="underline overline">Underline Overline</option>
@@ -876,7 +876,8 @@
                                         <form class="form-horizontal">
                                             <div class="form-group"><label class="text-nowrap col-sm-2">Top Left</label>
                                                 <div class="col-sm-10">
-                                                    <div class="d-flex"><input class="form-control" type="text"
+                                                    <div class="d-flex"><input class="form-control element-style"
+                                                                               type="text"
                                                                                id="style-border-top-left-radius"
                                                                                style="height: 31px;width: 300%;"
                                                                                style-data-type="border-top-left-radius">
@@ -886,7 +887,8 @@
                                             <div class="form-group"><label class="text-nowrap col-sm-2">Bottom
                                                     Left</label>
                                                 <div class="col-sm-10">
-                                                    <div class="d-flex"><input class="form-control" type="text"
+                                                    <div class="d-flex"><input class="form-control element-style"
+                                                                               type="text"
                                                                                id="style-border-bottom-left-radius"
                                                                                style="height: 31px;width: 300%;"
                                                                                style-data-type="border-bottom-left-radius">
@@ -898,7 +900,8 @@
                                             <div class="form-group"><label class="text-nowrap col-sm-2">Top
                                                     Right</label>
                                                 <div class="col-sm-10">
-                                                    <div class="d-flex"><input class="form-control" type="text"
+                                                    <div class="d-flex"><input class="form-control element-style"
+                                                                               type="text"
                                                                                id="style-border-top-right-radius"
                                                                                style="height: 31px;width: 300%;"
                                                                                style-data-type="border-top-right-radius">
@@ -908,7 +911,8 @@
                                             <div class="form-group"><label class="text-nowrap col-sm-2">Bottom
                                                     Right</label>
                                                 <div class="col-sm-10">
-                                                    <div class="d-flex"><input class="form-control" type="text"
+                                                    <div class="d-flex"><input class="form-control element-style"
+                                                                               type="text"
                                                                                id="style-border-bottom-right-radius"
                                                                                style="height: 31px;width: 300%;"
                                                                                style-data-type="border-bottom-right-radius">
