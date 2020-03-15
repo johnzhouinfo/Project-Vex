@@ -10,8 +10,6 @@
     <link rel="icon" href="favicon.ico">
 
 
-   
-
     <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="lib/css/styles.min.css">
     <script src="https://rawgit.com/ArthurClemens/Javascript-Undo-Manager/master/lib/undomanager.js"></script>
@@ -38,7 +36,7 @@
     <div id="vex-component">
         <ul id="drag-list-container">
             <li draggable="true" data-insert-html="<h1>HEADER H1</h1>"><i class="fa fa-header"></i>
-                <p >Header</p></li>
+                <p>Header</p></li>
             <li draggable="true"><img src="./img/empty-avatar.png">
                 <p>Chart</p></li>
             <li draggable="true"><i class="fa fa-envelope"></i>
@@ -98,7 +96,7 @@
                                     <div class="d-flex">
                                         <form class="form-horizontal">
                                             <div class="form-group"><label
-                                                    class="text-nowrap d-inline col-sm-2">Id</label>
+                                                        class="text-nowrap d-inline col-sm-2">Id</label>
                                                 <div class="col-sm-10"><input class="form-control element-attribute"
                                                                               type="text" id="attribute-id"
                                                                               attr-data-type="id"></div>
@@ -106,7 +104,7 @@
                                         </form>
                                         <form class="form-horizontal">
                                             <div class="form-group"><label
-                                                    class="text-nowrap d-inline col-sm-2">Class</label>
+                                                        class="text-nowrap d-inline col-sm-2">Class</label>
                                                 <div class="col-sm-10"><input class="form-control element-attribute"
                                                                               type="text" id="attribute-class"
                                                                               attr-data-type="class"></div>
@@ -153,7 +151,7 @@
                                     </form>
                                     <form class="form-horizontal">
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Disabled<br><label
-                                                    class="switch">
+                                                        class="switch">
                                                     <input id="attribute-button-disabled" class="element-attribute"
                                                            type="checkbox" attr-data-type="disabled">
                                                     <span class="slider round"></span>
@@ -245,25 +243,26 @@
                                                                           attr-data-type="height"></div>
                                         </div>
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Muted<br><label
-                                                    class="switch">
+                                                        class="switch">
                                                     <input id="attribute-video-muted" class="element-attribute"
                                                            type="checkbox" attr-data-type="muted">
                                                     <span class="slider round"></span>
                                                 </label></label></div>
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Loop<br><label
-                                                    class="switch">
+                                                        class="switch">
                                                     <input id="attribute-video-loop" class="element-attribute"
                                                            type="checkbox" attr-data-type="loop">
                                                     <span class="slider round"></span>
                                                 </label></label></div>
                                         <div class="form-group"><label
-                                                class="text-nowrap col-sm-2">AutoPlay&nbsp;<br><label class="switch">
+                                                    class="text-nowrap col-sm-2">AutoPlay&nbsp;<br><label
+                                                        class="switch">
                                                     <input id="attribute-video-autoplay" class="element-attribute"
                                                            type="checkbox" attr-data-type="autoplay">
                                                     <span class="slider round"></span>
                                                 </label></label></div>
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Controls<br><label
-                                                    class="switch">
+                                                        class="switch">
                                                     <input id="attribute-video-controls" class="element-attribute"
                                                            type="checkbox" attr-data-type="controls">
                                                     <span class="slider round"></span>
@@ -449,7 +448,7 @@
                                     <div class="d-flex">
                                         <form class="form-horizontal">
                                             <div class="form-group"><label
-                                                    class="text-nowrap d-inline col-sm-2">Display</label>
+                                                        class="text-nowrap d-inline col-sm-2">Display</label>
                                                 <div class="col-sm-10"><select class="form-control element-style"
                                                                                id="style-display"
                                                                                style-data-type="display">
@@ -461,19 +460,19 @@
                                                     </select></div>
                                             </div>
                                             <div class="form-group"><label
-                                                    class="text-nowrap d-inline col-sm-2">Left</label>
+                                                        class="text-nowrap d-inline col-sm-2">Left</label>
                                                 <div class="col-sm-10"><input class="form-control element-style"
                                                                               type="text" id="style-left"
                                                                               style-data-type="left"></div>
                                             </div>
                                             <div class="form-group"><label
-                                                    class="text-nowrap d-inline col-sm-2">Top</label>
+                                                        class="text-nowrap d-inline col-sm-2">Top</label>
                                                 <div class="col-sm-10"><input class="form-control element-style"
                                                                               type="text" id="style-top"
                                                                               style-data-type="top"></div>
                                             </div>
                                             <div class="form-group"><label
-                                                    class="text-nowrap d-inline col-sm-2">Float</label>
+                                                        class="text-nowrap d-inline col-sm-2">Float</label>
                                                 <div class="col-sm-10"><select class="form-control element-style"
                                                                                id="style-float" style-data-type="float">
                                                         <option value="none">None</option>
@@ -495,13 +494,13 @@
                                                     </select></div>
                                             </div>
                                             <div class="form-group"><label
-                                                    class="text-nowrap d-inline col-sm-2">Right</label>
+                                                        class="text-nowrap d-inline col-sm-2">Right</label>
                                                 <div class="col-sm-10"><input class="form-control element-style"
                                                                               type="text" id="style-right"
                                                                               style-data-type="right"></div>
                                             </div>
                                             <div class="form-group"><label
-                                                    class="text-nowrap d-inline col-sm-2">Bottom</label>
+                                                        class="text-nowrap d-inline col-sm-2">Bottom</label>
                                                 <div class="col-sm-10"><input class="form-control element-style"
                                                                               type="text" id="style-bottom"
                                                                               style-data-type="bottom"></div>
@@ -834,7 +833,7 @@
                                             <div class="col-sm-10"><select class="form-control element-style"
                                                                            id="style-border-style"
                                                                            style-data-type="border-style">
-                                                    <option value="">Default</option>
+                                                    <option value="" selected="">Default</option>
                                                     <option value="solid">Solid</option>
                                                     <option value="dotted">Dotted</option>
                                                     <option value="dashed">Dashed</option>
@@ -854,7 +853,7 @@
                                         </form>
                                         <form class="form-horizontal">
                                             <div class="form-group"><label
-                                                    class="text-nowrap d-inline col-sm-2">Colour</label>
+                                                        class="text-nowrap d-inline col-sm-2">Colour</label>
                                                 <div class="col-sm-10"><input type="color" id="style-border-color"
                                                                               class="element-style" value="#ffffff"
                                                                               style-data-type="border-color"></div>
@@ -937,9 +936,9 @@
                                             <div class="col-sm-10"><input class="form-control element-style image-class"
                                                                           type="text" id="style-background-image"
                                                                           style-data-type="background-image"><input
-                                                    type="file" class="upload-btn" accept="image/*"
-                                                    data-type="background-image"
-                                                    attr-type="style"></div>
+                                                        type="file" class="upload-btn" accept="image/*"
+                                                        data-type="background-image"
+                                                        attr-type="style"></div>
                                         </div>
                                     </form>
                                     <form class="form-horizontal">
