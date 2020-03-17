@@ -167,15 +167,15 @@ function changeLiveStatus(event) {
         type: "POST",
         url: "./lib/updateLive.php",
         data: {
-            id: productId
+            id: productId,
+            value: checked
         },
         success: function (data) {
             var data = JSON.parse(data);
-            console.log(data);
             if (data.status == true) {
                 alert("Successfully");
             } else {
-                alert("Error Code: " + data.error_code + "\nDescription: " + data.error)
+                alert("Error Code: " + data.code + "\nDescription: " + data.msg);
                 $(event.target).attr("checked", !checked);
             }
         },
