@@ -2,7 +2,8 @@
  *   Vex-Page Start
  */
 $('.drop').load(function () {
-
+    $("#drag-content").remove();
+    $('#select-box').css("display", "none");
     var style = $("<style data-reserved-styletag></style>").html(GetInsertionCSS);
     var frameWindow = $(this).prop('contentWindow');
     var prev;
@@ -110,7 +111,7 @@ $('.drop').load(function () {
  * @constructor
  */
 GetInsertionCSS = function () {
-    var styles = "" +
+    var styles = "img, a {user-select: none;-webkit-user-drag: none;}" +
         ".reserved-drop-marker{width:100%;height:2px;background:#00a8ff;position:absolute}.reserved-drop-marker::after,.reserved-drop-marker::before{content:'';background:#00a8ff;height:7px;width:7px;position:absolute;border-radius:50%;top:-2px}.reserved-drop-marker::before{left:0}.reserved-drop-marker::after{right:0}";
     styles += "[data-dragcontext-marker],[data-sh-parent-marker]{outline:#19cd9d solid 2px;text-align:center;position:absolute;z-index:123456781;pointer-events:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}[data-dragcontext-marker] [data-dragcontext-marker-text],[data-sh-parent-marker] [data-sh-parent-marker-text]{background:#19cd9d;color:#fff;padding:2px 10px;display:inline-block;font-size:14px;position:relative;top:-24px;min-width:121px;font-weight:700;pointer-events:none;z-index:123456782}[data-dragcontext-marker].invalid{outline:#dc044f solid 2px}[data-dragcontext-marker].invalid [data-dragcontext-marker-text]{background:#dc044f}[data-dragcontext-marker=body]{outline-offset:-2px}[data-dragcontext-marker=body] [data-dragcontext-marker-text]{top:0;}";
     styles += '.drop-marker{pointer-events:none;}.drop-marker.horizontal{background:#00adff;position:absolute;height:2px;list-style:none;visibility:visible!important;box-shadow:0 1px 2px rgba(255,255,255,.4),0 -1px 2px rgba(255,255,255,.4);z-index:123456789;text-align:center}.drop-marker.horizontal.topside{margin-top:0}.drop-marker.horizontal.bottomside{margin-top:2px}.drop-marker.horizontal:before{content:"";width:8px;height:8px;background:#00adff;border-radius:8px;margin-top:-3px;float:left;box-shadow:0 1px 2px rgba(255,255,255,.4),0 -1px 2px rgba(255,255,255,.4)}.drop-marker.horizontal:after{content:"";width:8px;height:8px;background:#00adff;border-radius:8px;margin-top:-3px;float:right;box-shadow:0 1px 2px rgba(255,255,255,.4),0 -1px 2px rgba(255,255,255,.4)}.drop-marker.vertical{height:50px;list-style:none;border:1px solid #00ADFF;position:absolute;margin-left:3px;display:inline;box-shadow:1px 0 2px rgba(255,255,255,.4),-1px 0 2px rgba(255,255,255,.4)}.drop-marker.vertical.leftside{margin-left:0}.drop-marker.vertical.rightside{margin-left:3px}.drop-marker.vertical:before{content:"";width:8px;height:8px;background:#00adff;border-radius:8px;margin-top:-4px;top:0;position:absolute;margin-left:-4px;box-shadow:1px 0 2px rgba(255,255,255,.4),-1px 0 2px rgba(255,255,255,.4)}.drop-marker.vertical:after{content:"";width:8px;height:8px;background:#00adff;border-radius:8px;margin-left:-4px;bottom:-4px;position:absolute;box-shadow:1px 0 2px rgba(255,255,255,.4),-1px 0 2px rgba(255,255,255,.4)}';
@@ -124,10 +125,63 @@ GetInsertionCSS = function () {
  */
 
 /*
-    Vex-Toolbar START
+    Vex-Component START
+ */
+
+
+/**
+ * Search component
+ */
+$("#component-search").on("keyup", function () {
+    var value = $(this).val().toLowerCase();
+    filterUl(value);
+
+});
+
+function filterUl(value) {
+    var list = $("#drag-list-container li").hide()
+        .filter(function () {
+            var item = $(this).text();
+            var padrao = new RegExp(value, "i");
+            return padrao.test(item);
+        }).closest("li").show();
+};
+
+$("#clear-component-search-input").on("click", function () {
+    $("#component-search").val("");
+    filterUl("");
+});
+
+/*
+    Vex-Component END
  */
 
 
 /*
-    Vex-Toolbar END
+    Vex-Project-List
  */
+function changeLiveStatus(event) {
+    var productId = $(event.target).attr("productId");
+    var checked = $(event.target).is(":checked");
+    $.ajax({
+        type: "POST",
+        url: "./lib/updateLive.php",
+        data: {
+            id: productId
+        },
+        success: function (data) {
+            var data = JSON.parse(data);
+            console.log(data);
+            if (data.status == true) {
+                alert("Successfully");
+            } else {
+                alert("Error Code: " + data.error_code + "\nDescription: " + data.error)
+                $(event.target).attr("checked", !checked);
+            }
+        },
+    });
+}
+
+function loadPage(id) {
+    $(".drop").attr("src", "page.php?id=" + id);
+}

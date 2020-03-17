@@ -51,14 +51,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($result = pg_execute($link, "find_user", array($username))) {
                 $result_array = pg_fetch_row($result);
                 $user_id = trim($result_array[0]);
+                $name = trim($result_array[3]);
+
                 if (pg_num_rows($result) == 1) {
                     if (hash_equals(hash("sha256", $password), trim($result_array[2]))) {
                         // Checking the user who has been blocked or not
                         if (trim($result_array[8]) == 't') {
-                            // If the user is administrator or not
                             $_SESSION["loggedin"] = true;
                             $_SESSION["username"] = $username;
                             $_SESSION["id"] = $user_id;
+                            $_SESSION["name"] = $name;
+                            // If the user is administrator or not
                             if ($result_array[5] == 0) {
                                 $_SESSION["admin"] = true;
                                 header("location: ./web_manage/admin.php");
