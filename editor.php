@@ -1,3 +1,20 @@
+<?php
+session_start();
+require_once "./lib/config.php";
+
+$componentResult = pg_query($link, "SELECT * FROM vex_component");
+if (isset($_SESSION["id"])) {
+    $userId = $_SESSION["id"];
+    $projectResult = pg_query($link, "SELECT * FROM vex_product WHERE user_id = $userId AND is_delete = false");
+}
+if (!$componentResult) {
+    echo "An error occurred.\n";
+    exit;
+}
+
+pg_close($link);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +29,7 @@
 
     <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="lib/css/styles.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://rawgit.com/ArthurClemens/Javascript-Undo-Manager/master/lib/undomanager.js"></script>
 
     <base href="">
@@ -30,17 +48,47 @@
         <div class="undo-container">
             <input id="undo" class="undo-redo disable" value="undo" type="button">
             <input id="redo" class="undo-redo disable" value="redo" type="button">
+            <ul>
+                <?php
+                if (isset($_SESSION["id"])) {
+                    while ($row = pg_fetch_array($projectResult)) {
+                        $productName = $row['product_name'];
+                        $productId = $row['product_id'];
+                        $isLive = $row['is_live'] == "t" ? "Checked" : "";
+//                    echo "<div>";
+                        echo " <li class='product-list' onclick='loadPage($productId)' productId='$productId'>$productName</li>";
+                        echo "<input class='project-list-is-live' onChange='changeLiveStatus(event)' productId='$productId' type='checkbox' $isLive>";
+                        echo "<button class='product-list-btn' onclick='shareURL($productId)'><i class=\"fa fa-link\"></i></button>";
+                        echo "<button class='product-list-btn' onclick='deleteProduct($productId)'><i class=\"fa fa-trash\"></i></button>";
+
+                        //                    echo "</div>";
+                    }
+                }
+
+                ?>
+            </ul>
+
         </div>
     </div>
 
     <div id="vex-component">
+        <div class="search">
+            <input id="component-search" class="form-control form-control-sm component-search"
+                   placeholder="Search components" type="text">
+            <button id="clear-component-search-input" class="clear-backspace">
+                <i class="fa fa-close"></i>
+            </button>
+        </div>
         <ul id="drag-list-container">
-            <li draggable="true" data-insert-html="<h1>HEADER H1</h1>"><i class="fa fa-header"></i>
-                <p>Header</p></li>
-            <li draggable="true"><img src="./img/empty-avatar.png">
-                <p>Chart</p></li>
-            <li draggable="true"><i class="fa fa-envelope"></i>
-                <p>Contact</p></li>
+            <?php
+            while ($row = pg_fetch_array($componentResult)) {
+                $name = $row['component_name'];
+                $code = $row['code'];
+                $icon = $row['icon'] == null ? "./img/empty-avatar.png" : $row['icon'];
+                echo " <li draggable=\"true\" data-insert-html=\"$code\"><img src=\"$icon\"></i>
+                <p>$name</p></li>";
+            }
+            ?>
         </ul>
     </div>
     <div id="vex-page">
@@ -78,9 +126,13 @@
     <div id="vex-toolbar">
         <div>
             <ul class="nav nav-tabs">
-                <li class="nav-item"><a class="nav-link active" role="tab" data-toggle="tab" href="#tab-1">Content</a>
+                <li class="nav-item tab-class">
+
+                    <a class="nav-link tab-item-class active" role="tab" data-toggle="tab" href="#tab-1"><i
+                                class="fa fa-cube"></i><br>Content</a>
                 </li>
-                <li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab" href="#tab-2">Style</a></li>
+                <li class="nav-item tab-class"><a class="nav-link tab-item-class" role="tab" data-toggle="tab"
+                                                  href="#tab-2"><i class="fa fa-window-maximize"></i><br>Style</a></li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane active" role="tabpanel" id="tab-1">

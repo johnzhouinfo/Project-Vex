@@ -1,5 +1,5 @@
--- User table
--- User type: 0 for Admin User, 1 for Normal User
+-- user table
+-- user type: 0 for Admin user, 1 for Normal user
 CREATE TABLE public.vex_user
 (
     user_id serial NOT NULL PRIMARY KEY,

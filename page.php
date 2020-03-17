@@ -29,7 +29,7 @@ if (verifyPageId($page_id)) {
                 // The page can only be accessed by administrator or owner, or when the page is public and was not deleted
                 if ($page_is_delete === 'f' &&
                     ($page_is_live === 't' || (isset($_SESSION["admin"]) && isset($_SESSION["admin"]) === true) ||
-                        ((isset($_SESSION["admin"])) && (isset($_SESSION["id"])) === $page_user_id))) {
+                        (isset($_SESSION["id"]) && $_SESSION["id"] === $page_user_id))) {
                     echo $page_result[3];
                 } else {
                     pageNotFound($page_id);
