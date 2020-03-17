@@ -5,7 +5,7 @@ require_once "./lib/config.php";
 $componentResult = pg_query($link, "SELECT * FROM vex_component");
 if (isset($_SESSION["id"])) {
     $userId = $_SESSION["id"];
-    $projectResult = pg_query($link, "SELECT * FROM vex_product WHERE user_id = $userId AND is_delete = false");
+    $projectResult = pg_query($link, "SELECT * FROM vex_product WHERE user_id = $userId AND is_delete = false ORDER BY create_time");
 }
 if (!$componentResult) {
     echo "An error occurred.\n";
@@ -1053,10 +1053,11 @@ pg_close($link);
         </div>
     </div>
 
+
     <script src="lib/js/jquery.min.js"></script>
-    <script src="lib/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.min.js"></script>
 
     <script src="js/editor.js"></script>
     <script src="lib/js/dragdrop.js"></script>
