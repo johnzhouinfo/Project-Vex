@@ -48,6 +48,7 @@ pg_close($link);
         <div class="undo-container">
             <input id="undo" class="undo-redo disable" value="undo" type="button">
             <input id="redo" class="undo-redo disable" value="redo" type="button">
+            <input onclick="saveOrUpdate(event)" type="button" value="Save">
             <ul>
                 <?php
                 if (isset($_SESSION["id"])) {
@@ -55,13 +56,13 @@ pg_close($link);
                         $productName = $row['product_name'];
                         $productId = $row['product_id'];
                         $isLive = $row['is_live'] == "t" ? "Checked" : "";
-//                    echo "<div>";
-                        echo " <li class='product-list' onclick='loadPage($productId)' productId='$productId'>$productName</li>";
+                        echo "<li>";
+                        echo " <a id = 'product-id-$productId' class='product-list' onclick='loadPage($productId)' productId='$productId'>$productName</a>";
                         echo "<input class='project-list-is-live' onChange='changeLiveStatus(event)' productId='$productId' type='checkbox' $isLive>";
                         echo "<button class='product-list-btn' onclick='shareURL($productId)'><i class=\"fa fa-link\"></i></button>";
-                        echo "<button class='product-list-btn' onclick='deleteProduct($productId)'><i class=\"fa fa-trash\"></i></button>";
+                        echo "<button class='product-list-btn' onclick='deleteProduct(event)' productId='$productId'><i class=\"fa fa-trash\" productId='$productId'></i></button>";
 
-                        //                    echo "</div>";
+                        echo "</li>";
                     }
                 }
 
@@ -118,7 +119,7 @@ pg_close($link);
                     </div>
                 </div>
             </div>
-            <iframe class="drop" style="width:100%;height:100%;" src="index.php"></iframe>
+            <iframe class="drop" style="width:100%;height:100%;" src="index.php" product-id=""></iframe>
         </div>
     </div>
 
@@ -1055,8 +1056,8 @@ pg_close($link);
 
 
     <script src="lib/js/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="lib/js/jquery-1.12.4.js"></script>
+    <script src="lib/js/jquery-ui.js"></script>
     <script src="lib/bootstrap/js/bootstrap.min.js"></script>
 
     <script src="js/editor.js"></script>

@@ -173,7 +173,7 @@ function changeLiveStatus(event) {
         success: function (data) {
             var data = JSON.parse(data);
             if (data.status == true) {
-                alert("Successfully");
+                alert(data.msg);
             } else {
                 alert("Error Code: " + data.code + "\nDescription: " + data.msg);
                 $(event.target).attr("checked", !checked);
@@ -184,4 +184,64 @@ function changeLiveStatus(event) {
 
 function loadPage(id) {
     $(".drop").attr("src", "page.php?id=" + id);
+    $(".drop").attr("product-id", id);
+}
+
+function deleteProduct(event) {
+    var productId = $(event.target).attr("productId");
+    var parent = $($(event.target).get(0).parentElement).get(0).parentElement;
+    $.ajax({
+        type: "POST",
+        url: "./lib/deletePage.php",
+        data: {
+            id: productId,
+        },
+        success: function (data) {
+            var data = JSON.parse(data);
+            if (data.status == true) {
+                alert(data.msg);
+                $(parent).remove();
+            } else {
+                alert("Error Code: " + data.code + "\nDescription: " + data.msg);
+            }
+        },
+    });
+}
+
+function shareURL(id) {
+    var hostname = window.location.origin;
+    var path = window.location.pathname;
+    path = path.substring(0, path.indexOf("editor.php"));
+    var link = hostname + path + "page.php?id=" + id;
+    alert(link);
+}
+
+function saveOrUpdate(event) {
+    var id = $(".drop").attr("product-id");
+    var productName = $("#product-id-" + id).html() == undefined ? "My Page" : $("#product-id-" + id).html();
+    var isCreate = id == "";
+    var url = "./lib/savePage.php";
+
+    var page = $(".drop").contents().find("html").clone();
+    $(page).find("[data-reserved-styletag]").remove();
+    $(page).find("[data-dragcontext-marker]").remove();
+    page = "<!DOCTYPE html><html>" + $(page).html() + "</html>";
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: {
+            type: isCreate ? "save" : "update",
+            id: id,
+            name: productName,
+            page: page,
+        },
+        success: function (data) {
+            var data = JSON.parse(data);
+            if (data.status == true) {
+                alert(data.msg);
+            } else {
+                alert("Error Code: " + data.code + "\nDescription: " + data.msg);
+            }
+        }
+    });
 }
