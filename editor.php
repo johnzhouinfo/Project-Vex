@@ -2,7 +2,7 @@
 session_start();
 require_once "./lib/config.php";
 
-$componentResult = pg_query($link, "SELECT * FROM vex_component");
+$componentResult = pg_query($link, "SELECT * FROM vex_component WHERE is_delete = false AND is_enable = true");
 if (isset($_SESSION["id"])) {
     $userId = $_SESSION["id"];
     $projectResult = pg_query($link, "SELECT * FROM vex_product WHERE user_id = $userId AND is_delete = false ORDER BY create_time");
@@ -97,25 +97,22 @@ pg_close($link);
             <div id="iframe-layer">
                 <div id="select-box" style="display: none; pointer-events:none;">
 
-                    <div id="wysiwyg-editor" style="pointer-events:auto;">
-                        <ul id="bold-btn" href="" title="Bold"></ul>
-                        <a id="bold-btn" href="" title="Bold"><i><strong>B</strong></i></a>
-                        <a id="italic-btn" href="" title="Italic"><i>I</i></a>
-                        <a id="underline-btn" href="" title="Underline"><u>u</u></a>
-                        <a id="strike-btn" href="" title="Strikeout">
-                            <del>S</del>
-                        </a>
-                        <a id="link-btn" href="" title="Create link"><strong>a</strong></a>
+                    <div id="wysiwyg-editor" style="pointer-events:auto; display: none;">
+                        <a id="bold-btn" draggable="false" href="" title="Bold"><i><strong>B</strong></i></a>
+                        <a id="italic-btn" draggable="false" href="" title="Italic"><i>I</i></a>
+                        <a id="underline-btn" draggable="false" href="" title="Underline"><u>u</u></a>
                     </div>
 
-                    <div id="select-actions">
-                        <a id="drag-btn" href="" title="Drag element"><i class="la la-arrows"></i></a>
-                        <a id="parent-btn" href="" title="Select parent"><i class="la la-level-down la-rotate-180"></i></a>
+                    <div id="select-actions" style="pointer-events:auto;">
 
-                        <a id="up-btn" href="" title="Move element up"><i class="la la-arrow-up"></i></a>
-                        <a id="down-btn" href="" title="Move element down"><i class="la la-arrow-down"></i></a>
-                        <a id="clone-btn" href="" title="Clone element"><i class="la la-copy"></i></a>
-                        <a id="delete-btn" href="" title="Remove element"><i class="la la-trash"></i></a>
+                        <a id="parent-btn" draggable="false" href="" title="Select parent"><i
+                                class="fa fa-level-up"></i></a>
+                        <a id="clone-btn" draggable="false" href="" title="Clone element"><i class="fa fa-copy"></i></a>
+                        <a id="delete-btn" draggable="false" href="" title="Remove element"><i class="fa fa-trash"></i></a>
+                    </div>
+
+                    <div id="select-tag-name">
+                        <span id="tag-name">&lt;tag&gt;</span>
                     </div>
                 </div>
             </div>

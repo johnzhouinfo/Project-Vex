@@ -1,5 +1,6 @@
 /**
- *   Vex-Page Start
+ *                                                      Vex-Page Start
+ *   -------------------------------------------------------------------------------------------------------------------
  */
 $('.drop').load(function () {
     $("#drag-content").remove();
@@ -7,14 +8,13 @@ $('.drop').load(function () {
     var style = $("<style data-reserved-styletag></style>").html(GetInsertionCSS);
     var frameWindow = $(this).prop('contentWindow');
     var prev;
-    var selectTarget;
+
     // Insert the style for marker and
     $(frameWindow.document.head).append(style);
     // Define marker tag
     $contextMarker = $("<div data-dragcontext-marker><span data-dragcontext-marker-text></span></div>");
-
     // Add draggable element into the select-box
-    $('#wysiwyg-editor').prepend('<li id="drag-content" draggable="true" data-insert-html=" "><p>AAA</p></li>');
+    $('#select-actions').prepend('<a id="drag-content" draggable="true" title="Drag" data-insert-html=" "><i class="fa fa-arrows"></i></a>');
     // Add mouse listener
     $(frameWindow.document).contents().on("mouseover", handler);
 
@@ -25,14 +25,14 @@ $('.drop').load(function () {
         if ($(event.target).attr("contenteditable"))
             return;
         selectTarget = event.target;
-        prev = event.target;
         // console.log("Inner click");
-
 
         // Show the select-box
         // Prevent user move element before/after body, html tags
-        if (event.target.tagName.toLocaleLowerCase() !== 'html') {
-            var rect = prev.getBoundingClientRect();
+        if (selectTarget.tagName.toLocaleLowerCase() !== 'html') {
+            var rect = selectTarget.getBoundingClientRect();
+            updateTagNameDisplayer(selectTarget);
+            $("#select-tag-name").css("display", "");
             $selectBox = $('#select-box');
             $selectBox.css({
                 height: (rect.height + 8) + "px",
@@ -41,7 +41,7 @@ $('.drop').load(function () {
                 left: (rect.left - 2) + "px",
                 display: 'block',
             });
-            $controlPanel = $('#wysiwyg-editor');
+            $controlPanel = $('#select-actions');
             $controlPanel.css({
                 display: 'block',
             });
@@ -71,39 +71,54 @@ $('.drop').load(function () {
      * @param event
      */
     function handler(event) {
-
-        // if (event.target === document ||
-        //     (prev && prev === event.target)) {
-        //     return;
-        // }
-        if (prev) {
-            prev = undefined;
-        }
         if (event.target) {
             prev = event.target;
-            var rect = prev.getBoundingClientRect();
-            $contextMarker.css({
-                height: (rect.height + 4) + "px",
-                width: (rect.width + 4) + "px",
-                top: (rect.top + $(frameWindow).scrollTop() - 2) + "px",
-                left: (rect.left + $(frameWindow).scrollLeft() - 2) + "px"
-            });
-            if (rect.top + $(".drop").contents().find("body").scrollTop() < 24)
-                $contextMarker.find("[data-dragcontext-marker-text]").css('top', '0px');
-            else
-                $contextMarker.find("[data-dragcontext-marker-text]").css('top', '-24px');
-            //show the tag name in marker
-            var name = prev.tagName;
-            $contextMarker.find('[data-dragcontext-marker-text]').html(name);
-            $contextMarker.attr("data-dragcontext-marker", name.toLowerCase());
-            if ($(".drop").contents().find("body [data-sh-parent-marker]").length != 0)
-                $(".drop").contents().find("body [data-sh-parent-marker]").first().before($contextMarker);
-            else
-                $(".drop").contents().find("body").append($contextMarker);
+            if (event.target.tagName.toLocaleLowerCase() !== 'html') {
+                var rect = prev.getBoundingClientRect();
+                $contextMarker.css({
+                    height: (rect.height + 4) + "px",
+                    width: (rect.width + 4) + "px",
+                    top: (rect.top + $(frameWindow).scrollTop() - 2) + "px",
+                    left: (rect.left + $(frameWindow).scrollLeft() - 2) + "px"
+                });
+                if (rect.top + $(".drop").contents().find("body").scrollTop() < 24)
+                    $contextMarker.find("[data-dragcontext-marker-text]").css('top', '0px');
+                else
+                    $contextMarker.find("[data-dragcontext-marker-text]").css('top', '-24px');
+                //show the tag name in marker
+                var name = prev.tagName;
+                $contextMarker.find('[data-dragcontext-marker-text]').html(name);
+                $contextMarker.attr("data-dragcontext-marker", name.toLowerCase());
+                if ($(".drop").contents().find("body [data-sh-parent-marker]").length != 0)
+                    $(".drop").contents().find("body [data-sh-parent-marker]").first().before($contextMarker);
+                else
+                    $(".drop").contents().find("body").append($contextMarker);
+            }
         }
     }
 
 });
+
+/**
+ * After attributes were changed, the select-box needs resize
+ * @param element
+ */
+function resizeSelectBox(element) {
+    var rect = element.getBoundingClientRect();
+    $selectBox = $('#select-box');
+    $selectBox.css({
+        height: (rect.height + 8) + "px",
+        width: (rect.width + 8) + "px",
+        top: (rect.top - 2) + "px",
+        left: (rect.left - 2) + "px",
+        display: 'block',
+    });
+    //Update the code in the drag element
+    $("#drag-content").attr('data-insert-html', element.outerHTML);
+    //Update changed element to the selectTarget in dragdrop.js
+    selectTarget = element;
+    updateTagNameDisplayer(selectTarget);
+}
 
 /**
  * A pre-code style insert into the iframe page
@@ -119,13 +134,81 @@ GetInsertionCSS = function () {
 
 };
 
+/**
+ * Parent Button click
+ */
+$("#parent-btn").on("click", function (event) {
+    event.preventDefault();
+    var parent = $(selectTarget).get(0).parentElement;
+    var tagName = $(parent).prop("tagName").toLowerCase();
+    if (tagName != 'body' && tagName != 'html') {
+        resizeSelectBox($(selectTarget).get(0).parentElement);
+        attributeDisplayUpdater();
+    } else {
+        //Show that you reached the edge
+    }
+});
+
+/**
+ * Clone Button click
+ */
+$("#clone-btn").on("click", function (event) {
+    event.preventDefault();
+    var clone = $(selectTarget).clone();
+    $(selectTarget).after(clone);
+    resizeSelectBox(selectTarget);
+});
+
+/**
+ * Delete Button click
+ */
+$("#delete-btn").on("click", function (event) {
+    event.preventDefault();
+    $(selectTarget).remove()
+    // $("#select-actions").css("display", "none");
+    $("#select-box").css("display", "none");
+});
+
+/**
+ * Bold Button click
+ */
+$("#bold-btn").on("click", function (event) {
+    event.preventDefault();
+    console.log($(".drop").get(0).contentWindow.document.execCommand('bold', false, null));
+});
+
+/**
+ * Italic Button click
+ */
+$("#italic-btn").on("click", function (event) {
+    event.preventDefault();
+    console.log($(".drop").get(0).contentWindow.document.execCommand('italic', false, null));
+});
+
+/**
+ * Underline Button click
+ */
+$("#underline-btn").on("click", function (event) {
+    event.preventDefault();
+    console.log($(".drop").get(0).contentWindow.document.execCommand('underline', false, null));
+});
+
+/**
+ * Show the current selected element's tag name
+ * @param element
+ */
+function updateTagNameDisplayer(element) {
+    $("#tag-name").text("<" + element.tagName + ">");
+}
 
 /*
-    Vex-Page END
+    --------------------------------------------------------------------------------------------------------------------
+                                                       Vex-Page END
  */
 
 /*
-    Vex-Component START
+                                                   Vex-Component START
+    --------------------------------------------------------------------------------------------------------------------
  */
 
 
@@ -138,6 +221,10 @@ $("#component-search").on("keyup", function () {
 
 });
 
+/**
+ * Filter the components by input the keyword
+ * @param value
+ */
 function filterUl(value) {
     var list = $("#drag-list-container li").hide()
         .filter(function () {
@@ -147,18 +234,29 @@ function filterUl(value) {
         }).closest("li").show();
 };
 
+/**
+ * Reset search button
+ */
 $("#clear-component-search-input").on("click", function () {
     $("#component-search").val("");
     filterUl("");
 });
 
 /*
-    Vex-Component END
+    --------------------------------------------------------------------------------------------------------------------
+                                                  Vex-Component END
  */
 
 
 /*
-    Vex-Project-List
+                                                Vex-Project-List START
+    --------------------------------------------------------------------------------------------------------------------
+ */
+
+/**
+ * This method will send Ajax request to PHP server
+ * Update the page's live status
+ * @param event
  */
 function changeLiveStatus(event) {
     var productId = $(event.target).attr("productId");
@@ -182,11 +280,20 @@ function changeLiveStatus(event) {
     });
 }
 
+/**
+ * This method will change the page and shown in iframe
+ * @param id
+ */
 function loadPage(id) {
     $(".drop").attr("src", "page.php?id=" + id);
     $(".drop").attr("product-id", id);
 }
 
+/**
+ * Calling this method will sending the delete request through Ajax,
+ * it will assign the product's 'is_delete' to TRUE
+ * @param event
+ */
 function deleteProduct(event) {
     var productId = $(event.target).attr("productId");
     var parent = $($(event.target).get(0).parentElement).get(0).parentElement;
@@ -208,14 +315,21 @@ function deleteProduct(event) {
     });
 }
 
+/**
+ * This method will return the product URL
+ * @param id
+ */
 function shareURL(id) {
-    var hostname = window.location.origin;
-    var path = window.location.pathname;
-    path = path.substring(0, path.indexOf("editor.php"));
-    var link = hostname + path + "page.php?id=" + id;
-    alert(link);
+    var hostname = window.location.href.substring(0, window.location.href.indexOf("editor.php"));
+    var URL = hostname + "page.php?id=" + id;
+    alert(URL);
 }
 
+/**
+ * This method will passing the html code into backend through Ajax requests
+ * PHP server will receive the requests and insert/update database
+ * @param event
+ */
 function saveOrUpdate(event) {
     var id = $(".drop").attr("product-id");
     var productName = $("#product-id-" + id).html() == undefined ? "My Page" : $("#product-id-" + id).html();
@@ -245,3 +359,8 @@ function saveOrUpdate(event) {
         }
     });
 }
+
+/*
+    --------------------------------------------------------------------------------------------------------------------
+                                                    Vex-Project-List END
+ */
