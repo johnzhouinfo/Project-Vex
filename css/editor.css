@@ -182,3 +182,47 @@ div {
 .tab-item-class {
     text-align: center;
 }
+
+.element-style input {
+    -webkit-backface-visibility: hidden;
+}
+
+#select-actions {
+    position: absolute;
+    left: -2px;
+    top: -25px;
+    width: 107px;
+    background: #4285f4;
+    color: #fff;
+    padding: 0px 0px;
+    border-radius: 3px 0px 0px 0px;
+}
+
+#wysiwyg-editor {
+    position: absolute;
+    left: -2px;
+    top: -25px;
+    width: 63px;
+    background: #4285f4;
+    color: #fff;
+    padding: 0px 0px;
+    border-radius: 3px 3px 0px 0px;
+}
+
+#select-tag-name {
+    position: absolute;
+    left: 105px;
+    top: -25px;
+    background: #4285f4;
+    color: #fff;
+    padding: 0px 5px;
+    border-radius: 0px 3px 0px 0px;
+}
+
+#select-actions > a, #wysiwyg-editor > a {
+    pointer-events: auto;
+    color: #fff;
+    font-size: 16px;
+    padding-right: 2px;
+    padding: 2px 5px;
+}

@@ -7,10 +7,10 @@ try {
         $productId = $_POST["id"];
         if (isset($_SESSION["admin"]) && $_SESSION["admin"] === true) {
             //Admins have ability to change the state
-            $res1 = pg_query($link, "DELETE FROM vex_product WHERE product_id = $productId");
+            $res1 = pg_query($link, "UPDATE vex_product SET is_delete = true WHERE product_id = $productId");
         } else {
             //Make sure user can only change their own pages
-            $res1 = pg_query($link, "DELETE FROM vex_product WHERE product_id = $productId AND user_id = $user_id");
+            $res1 = pg_query($link, "UPDATE vex_product SET is_delete = true WHERE product_id = $productId AND user_id = $user_id");
         }
         if (!$res1 || pg_affected_rows($res1) == 0) {
             //In case of inserting error, rollback sql
