@@ -1,15 +1,33 @@
 <?php
 session_start();
+setcookie('key', 'value', time() + (7 * 24 * 3600), "/; SameSite=None; Secure");
 require_once "./lib/config.php";
-
+$pageId = 0;
 $componentResult = pg_query($link, "SELECT * FROM vex_component WHERE is_delete = false AND is_enable = true");
 if (isset($_SESSION["id"])) {
     $userId = $_SESSION["id"];
-    $projectResult = pg_query($link, "SELECT * FROM vex_product WHERE user_id = $userId AND is_delete = false ORDER BY create_time");
+    $projectResult = pg_query($link, "SELECT product_id, product_name, is_live FROM vex_product WHERE user_id = $userId AND is_delete = false ORDER BY create_time");
 }
 if (!$componentResult) {
     echo "An error occurred.\n";
     exit;
+}
+if (isset($_GET["id"])) {
+    $pageId = $_GET["id"];
+    if (isset($_SESSION["loggedin"])) {
+        if (isset($_SESSION["admin"]) && isset($_SESSION["admin"]) === true) {
+            $sql = "SELECT * from vex_product WHERE product_id = $pageId AND is_delete = false";
+        } else {
+            $sql = "SELECT * from vex_product WHERE product_id = $pageId AND user_id = $userId AND is_delete = false";
+        }
+        $loadPageResult = pg_query($link, $sql);
+
+    } else {
+        echo "<script>alert('You don\'t have permission');</script>";
+        $pageId = 0;
+    }
+
+
 }
 
 pg_close($link);
@@ -29,7 +47,14 @@ pg_close($link);
 
     <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="lib/css/styles.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">-->
+    <link rel="stylesheet" href="lib/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="lib/css/Features-Clean.css">
+    <link rel="stylesheet" href="lib/css/Footer-Basic.css">
+    <link rel="stylesheet" href="lib/css/Highlight-Clean.css">
+    <link rel="stylesheet" href="lib/css/Login-Form-Clean.css">
+    <link rel="stylesheet" href="lib/css/Registration-Form-with-Photo.css">
+    <link rel="stylesheet" href="css/common.css">
     <script src="https://rawgit.com/ArthurClemens/Javascript-Undo-Manager/master/lib/undomanager.js"></script>
 
     <base href="">
@@ -45,11 +70,79 @@ pg_close($link);
     <div id="vex-nav">NAV</div>
 
     <div id="vex-left-top-project-list">Project List
-        <div class="undo-container">
+        <button data-toggle="modal" data-target="#new_page_modal">New Page</button>
+        <div id="login-btn-group" style="position: relative; height: 40px; display:
+            <?php if (isset($_SESSION["id"])) {
+            echo "none;";
+        } else {
+            echo "flex";
+        }
+        ?>">
+            <button class="btn btn-primary" id="home_login" type="button" data-toggle="modal"
+                    data-target="#login_modal">Login
+            </button>
+            <ul class="nav navbar-nav">
+                <li class="nav-item" role="presentation"><a class="nav-link text-primary" id="home_register"
+                                                            href="register.php">Register</a></li>
+            </ul>
+        </div>
+        <div id="user-btn-group" style="position: relative; height: 40px; display:
+        <?php if (!isset($_SESSION["id"])) {
+            echo "none;";
+        } else {
+            echo "";
+        }
+        ?>
+            ">
+            <a data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle nav-link">
+                Hi! <span id="username-text" class="UserInfo-avatar">
+                        <?php
+                        if (isset($_SESSION["name"]))
+                            echo $_SESSION["name"];
+                        else
+                            echo "USER";
+                        ?>
+                    </span>
+                <img style="border-radius: 50%;" class="avatar-img" id="user-avatar" width="40" height="40"
+                     src="<?php
+                     if (isset($_SESSION["loggedin"])) {
+                         echo($_SESSION["icon"] == null ? "img/empty-avatar.png" : $_SESSION["icon"]);
+                     }
+                     ?>" alt="">
+            </a>
+            <div role="menu" class="dropdown-menu shadow dropdown-menu-right animated--grow-in">
+                <a role="presentation" class="dropdown-item" href="#">
+                    <i class="fa fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                     Profile
+                </a>
+                <a role="presentation" class="dropdown-item" href="#">
+                    <i class="fa fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                     Settings
+                </a>
+                <a role="presentation" class="dropdown-item" href="#">
+                    <i class="fa fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                     Project
+                </a>
+                <div class="dropdown-divider"></div>
+                <a id="logout-btn" role="presentation" class="dropdown-item" href="#">
+                    <i class="fa fa-sign-out fa-sm fa-fw mr-2 text-gray-400"></i>
+                     Logout
+                </a>
+            </div>
+        </div>
+
+
+        <div class="undo-container" style="position: relative;">
             <input id="undo" class="undo-redo disable" value="undo" type="button">
             <input id="redo" class="undo-redo disable" value="redo" type="button">
             <input onclick="saveOrUpdate(event)" type="button" value="Save">
-            <ul>
+
+
+        </div>
+
+
+        <div>
+            <ul id="product-list">
                 <?php
                 if (isset($_SESSION["id"])) {
                     while ($row = pg_fetch_array($projectResult)) {
@@ -57,23 +150,23 @@ pg_close($link);
                         $productId = $row['product_id'];
                         $isLive = $row['is_live'] == "t" ? "Checked" : "";
                         echo "<li>";
-                        echo " <a id = 'product-id-$productId' class='product-list' onclick='loadPage($productId)' productId='$productId'>$productName</a>";
-                        echo "<input class='project-list-is-live' onChange='changeLiveStatus(event)' productId='$productId' type='checkbox' $isLive>";
-                        echo "<button class='product-list-btn' onclick='shareURL($productId)'><i class=\"fa fa-link\"></i></button>";
-                        echo "<button class='product-list-btn' onclick='deleteProduct(event)' productId='$productId'><i class=\"fa fa-trash\" productId='$productId'></i></button>";
-
+                        echo " <a id = 'product-id-$productId'  href='' class='product-list' onclick='loadPage(event)' productId='$productId'>$productName</a>";
+                        echo "<input class='product-list-is-live' onChange='changeLiveStatus(event)' productId='$productId' type='checkbox' $isLive>";
+                        echo "<button class='product-list-share product-list-btn' onclick='shareURL($productId)'><i class=\"fa fa-link\"></i></button>";
+                        echo "<button class='product-list-delete product-list-btn' onclick='deleteProduct(event)' productId='$productId'><i class=\"fa fa-trash\" productId='$productId'></i></button>";
+                        echo "<button class='product-list-change-name product-list-btn' onclick='initChangeName(event)' data-toggle=\"modal\" data-target=\"#change_name_modal\"><i class=\"fa fa-pencil\" product-name='$productName' product-id='$productId'></i></button>";
                         echo "</li>";
                     }
                 }
 
                 ?>
-            </ul>
-
         </div>
+
+        </ul>
     </div>
 
     <div id="vex-component">
-        <div class="search">
+        <div class="search" style="position: relative;">
             <input id="component-search" class="form-control form-control-sm component-search"
                    placeholder="Search components" type="text">
             <button id="clear-component-search-input" class="clear-backspace">
@@ -116,7 +209,26 @@ pg_close($link);
                     </div>
                 </div>
             </div>
-            <iframe class="drop" style="width:100%;height:100%;" src="index.php" product-id=""></iframe>
+            <?php
+            if (isset($_GET["id"])) {
+                if (pg_num_rows($loadPageResult) == 0) {
+                    if (isset($_SESSION["admin"])) {
+                        echo "<script>alert('Page does not exist!');</script>";
+                        echo "<iframe class=\"drop\" style=\"width:100%;height:100%;\" src=\"page.php?id=0\" product-id=\"\"></iframe>";
+                    } else {
+                        echo "<script>alert('You don\'t have permission!');</script>";
+                        echo "<iframe class=\"drop\" style=\"width:100%;height:100%;\" src=\"page.php?id=0\" product-id=\"\"></iframe>";
+                    }
+                } else {
+                    $pageId = $_GET["id"];
+                    echo "<iframe class=\"drop\" style=\"width:100%;height:100%;\" src=\"page.php?id=$pageId\" product-id=\"$pageId\"></iframe>";
+                }
+            } else {
+                echo "<iframe class=\"drop\" style=\"width:100%;height:100%;\" src=\"page.php?id=0\" product-id=\"\"></iframe>";
+            }
+
+            ?>
+
         </div>
     </div>
 
@@ -1050,17 +1162,144 @@ pg_close($link);
             </div>
         </div>
     </div>
+</div>
+<div class="footer-basic">
+    <div class="modal fade border rounded" role="dialog" tabindex="-1" id="login_modal"
+         style="padding: 100px;margin: 0px;width: 100%;height: 100%;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="width: 498px;height: 75px;">
+                    <h1 class="display-4 modal-title" style="font-size: 33px;">Login</h1>
+                    <button type="button" class="close" id="close-login-form" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body" id="popup_momorizeCheck"
+                     style="height: 210px;width: 498px;background-color: #f6f5fb;">
+                    <label style="color: rgb(114,120,126);font-size: 14px;">Username</label> <span class="help-block"
+                                                                                                   id="username-error"
+                                                                                                   style="float: right"></span>
+                    <form>
+                        <div class="form-group" style="padding-bottom: 16px; margin-bottom: 0">
+                            <input class="border rounded border-light form-control" type="text" id="popup_username"
+                                   style="font-size: 14px;height: 40px;background-color: rgb(220,225,232);" required=""
+                                   name="usrnm" placeholder="Username">
+                        </div>
+
+                        <label style="color: rgb(114,120,126);font-size: 14px;">Password</label> <span
+                            class="help-block" id="password-error" style="float: right"></span>
+                        <div class="form-group">
+                            <input class="border rounded border-light form-control" type="password" id="popup_password"
+                                   style="font-size: 14px;height: 40px;background-color: rgb(220,225,232);" required=""
+                                   name="PW" placeholder="Password">
+                        </div>
 
 
-    <script src="lib/js/jquery.min.js"></script>
-    <script src="lib/js/jquery-1.12.4.js"></script>
-    <script src="lib/js/jquery-ui.js"></script>
-    <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+                    </form>
 
-    <script src="js/editor.js"></script>
-    <script src="lib/js/dragdrop.js"></script>
-    <script src="lib/js/attribute-management.js"></script>
-    <script src="lib/js/undo_redo.js"></script>
+                </div>
+                <div class="modal-footer" style="width: 498px;">
+                    <button class="btn btn-primary btn-block border rounded" id="popup_loginBTN" type="submit"
+                            style="height: 45px;">Sign in
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade border rounded" role="dialog" tabindex="-1" id="change_name_modal"
+         style="padding: 100px;margin: 0px;width: 100%;height: 100%;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="width: 498px;height: 75px;">
+                    <h1 class="display-4 modal-title" style="font-size: 33px;">Change Project Name</h1>
+                    <button type="button" class="close" id="close-save-name-form" data-dismiss="modal"
+                            aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body" id="popup_momorizeCheck"
+                     style="height: 105px;width: 498px;background-color: #f6f5fb;">
+                    <label style="color: rgb(114,120,126);font-size: 14px;">New Name</label> <span class="help-block"
+                                                                                                   id="name-error"
+                                                                                                   style="float: right"></span>
+                    <form>
+                        <div class="form-group" style="padding-bottom: 16px; margin-bottom: 0">
+                            <input class="border rounded border-light form-control" type="text" id="popup_change_name"
+                                   style="font-size: 14px;height: 40px;background-color: rgb(220,225,232);" required=""
+                                   name="projectname" placeholder="Name">
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer" style="width: 498px;">
+                    <button class="btn btn-primary btn-block border rounded" id="popup_save_name_BTN" type="submit"
+                            style="height: 45px;">Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade border rounded" role="dialog" tabindex="-1" id="new_page_modal"
+         style="padding: 100px;margin: 0px;width: 100%;height: 100%;">
+        <div class="modal-dialog" role="document" style=" max-width: 650px">
+            <div class="modal-content">
+                <div class="modal-header" style="width: 648px;height: 75px;">
+                    <h1 class="display-4 modal-title" style="font-size: 33px;">New page</h1>
+                    <button type="button" class="close" id="close-new-page-form" data-dismiss="modal"
+                            aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body" id="popup_momorizeCheck" style="width: 648px;background-color: #f6f5fb;">
+                    <label style="color: rgb(114,120,126);font-size: 14px;">Project Name</label> <span
+                        class="help-block" id="page-name-error" style="float: right"></span>
+                    <form>
+                        <div class="form-group" style="padding-bottom: 16px; margin-bottom: 0">
+                            <input class="border rounded border-light form-control" type="text" id="popup_new_page_name"
+                                   style="font-size: 14px;height: 40px;background-color: rgb(220,225,232);" required=""
+                                   name="projectname" placeholder="Name">
+                        </div>
+                    </form>
+                    <ul id="template-list" style="display: contents">
+                        <li>
+                            <img class="template-pages highlight" src="img/white.jpg" width="150" height="100"
+                                 page-src="./model/template/blank.html">
+                            <span>Blank</span>
+                        </li>
+                        <li>
+                            <img class="template-pages" src="img/empty-avatar.png" width="150" height="100"
+                                 page-src="2">
+                            <span>tmp1</span>
+                        </li>
+                        <li>
+                            <img class="template-pages" src="img/empty-avatar.png" width="150" height="100"
+                                 page-src="3">
+                            <span>tmp1</span>
+                        </li>
+                        <li>
+                            <img class="template-pages" src="img/empty-avatar.png" width="150" height="100"
+                                 page-src="4">
+                            <span>tmp1</span>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="modal-footer" style="width: 648px;">
+                    <button class="btn btn-primary btn-block border rounded" id="popup_create_page_BTN" type="submit"
+                            style="height: 45px;">Create
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="lib/js/jquery.min.js"></script>
+<script src="lib/js/jquery-1.12.4.js"></script>
+<script src="lib/js/jquery-ui.js"></script>
+<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="js/common.js"></script>
+
+<script src="js/editor.js"></script>
+<script src="lib/js/dragdrop.js"></script>
+<script src="lib/js/attribute-management.js"></script>
+<script src="lib/js/undo_redo.js"></script>
 
 
 </body>

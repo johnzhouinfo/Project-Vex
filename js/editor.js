@@ -167,6 +167,7 @@ $("#delete-btn").on("click", function (event) {
     $(selectTarget).remove()
     // $("#select-actions").css("display", "none");
     $("#select-box").css("display", "none");
+    $(".drop").contents().find("[data-dragcontext-marker]").remove();
 });
 
 /**
@@ -284,7 +285,10 @@ function changeLiveStatus(event) {
  * This method will change the page and shown in iframe
  * @param id
  */
-function loadPage(id) {
+function loadPage(event) {
+    //TODO if there is unsaved element, alert
+    event.preventDefault();
+    var id = $(event.target).attr("productId");
     $(".drop").attr("src", "page.php?id=" + id);
     $(".drop").attr("product-id", id);
 }
@@ -297,22 +301,30 @@ function loadPage(id) {
 function deleteProduct(event) {
     var productId = $(event.target).attr("productId");
     var parent = $($(event.target).get(0).parentElement).get(0).parentElement;
-    $.ajax({
-        type: "POST",
-        url: "./lib/deletePage.php",
-        data: {
-            id: productId,
-        },
-        success: function (data) {
-            var data = JSON.parse(data);
-            if (data.status == true) {
-                alert(data.msg);
-                $(parent).remove();
-            } else {
-                alert("Error Code: " + data.code + "\nDescription: " + data.msg);
-            }
-        },
-    });
+    console.log(productId);
+    // Delete the created page
+    if (productId == undefined || productId == "") {
+        $(parent).remove();
+    } else {
+        //The page in the database
+        $.ajax({
+            type: "POST",
+            url: "./lib/deletePage.php",
+            data: {
+                id: productId,
+            },
+            success: function (data) {
+                var data = JSON.parse(data);
+                if (data.status == true) {
+                    alert(data.msg);
+                    $(parent).remove();
+                } else {
+                    alert("Error Code: " + data.code + "\nDescription: " + data.msg);
+                }
+            },
+        });
+    }
+    $(".drop").attr("src", "./page.php?id=0").attr("product-id", "");
 }
 
 /**
@@ -340,6 +352,7 @@ function saveOrUpdate(event) {
     $(page).find("[data-reserved-styletag]").remove();
     $(page).find("[data-dragcontext-marker]").remove();
     page = "<!DOCTYPE html><html>" + $(page).html() + "</html>";
+    page = page.replace(/'/g, "\'\'");
     $.ajax({
         type: "POST",
         url: url,
@@ -353,6 +366,17 @@ function saveOrUpdate(event) {
             var data = JSON.parse(data);
             if (data.status == true) {
                 alert(data.msg);
+                console.log(data.product_id);
+                if (isCreate) {
+                    var productId = data.product_id;
+                    $("ul [new = 'true'] .product-list-name").attr("id", "product-id-" + productId).attr("productId", productId);
+                    $("ul [new = 'true'] .product-list-is-live").attr("productId", productId).removeAttr("disabled");
+                    $("ul [new = 'true'] .product-list-share").attr("onclick", "shareURL(" + productId + ")").removeAttr("disabled");
+                    $("ul [new = 'true'] .product-list-delete").attr("productId", productId).removeAttr("disabled");
+                    $("ul [new = 'true'] .product-list-delete i").attr("productId", productId);
+                    $("ul [new = 'true']").removeAttr("new");
+                    $(".drop").attr("product-id", productId);
+                }
             } else {
                 alert("Error Code: " + data.code + "\nDescription: " + data.msg);
             }
@@ -364,3 +388,67 @@ function saveOrUpdate(event) {
     --------------------------------------------------------------------------------------------------------------------
                                                     Vex-Project-List END
  */
+
+/**
+ * Click logout in the editor page, remove the product list and redirect the inner page to default
+ */
+$("#logout-btn").on("click", function () {
+    //TODO reset all
+    $("#product-list").empty();
+    $(".drop").attr("src", "./page.php?=0");
+    resetData();
+});
+
+/**
+ * Click the change name button, load the exist name and current id
+ * @param event
+ */
+function initChangeName(event) {
+    $("#popup_change_name").val($(event.target).attr("product-name").trim());
+    $("#popup_change_name").attr("product-id", $(event.target).attr("product-id"));
+    // console.log();
+
+}
+
+/**
+ * Change the product name
+ */
+$("#popup_save_name_BTN").on("click", function () {
+    console.log("Change product name");
+    $("#product-id-" + $("#popup_change_name").attr("product-id")).text($("#popup_change_name").val());
+    $("#close-save-name-form").click();
+
+});
+
+/**
+ * Select the template page
+ */
+$("#template-list > li > img").on("click", function (event) {
+    $("#template-list li .highlight").attr("class", "");
+    $(event.target).attr("class", "highlight");
+});
+
+/**
+ * Create the new product page
+ */
+$("#popup_create_page_BTN").on("click", function () {
+    //TODO if there is unsaved element it need popup alert
+    $("#page-name-error").text("");
+    var name = $("#popup_new_page_name").val();
+    if (name == "") {
+        $("#page-name-error").text("Name required");
+    } else {
+        var result = $("#template-list li .highlight").attr("page-src");
+        $(".drop").attr("src", result).attr("product-id", "");
+        var html = "<li new='true'>" +
+            " <a id = 'product-id-'  href='' class='product-list-name' onclick='loadPage(event)' productId=''>" + name + "</a>" +
+            "<input class='product-list-is-live' onChange='changeLiveStatus(event)' productId='' type='checkbox' disabled>" +
+            "<button class='product-list-share product-list-btn' onclick='shareURL()' disabled><i class=\"fa fa-link\"></i></button>" +
+            "<button class='product-list-delete product-list-btn' onclick='deleteProduct(event)' productId=''><i class=\"fa fa-trash\" productId=''></i></button>" +
+            "<button class='product-list-change-name product-list-btn' onclick='initChangeName(event)' data-toggle=\"modal\" data-target=\"#change_name_modal\"><i class=\"fa fa-pencil\" product-name='" + name + "' product-id=''></i></button>" +
+            "</li>";
+        $("#product-list").append(html);
+        $("#close-new-page-form").click();
+    }
+
+});
