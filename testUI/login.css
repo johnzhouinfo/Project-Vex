@@ -1,0 +1,10 @@
+.background{
+
+}
+.form-container{
+    position:absolute;
+    top: 15vh;
+    background-color: lightgray;
+    padding: 20px;
+    border-radius:10px;
+}

@@ -1,0 +1,10 @@
+.background{
+
+}
+.try{
+    position:absolute;
+    top: 15vh;
+    background-color: lightgray;
+    padding: 10px;
+    border-radius:10px;
+}
