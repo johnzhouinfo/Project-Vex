@@ -84,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>SignINSheet</title>
+    <title>Login</title>
     <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="lib/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="lib/css/Features-Clean.css">
@@ -100,20 +100,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="container">
     <nav class="navbar navbar-light navbar-expand fixed-top text-left"
          style="background-color: #ffffff;padding: 2% 5%;height: 80px;">
-        <div class="container-fluid"><img id="home_emblem" style="width: 24px;height: 24px;" src="img/Vex_Three.gif"><a
-                class="navbar-brand" id="home_brand" href="index.php">&nbsp;Vex</a>
+        <div class="container-fluid"><img id="home_emblem" style="width: 24px;height: 24px;" src="img/Vex_Three.gif"
+                                          alt="vex_logo"><a
+                    class="navbar-brand" id="home_brand" href="index.php">&nbsp;Vex</a>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav"></ul>
             </div>
             <ul class="nav navbar-nav">
-                <li class="nav-item" role="presentation"><a class="nav-link text-primary" id="home_register"
-                                                            href="register.php">Register</a></li>
+                <li class="nav-item" role="presentation">
+                    <a class="btn btn-outline-primary btn-sm" role="button" id="reg_button"
+                       href="register.php">Register</a>
+                </li>
             </ul>
         </div>
     </nav>
 </div>
 <div class="login-clean" style="height: 100vh;background-color: rgb(255,255,255);padding: 150px;">
-    <form class="text-left border rounded" style="font-size: 12px;width: 408px;height: 449px;padding: 37px;" action="
+    <form class="text-left border rounded"
+          style="font-size: 12px;width: 408px;height: 449px;padding: 37px; max-width: 400px;" action="
     <?php
     echo htmlspecialchars($_SERVER["PHP_SELF"]);
     ?>"
@@ -128,7 +132,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                                style="float: right"><?php echo $username_err; ?></span>
         <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
             <input class="border rounded border-light form-control d-flex" type="text" id="login_pg_usrname"
-                   style="height: 37px;font-size: 12px;background-color: rgb(220,225,232);width: 244px;" name="username"
+                   style="height: 37px;font-size: 12px;background-color: rgb(220,225,232);" name="username"
                    placeholder="Username" value="<?php echo $username; ?>">
         </div>
 

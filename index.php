@@ -17,6 +17,7 @@ session_start();
     <link rel="stylesheet" href="lib/css/Login-Form-Clean.css">
     <link rel="stylesheet" href="lib/css/Registration-Form-with-Photo.css">
     <link rel="stylesheet" href="lib/css/styles.css">
+    <link rel="stylesheet" href="lib/css/sweetalert.css">
     <link rel="stylesheet" href="css/common.css">
 </head>
 
@@ -183,6 +184,7 @@ session_start();
 </div>
 <script src="lib/js/jquery.min.js"></script>
 <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="lib/js/sweetalert.min.js"></script>
 <script src="js/common.js"></script>
 <script src="js/index.js"></script>
 </body>

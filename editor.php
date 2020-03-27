@@ -23,6 +23,9 @@ if (isset($_GET["id"])) {
         $loadPageResult = pg_query($link, $sql);
 
     } else {
+        echo "<script>setTimeout(function() {
+                      swal(\"Failed!\", \"You don't have permission!\", \"error\");
+                    },100)</script>";
         echo "<script>alert('You don\'t have permission');</script>";
         $pageId = 0;
     }
@@ -54,6 +57,7 @@ pg_close($link);
     <link rel="stylesheet" href="lib/css/Highlight-Clean.css">
     <link rel="stylesheet" href="lib/css/Login-Form-Clean.css">
     <link rel="stylesheet" href="lib/css/Registration-Form-with-Photo.css">
+    <link rel="stylesheet" href="lib/css/sweetalert.css">
     <link rel="stylesheet" href="css/common.css">
     <script src="https://rawgit.com/ArthurClemens/Javascript-Undo-Manager/master/lib/undomanager.js"></script>
 
@@ -82,8 +86,8 @@ pg_close($link);
                     data-target="#login_modal">Login
             </button>
             <ul class="nav navbar-nav">
-                <li class="nav-item" role="presentation"><a class="nav-link text-primary" id="home_register"
-                                                            href="register.php">Register</a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link text-primary" id="register"
+                                                            href="">Register</a></li>
             </ul>
         </div>
         <div id="user-btn-group" style="position: relative; height: 40px; display:
@@ -1248,7 +1252,7 @@ pg_close($link);
                 </div>
                 <div class="modal-body" id="popup_momorizeCheck" style="width: 648px;background-color: #f6f5fb;">
                     <label style="color: rgb(114,120,126);font-size: 14px;">Project Name</label> <span
-                        class="help-block" id="page-name-error" style="float: right"></span>
+                            class="help-block" id="page-name-error" style="float: right"></span>
                     <form>
                         <div class="form-group" style="padding-bottom: 16px; margin-bottom: 0">
                             <input class="border rounded border-light form-control" type="text" id="popup_new_page_name"
@@ -1258,22 +1262,22 @@ pg_close($link);
                     </form>
                     <ul id="template-list" style="display: contents">
                         <li>
-                            <img class="template-pages highlight" src="img/white.jpg" width="150" height="100"
+                            <img id="template-default" class="highlight" src="img/white.jpg" width="150" height="100"
                                  page-src="./model/template/blank.html">
                             <span>Blank</span>
                         </li>
                         <li>
-                            <img class="template-pages" src="img/empty-avatar.png" width="150" height="100"
+                            <img class="" src="img/empty-avatar.png" width="150" height="100"
                                  page-src="2">
                             <span>tmp1</span>
                         </li>
                         <li>
-                            <img class="template-pages" src="img/empty-avatar.png" width="150" height="100"
+                            <img class="" src="img/empty-avatar.png" width="150" height="100"
                                  page-src="3">
                             <span>tmp1</span>
                         </li>
                         <li>
-                            <img class="template-pages" src="img/empty-avatar.png" width="150" height="100"
+                            <img class="" src="img/empty-avatar.png" width="150" height="100"
                                  page-src="4">
                             <span>tmp1</span>
                         </li>
@@ -1294,6 +1298,7 @@ pg_close($link);
 <script src="lib/js/jquery-1.12.4.js"></script>
 <script src="lib/js/jquery-ui.js"></script>
 <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="lib/js/sweetalert.min.js"></script>
 <script src="js/common.js"></script>
 
 <script src="js/editor.js"></script>

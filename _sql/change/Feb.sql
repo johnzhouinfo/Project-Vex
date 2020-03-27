@@ -34,7 +34,7 @@ VALUES (2, 'test3', '<!DOCTYPE html>
 
 
 INSERT INTO public.vex_product(user_id, product_name, code, create_time)
-VALUES (5, 'My Page', '<!DOCTYPE html>
+VALUES (2, 'My Page', '<!DOCTYPE html>
 <html lang="en">
 <head>
   <title>Bootstrap 4 Website Example</title>
