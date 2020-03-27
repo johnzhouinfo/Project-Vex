@@ -3,7 +3,7 @@
 require_once "./lib/config.php";
 // Initialize the session
 session_start();
-
+header('Set-Cookie: cross-site-cookie=name; SameSite=None; Secure');
 $page_id = '';
 // Set page_id if user entered
 if (isset($_GET['id']) === true) {
@@ -29,7 +29,8 @@ if (verifyPageId($page_id)) {
                 // The page can only be accessed by administrator or owner, or when the page is public and was not deleted
                 if ($page_is_delete === 'f' &&
                     ($page_is_live === 't' || (isset($_SESSION["admin"]) && isset($_SESSION["admin"]) === true) ||
-                        ((isset($_SESSION["admin"])) && (isset($_SESSION["id"])) === $page_user_id))) {
+                        (isset($_SESSION["id"]) && $_SESSION["id"] === $page_user_id))) {
+                    echo header('Set-Cookie: cross-site-cookie=name; SameSite=None; Secure');
                     echo $page_result[3];
                 } else {
                     pageNotFound($page_id);
