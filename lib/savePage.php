@@ -25,9 +25,9 @@ try {
             //In case of inserting error, rollback sql
             pg_query("rollback");
             if ($productId == null) {
-                throw new Exception("Save Record in Database failed. User ID: $user_id, Code: $code", 102);
+                throw new Exception("Save Record in Database failed. User ID: $user_id", 102);
             } else {
-                throw new Exception("Upate Record in Database failed. Product ID: $productId, User ID: $user_id, Code: $code", 102);
+                throw new Exception("Update Record in Database failed. Product ID: $productId, User ID: $user_id", 102);
             }
         } else {
             pg_query("commit");

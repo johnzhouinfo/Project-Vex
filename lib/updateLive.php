@@ -23,6 +23,7 @@ try {
                 array(
                     'status' => true,
                     'msg' => "Update live page Successfully.",
+                    'page_status' => $value,
                     'code' => 200
                 )
             );

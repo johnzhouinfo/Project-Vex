@@ -139,9 +139,10 @@ GetInsertionCSS = function () {
  */
 $("#parent-btn").on("click", function (event) {
     event.preventDefault();
+    event.stopPropagation();
     var parent = $(selectTarget).get(0).parentElement;
     var tagName = $(parent).prop("tagName").toLowerCase();
-    if (tagName != 'body' && tagName != 'html') {
+    if (tagName != 'html') {
         resizeSelectBox($(selectTarget).get(0).parentElement);
         attributeDisplayUpdater();
     } else {
@@ -164,7 +165,7 @@ $("#clone-btn").on("click", function (event) {
  */
 $("#delete-btn").on("click", function (event) {
     event.preventDefault();
-    $(selectTarget).remove()
+    $(selectTarget).remove();
     // $("#select-actions").css("display", "none");
     $("#select-box").css("display", "none");
     $(".drop").contents().find("[data-dragcontext-marker]").remove();
@@ -272,9 +273,10 @@ function changeLiveStatus(event) {
         success: function (data) {
             var data = JSON.parse(data);
             if (data.status == true) {
-                alert(data.msg);
+                var status = data.page_status === "true" ? "LIVE" : "OFFLINE";
+                swal("Success!", "Your page now " + status, "success");
             } else {
-                alert("Error Code: " + data.code + "\nDescription: " + data.msg);
+                swal("Update page failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
                 $(event.target).attr("checked", !checked);
             }
         },
@@ -288,9 +290,36 @@ function changeLiveStatus(event) {
 function loadPage(event) {
     //TODO if there is unsaved element, alert
     event.preventDefault();
+    var hasCreated = $("#product-list [new = 'true']");
+    var hasUnsaved;
     var id = $(event.target).attr("productId");
-    $(".drop").attr("src", "page.php?id=" + id);
-    $(".drop").attr("product-id", id);
+    if (id == undefined || id == "") {
+        return
+    } else {
+        if (hasCreated.length != 0) {
+            swal({
+                    title: "Are you sure?",
+                    text: "Unsaved new page will be removed!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                    closeOnConfirm: true,
+                    closeOnCancel: true
+                },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        $(".drop").attr("src", "page.php?id=" + id);
+                        $(".drop").attr("product-id", id);
+                        hasCreated.remove();
+                    }
+                });
+        } else {
+            $(".drop").attr("src", "page.php?id=" + id);
+            $(".drop").attr("product-id", id);
+        }
+    }
 }
 
 /**
@@ -301,30 +330,52 @@ function loadPage(event) {
 function deleteProduct(event) {
     var productId = $(event.target).attr("productId");
     var parent = $($(event.target).get(0).parentElement).get(0).parentElement;
-    console.log(productId);
     // Delete the created page
-    if (productId == undefined || productId == "") {
-        $(parent).remove();
-    } else {
-        //The page in the database
-        $.ajax({
-            type: "POST",
-            url: "./lib/deletePage.php",
-            data: {
-                id: productId,
-            },
-            success: function (data) {
-                var data = JSON.parse(data);
-                if (data.status == true) {
-                    alert(data.msg);
+    swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover this project!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            closeOnConfirm: false,
+            closeOnCancel: true,
+            showLoaderOnConfirm: true
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                if (productId == undefined || productId == "") {
                     $(parent).remove();
+                    setTimeout(function () {
+                        swal("Deleted!", "Your page has been deleted!", "success");
+                        $(".drop").attr("src", "./page.php?id=0").attr("product-id", "");
+                    }, 500);
                 } else {
-                    alert("Error Code: " + data.code + "\nDescription: " + data.msg);
+                    //The page in the database
+                    $.ajax({
+                        type: "POST",
+                        url: "./lib/deletePage.php",
+                        data: {
+                            id: productId,
+                        },
+                        success: function (data) {
+                            var data = JSON.parse(data);
+                            if (data.status == true) {
+                                setTimeout(function () {
+                                    swal("Deleted!", "Your page has been deleted!", "success");
+                                    $(parent).remove();
+                                }, 1000);
+                            } else {
+                                setTimeout(function () {
+                                    swal("Failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
+                                }, 1000);
+                            }
+                        },
+                    });
                 }
-            },
+            }
         });
-    }
-    $(".drop").attr("src", "./page.php?id=0").attr("product-id", "");
 }
 
 /**
@@ -334,7 +385,7 @@ function deleteProduct(event) {
 function shareURL(id) {
     var hostname = window.location.href.substring(0, window.location.href.indexOf("editor.php"));
     var URL = hostname + "page.php?id=" + id;
-    alert(URL);
+    swal("Here is link", URL, "success");
 }
 
 /**
@@ -343,6 +394,9 @@ function shareURL(id) {
  * @param event
  */
 function saveOrUpdate(event) {
+    if ($(".drop").attr("src") == "page.php?id=0") {
+        return
+    }
     var id = $(".drop").attr("product-id");
     var productName = $("#product-id-" + id).html() == undefined ? "My Page" : $("#product-id-" + id).html();
     var isCreate = id == "";
@@ -365,20 +419,20 @@ function saveOrUpdate(event) {
         success: function (data) {
             var data = JSON.parse(data);
             if (data.status == true) {
-                alert(data.msg);
+                swal("Saved!", "Your page has been saved!", "success");
                 console.log(data.product_id);
                 if (isCreate) {
                     var productId = data.product_id;
-                    $("ul [new = 'true'] .product-list-name").attr("id", "product-id-" + productId).attr("productId", productId);
-                    $("ul [new = 'true'] .product-list-is-live").attr("productId", productId).removeAttr("disabled");
-                    $("ul [new = 'true'] .product-list-share").attr("onclick", "shareURL(" + productId + ")").removeAttr("disabled");
-                    $("ul [new = 'true'] .product-list-delete").attr("productId", productId).removeAttr("disabled");
-                    $("ul [new = 'true'] .product-list-delete i").attr("productId", productId);
-                    $("ul [new = 'true']").removeAttr("new");
+                    $("#product-list [new = 'true'] .product-list-name").attr("id", "product-id-" + productId).attr("productId", productId);
+                    $("#product-list [new = 'true'] .product-list-is-live").attr("productId", productId).removeAttr("disabled");
+                    $("#product-list [new = 'true'] .product-list-share").attr("onclick", "shareURL(" + productId + ")").removeAttr("disabled");
+                    $("#product-list [new = 'true'] .product-list-delete").attr("productId", productId).removeAttr("disabled");
+                    $("#product-list [new = 'true'] .product-list-delete i").attr("productId", productId);
+                    $("#product-list [new = 'true']").removeAttr("new");
                     $(".drop").attr("product-id", productId);
                 }
             } else {
-                alert("Error Code: " + data.code + "\nDescription: " + data.msg);
+                swal("Save page failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
             }
         }
     });
@@ -433,6 +487,16 @@ $("#template-list > li > img").on("click", function (event) {
  */
 $("#popup_create_page_BTN").on("click", function () {
     //TODO if there is unsaved element it need popup alert
+    var hasCreated = $("#product-list [new = 'true']");
+    var hasUnsaved;
+    if (hasCreated.length != 0) {
+        if (confirm(" You have an unsaved product.\n Unsaved page will be removed\n Do you still want to continue?  ")) {
+            hasCreated.remove();
+        } else {
+            $("#close-new-page-form").click();
+            return
+        }
+    }
     $("#page-name-error").text("");
     var name = $("#popup_new_page_name").val();
     if (name == "") {
@@ -448,7 +512,16 @@ $("#popup_create_page_BTN").on("click", function () {
             "<button class='product-list-change-name product-list-btn' onclick='initChangeName(event)' data-toggle=\"modal\" data-target=\"#change_name_modal\"><i class=\"fa fa-pencil\" product-name='" + name + "' product-id=''></i></button>" +
             "</li>";
         $("#product-list").append(html);
+        $("#popup_new_page_name").val("");
+        $("#template-list li .highlight").attr("class", "");
+        $("#template-list #template-default").attr("class", "highlight");
         $("#close-new-page-form").click();
     }
 
 });
+
+$("#register").on("click", function (event) {
+    event.preventDefault();
+    window.open("register.php?redirect=true");
+    $("#home_login").click();
+})
