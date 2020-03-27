@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $name = trim($result_array[3]);
                 $icon = trim($result_array[6]);
                 if (pg_num_rows($result) == 1) {
-                    if (hash_equals(hash("sha256", $password), trim($result_array[2]))) {
+                    if (hash("sha256", $password) === trim($result_array[2])) {
                         // Checking the user who has been blocked or not
                         if (trim($result_array[8]) == 't') {
                             $_SESSION["loggedin"] = true;
