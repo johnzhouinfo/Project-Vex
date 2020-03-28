@@ -134,3 +134,7 @@ div {
     color: #aaa;
     pointer-events: none;
 }
+
+.mobile {
+    display: inline-block;
+}

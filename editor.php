@@ -30,6 +30,7 @@
         <div class="undo-container">
             <input id="undo" class="undo-redo disable" value="undo" type="button">
             <input id="redo" class="undo-redo disable" value="redo" type="button">
+            <input id="mobile" class="mobile" value="mobil view" type="button" onclick="toggleMobile()">
         </div>
     </div>
 
@@ -70,7 +71,7 @@
                     </div>
                 </div>
             </div>
-            <iframe class="drop" style="width:100%;height:100%;" src="index.php"></iframe>
+            <iframe class="drop" style="width:100%;height:100%;" src="index.php" id="iframe1"></iframe>
         </div>
     </div>
 
@@ -1010,6 +1011,7 @@
     <script src="lib/js/dragdrop.js"></script>
     <script src="lib/js/attribute-management.js"></script>
     <script src="lib/js/undo_redo.js"></script>
+    <script src="lib/js/view_toggle.js"></script>
 
 
 </body>
