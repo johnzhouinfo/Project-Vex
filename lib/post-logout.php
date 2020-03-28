@@ -1,5 +1,4 @@
 <?php
-// Initialize the session
 session_start();
 
 // Unset all of the session variables
@@ -17,6 +16,11 @@ if (ini_get("session.use_cookies")) {
 // Destroy the session.
 session_destroy();
 
-// Redirect to login page
-header("location: login.php");
+echo json_encode(
+    array(
+        'status' => true,
+        'msg' => "Logout Successfully.",
+        'code' => 200
+    )
+);
 exit;

@@ -8,7 +8,13 @@ body {
     overflow: hidden;
 }
 
-div {
+/*div{*/
+/*    position: absolute;*/
+/*    !*border: 1px solid #000000;*!*/
+/*}*/
+
+
+#vex-builder div {
     position: absolute;
     /*border: 1px solid #000000;*/
 }
@@ -40,6 +46,7 @@ div {
 #vex-left-top-project-list {
     height: 300px;
     left: 0;
+    overflow: auto;
 }
 
 #vex-component {
@@ -78,37 +85,73 @@ div {
 }
 
 #drag-list-container {
+
     list-style: none;
-    padding: 0px;
+    padding: 3%;
+    height: 100%;
+    background-color: #fafbfc;
 }
 
 #drag-list-container > li {
     display: inline-block;
-    margin-right: 2px;
+    margin: 4px;
     padding: 10px 15px;
     cursor: move;
     color: white;
     border: 1px solid black;
     width: 120px;
-    color: rgb(255, 255, 255);
     background-color: rgb(255, 255, 255);
     text-shadow: 0px 1px 1px black;
+    text-align: center;
+    border-radius: 10px;
+    border-color: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 5px 0px;
 }
+
+#drag-list-container > li:hover {
+    background-color: #ebf1fb;
+}
+
+
+
+.product-list-btn {
+    border: none;
+    background: none;
+    -webkit-appearance: none;
+}
+
+.clear-backspace {
+    position: absolute;
+    top: 2px;
+    right: 5px;
+    border: none;
+    background: none;
+    opacity: 0.8;
+
+}
+
 
 #drag-list-container > li i {
     font-size: 40px;
     margin-bottom: 10px;
+
     /* color: rgb(0, 187, 255); */
 }
 
 #drag-list-container > li p {
     margin: 0px;
+    color: rgb(51, 51, 51);
+    font-size: 15px;
+    line-height: 18px;
+    font-family: Arial, serif;
+    font-weight: 100;
+
 }
 
 #drag-list-container > li img {
-    width: 40px;
-    height: 40px;
-    margin-bottom: 10px;
+    width: 50px;
+    height: 50px;
+
 }
 
 #drag-content {
@@ -116,18 +159,20 @@ div {
 }
 
 .undo-container {
+    position: relative;
     margin: 40px 0;
 }
+
 .undo-redo {
     display: inline-block;
     color: rgb(0, 0, 0);
     /* text-decoration: none; */
     size: 40px;
-
 }
+
 .undo-redo:hover {
     background: #ccc;
-  }
+}
 
 .undo-redo.disable {
     background: rgba(238, 238, 238, 0.493);
@@ -135,6 +180,85 @@ div {
     pointer-events: none;
 }
 
-.mobile {
+.tab-class {
+    width: 50%;
+}
+
+.tab-item-class {
+    text-align: center;
+}
+
+.element-style input {
+    -webkit-backface-visibility: hidden;
+}
+
+#select-actions {
+    position: absolute;
+    left: -2px;
+    top: -25px;
+    width: 107px;
+    background: #4285f4;
+    color: #fff;
+    padding: 0px 0px;
+    border-radius: 3px 0px 0px 0px;
+}
+
+#wysiwyg-editor {
+    position: absolute;
+    left: -2px;
+    top: -25px;
+    width: 63px;
+    background: #4285f4;
+    color: #fff;
+    padding: 0px 0px;
+    border-radius: 3px 3px 0px 0px;
+}
+
+#select-tag-name {
+    position: absolute;
+    left: 105px;
+    top: -25px;
+    background: #4285f4;
+    color: #fff;
+    padding: 0px 5px;
+    border-radius: 0px 3px 0px 0px;
+}
+
+#select-actions > a, #wysiwyg-editor > a {
+    pointer-events: auto;
+    color: #fff;
+    font-size: 16px;
+    padding-right: 2px;
+    padding: 2px 5px;
+}
+
+#template-list > li {
+    display: inline-grid;
+    margin: 15px 15px;
+}
+
+#template-list > li > .highlight {
+    background-color: #4285f4;
+}
+
+#template-list > li > img {
     display: inline-block;
+    margin: 1px;
+    padding: 1px;
+    cursor: default;
+    color: white;
+    border: 1px solid black;
+
+    background-color: rgb(255, 255, 255);
+    text-shadow: 0px 1px 1px black;
+    text-align: center;
+    border-radius: 10px;
+    border-color: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 5px 0px;
+    width: 150px;
+    height: 100px;
+}
+
+#template-list > li > img:hover {
+    background-color: #4285f4;
 }
