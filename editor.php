@@ -49,7 +49,7 @@ pg_close($link);
 
 
     <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="lib/css/styles.min.css">
+    <link rel="stylesheet" href="lib/css/styles.css">
     <!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">-->
     <link rel="stylesheet" href="lib/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="lib/css/Features-Clean.css">
@@ -71,35 +71,48 @@ pg_close($link);
 
 
 <div id="vex-builder">
-    <div id="vex-nav">NAV</div>
-
-    <div id="vex-left-top-project-list">Project List
-        <button data-toggle="modal" data-target="#new_page_modal">New Page</button>
-        <div id="login-btn-group" style="position: relative; height: 40px; display:
+    <div id="vex-nav">
+        <nav class="navbar navbar-light navbar-expand fixed-top text-left"
+             style="background-color: #ffffff;height: 50px;">
+            <div class="container-fluid" style="height: 50px;">
+                <img id="home_emblem" style="width: 24px;height: 24px;" src="img/Vex_Three.gif" alt="vex_logo">
+                <a class="navbar-brand" id="home_brand" href="index.php">&nbsp;Vex</a>
+                <div class="collapse navbar-collapse" id="navcol-1">
+                    <ul class="nav navbar-nav"></ul>
+                </div>
+                <div class="collapse navbar-collapse undo-container" style="position: relative;">
+                    <input id="undo" class="undo-redo disable" value="undo" type="button">
+                    <input id="redo" class="undo-redo disable" value="redo" type="button">
+                    <input onclick="saveOrUpdate(event)" type="button" value="Save">
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="nav-item" role="presentation">
+                        <div id="login-btn-group" style="position: relative; height: 40px; display:
             <?php if (isset($_SESSION["id"])) {
-            echo "none;";
-        } else {
-            echo "flex";
-        }
-        ?>">
-            <button class="btn btn-primary" id="home_login" type="button" data-toggle="modal"
-                    data-target="#login_modal">Login
-            </button>
-            <ul class="nav navbar-nav">
-                <li class="nav-item" role="presentation"><a class="nav-link text-primary" id="register"
-                                                            href="">Register</a></li>
-            </ul>
-        </div>
-        <div id="user-btn-group" style="position: relative; height: 40px; display:
-        <?php if (!isset($_SESSION["id"])) {
-            echo "none;";
-        } else {
-            echo "";
-        }
-        ?>
-            ">
-            <a data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle nav-link">
-                Hi! <span id="username-text" class="UserInfo-avatar">
+                            echo "none;";
+                        } else {
+                            echo "flex";
+                        }
+                        ?>">
+                            <button class="btn btn-primary" id="home_login" type="button" data-toggle="modal"
+                                    data-target="#login_modal">Login
+                            </button>
+                            <ul class="nav navbar-nav">
+                                <li class="nav-item" role="presentation"><a class="nav-link text-primary" id="register"
+                                                                            href="">Register</a></li>
+                            </ul>
+                        </div>
+                        <div id="user-btn-group" style="position: relative; height: 40px; display:
+                        <?php if (!isset($_SESSION["id"])) {
+                            echo "none;";
+                        } else {
+                            echo "";
+                        }
+                        ?>
+                                ">
+                            <a data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle nav-link"
+                               style="padding-top: 0px">
+                                Hi! <span id="username-text" class="UserInfo-avatar">
                         <?php
                         if (isset($_SESSION["name"]))
                             echo $_SESSION["name"];
@@ -107,43 +120,46 @@ pg_close($link);
                             echo "USER";
                         ?>
                     </span>
-                <img style="border-radius: 50%;" class="avatar-img" id="user-avatar" width="40" height="40"
-                     src="<?php
-                     if (isset($_SESSION["loggedin"])) {
-                         echo($_SESSION["icon"] == null ? "img/empty-avatar.png" : $_SESSION["icon"]);
-                     }
-                     ?>" alt="">
-            </a>
-            <div role="menu" class="dropdown-menu shadow dropdown-menu-right animated--grow-in">
-                <a role="presentation" class="dropdown-item" href="#">
-                    <i class="fa fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                     Profile
-                </a>
-                <a role="presentation" class="dropdown-item" href="#">
-                    <i class="fa fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                     Settings
-                </a>
-                <a role="presentation" class="dropdown-item" href="#">
-                    <i class="fa fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                     Project
-                </a>
-                <div class="dropdown-divider"></div>
-                <a id="logout-btn" role="presentation" class="dropdown-item" href="#">
-                    <i class="fa fa-sign-out fa-sm fa-fw mr-2 text-gray-400"></i>
-                     Logout
-                </a>
+                                <img style="border-radius: 50%;" class="avatar-img" id="user-avatar" width="40"
+                                     height="40"
+                                     src="<?php
+                                     if (isset($_SESSION["loggedin"])) {
+                                         echo($_SESSION["icon"] == null ? "img/empty-avatar.png" : $_SESSION["icon"]);
+                                     }
+                                     ?>" alt="">
+                            </a>
+                            <div role="menu" class="dropdown-menu shadow dropdown-menu-right animated--grow-in">
+                                <a role="presentation" class="dropdown-item" href="#">
+                                    <i class="fa fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                     Profile
+                                </a>
+                                <a role="presentation" class="dropdown-item" href="#">
+                                    <i class="fa fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                     Settings
+                                </a>
+                                <a role="presentation" class="dropdown-item" href="#">
+                                    <i class="fa fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                     Project
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a id="logout-btn" role="presentation" class="dropdown-item" href="#">
+                                    <i class="fa fa-sign-out fa-sm fa-fw mr-2 text-gray-400"></i>
+                                     Logout
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
+        </nav>
+    </div>
+
+
+    <div id="vex-left-top-project-list">
+        <div class="search">
+            Project List
+            <button data-toggle="modal" data-target="#new_page_modal">New Page</button>
         </div>
-
-
-        <div class="undo-container" style="position: relative;">
-            <input id="undo" class="undo-redo disable" value="undo" type="button">
-            <input id="redo" class="undo-redo disable" value="redo" type="button">
-            <input onclick="saveOrUpdate(event)" type="button" value="Save">
-
-
-        </div>
-
 
         <div>
             <ul id="product-list">
@@ -153,24 +169,76 @@ pg_close($link);
                         $productName = $row['product_name'];
                         $productId = $row['product_id'];
                         $isLive = $row['is_live'] == "t" ? "Checked" : "";
-                        echo "<li>";
-                        echo " <a id = 'product-id-$productId'  href='' class='product-list' onclick='loadPage(event)' productId='$productId'>$productName</a>";
-                        echo "<input class='product-list-is-live' onChange='changeLiveStatus(event)' productId='$productId' type='checkbox' $isLive>";
-                        echo "<button class='product-list-share product-list-btn' onclick='shareURL($productId)'><i class=\"fa fa-link\"></i></button>";
-                        echo "<button class='product-list-delete product-list-btn' onclick='deleteProduct(event)' productId='$productId'><i class=\"fa fa-trash\" productId='$productId'></i></button>";
-                        echo "<button class='product-list-change-name product-list-btn' onclick='initChangeName(event)' data-toggle=\"modal\" data-target=\"#change_name_modal\"><i class=\"fa fa-pencil\" product-name='$productName' product-id='$productId'></i></button>";
-                        echo "</li>";
+                        $isLiveStatus = $row['is_live'] == "t" ? "" : "none";
+//                        echo "<li>";
+//                        echo " <a id = 'product-id-$productId'  href='' class='product-list' onclick='loadPage(event)' productId='$productId'>$productName</a>";
+//                        echo "<input class='product-list-is-live' onChange='changeLiveStatus(event)' productId='$productId' type='checkbox' $isLive>";
+//                        echo "<button class='product-list-share product-list-btn' onclick='shareURL($productId)'><i class=\"fa fa-link\"></i></button>";
+//                        echo "<button class='product-list-delete product-list-btn' onclick='deleteProduct(event)' productId='$productId'><i class=\"fa fa-trash\" productId='$productId'></i></button>";
+//                        echo "<button class='product-list-change-name product-list-btn' onclick='initChangeName(event)' data-toggle=\"modal\" data-target=\"#change_name_modal\"><i class=\"fa fa-pencil\" product-name='$productName' product-id='$productId'></i></button>";
+//                        echo "<span>&#8942;</span></li>";
+                        $code = "<li style=\"padding: 5px 10px;margin: 5px 10px; border-style: solid; border-width: 1px; border-radius: 5px\">
+                    <img src =\"img/file.svg\" alt=\"page\" width=\"19px\" style=\"padding-bottom: 2px\">
+                    <a id='product-id-$productId'  class='product-list product-list-name' onclick='loadPage(event)' productId='$productId' >$productName</a>
+                    <div class=\"product-option\" style=\"float: right\">
+                        <label class=\"switch\" style=\"margin-top: 2px;\" title='Live/Offline Page'>
+                            <input class='product-list-is-live' onChange='changeLiveStatus(event)'  productId='$productId' type='checkbox' $isLive>
+                            <span class=\"slider round\"><img src='img/LIVE.svg' class='live-text' style='display: $isLiveStatus'></span>
+                        </label>
+                        <a href=\"#\" class=\"\" data-toggle=\"dropdown\" style=\"margin: 4px\"><button class=\"product-list-btn\" style=\"width: 20px\"><strong>&#8942;</strong></button></a>
+                        <div class=\"dropdown-menu\">
+                            <a role=\"presentation\" class='dropdown-item product-list-share product-list-btn' onclick='shareURL($productId)'>
+                                <i class=\"fa fa-link\"></i>
+                                 Share URL
+                            </a>
+                            <a role=\"presentation\" class='dropdown-item product-list-change-name product-list-btn' onclick='initChangeName(event)' product-name='$productName' product-id='$productId' data-toggle=\"modal\" data-target = \"#change_name_modal\">
+                                <i class=\"fa fa-pencil\"></i>
+                                 Rename
+                            </a>
+                            <a role=\"presentation\" class='dropdown-item product-list-delete product-list-btn' onclick='deleteProduct(event)' productId='$productId'>
+                                <i class=\"fa fa-trash\" style=\"color: red\"></i>
+                                 Delete
+                            </a>
+                        </div>
+                </li>";
+                        echo $code;
+
                     }
                 }
 
                 ?>
-        </div>
+                <!--                <li style="padding: 5px 10px; margin: 5px 10px; border-style: solid; border-width: 1px; border-radius: 5px">-->
+                <!--                    <img src ="img/file.svg" alt="page" width="19px" style="padding-bottom: 2px">-->
+                <!--                    <a id='product-id-$productId'  class='product-list' onclick='loadPage(event)' productId='$productId'>$productName</a>-->
+                <!--                    <div class="product-option" style="float: right">-->
+                <!--                        <label class="switch" style="margin-top: 2px;">-->
+                <!--                            <input class='product-list-is-live' onChange='changeLiveStatus(event)' productId='$productId' type='checkbox' $isLive>-->
+                <!--                            <span class="slider round"></span>-->
+                <!--                        </label>-->
+                <!--                        <a href="#" data-toggle="dropdown" style="margin: 4px; padding: 0 2px;"><button class="product-list-btn" style="width: 20px" ><strong>&#8942;</strong></button></a>-->
+                <!--                        <div class="dropdown-menu">-->
+                <!--                            <a role="presentation" class='dropdown-item product-list-share product-list-btn' onclick='shareURL($productId)'>-->
+                <!--                                <i class="fa fa-link"></i>-->
+                <!--                                 Share URL-->
+                <!--                            </a>-->
+                <!--                            <a role="presentation" class='dropdown-item product-list-change-name product-list-btn' onclick='initChangeName(event)' data-toggle="modal" data-target="#change_name_modal">-->
+                <!--                                <i class="fa fa-pencil" product-name='$productName' product-id='$productId'></i>-->
+                <!--                                 Rename-->
+                <!--                            </a>-->
+                <!--                            <a role="presentation" class='dropdown-item product-list-delete product-list-btn' onclick='deleteProduct(event)' productId='$productId'>-->
+                <!--                                <i class="fa fa-trash" style="color: red" productId='$productId'></i>-->
+                <!--                                 Delete-->
+                <!--                            </a>-->
+                <!--                        </div>-->
+                <!--                </li>-->
 
-        </ul>
+
+            </ul>
+        </div>
     </div>
 
     <div id="vex-component">
-        <div class="search" style="position: relative;">
+        <div class="search">
             <input id="component-search" class="form-control form-control-sm component-search"
                    placeholder="Search components" type="text">
             <button id="clear-component-search-input" class="clear-backspace">
@@ -203,7 +271,7 @@ pg_close($link);
                     <div id="select-actions" style="pointer-events:auto;">
 
                         <a id="parent-btn" draggable="false" href="" title="Select parent"><i
-                                class="fa fa-level-up"></i></a>
+                                    class="fa fa-level-up"></i></a>
                         <a id="clone-btn" draggable="false" href="" title="Clone element"><i class="fa fa-copy"></i></a>
                         <a id="delete-btn" draggable="false" href="" title="Remove element"><i class="fa fa-trash"></i></a>
                     </div>
@@ -329,7 +397,8 @@ pg_close($link);
                         <div class="card default-hide-tab" id="link-tab">
                             <div class="card-header" role="tab">
                                 <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false"
-                                                    aria-controls="accordion-1 .item-3" href="div#accordion-1 .item-3">Link</a>
+                                                    aria-controls="accordion-1 .item-3"
+                                                    href="div#accordion-1 .item-3">Link</a>
                                 </h5>
                             </div>
                             <div class="collapse item-3" role="tabpanel" data-parent="#accordion-1">
@@ -382,7 +451,8 @@ pg_close($link);
                         <div class="card default-hide-tab" id="video-tab">
                             <div class="card-header" role="tab">
                                 <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false"
-                                                    aria-controls="accordion-1 .item-5" href="div#accordion-1 .item-5">Video</a>
+                                                    aria-controls="accordion-1 .item-5"
+                                                    href="div#accordion-1 .item-5">Video</a>
                                 </h5>
                             </div>
                             <div class="collapse item-5" role="tabpanel" data-parent="#accordion-1">
@@ -440,7 +510,8 @@ pg_close($link);
                         <div class="card default-hide-tab" id="image-tab">
                             <div class="card-header" role="tab">
                                 <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false"
-                                                    aria-controls="accordion-1 .item-6" href="div#accordion-1 .item-6">Image</a>
+                                                    aria-controls="accordion-1 .item-6"
+                                                    href="div#accordion-1 .item-6">Image</a>
                                 </h5>
                             </div>
                             <div class="collapse item-6" role="tabpanel" data-parent="#accordion-1">
@@ -484,7 +555,8 @@ pg_close($link);
                         <div class="card default-hide-tab" id="form-tab">
                             <div class="card-header" role="tab">
                                 <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false"
-                                                    aria-controls="accordion-1 .item-7" href="div#accordion-1 .item-7">Form</a>
+                                                    aria-controls="accordion-1 .item-7"
+                                                    href="div#accordion-1 .item-7">Form</a>
                                 </h5>
                             </div>
                             <div class="collapse item-7" role="tabpanel" data-parent="#accordion-1">
@@ -529,7 +601,8 @@ pg_close($link);
                         <div class="card default-hide-tab" id="input-tab">
                             <div class="card-header" role="tab">
                                 <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false"
-                                                    aria-controls="accordion-1 .item-9" href="div#accordion-1 .item-9">Input</a>
+                                                    aria-controls="accordion-1 .item-9"
+                                                    href="div#accordion-1 .item-9">Input</a>
                                 </h5>
                             </div>
                             <div class="collapse item-9" role="tabpanel" data-parent="#accordion-1">
@@ -648,7 +721,8 @@ pg_close($link);
                                             </div>
                                         </form>
                                         <form class="form-horizontal">
-                                            <div class="form-group"><label class="text-nowrap d-inline col-sm-2">Position</label>
+                                            <div class="form-group"><label
+                                                        class="text-nowrap d-inline col-sm-2">Position</label>
                                                 <div class="col-sm-10"><select class="form-control element-style"
                                                                                id="style-position"
                                                                                style-data-type="position">
@@ -822,7 +896,8 @@ pg_close($link);
                         <div class="card default-tab">
                             <div class="card-header" role="tab">
                                 <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false"
-                                                    aria-controls="accordion-2 .item-3" href="div#accordion-2 .item-3">Size</a>
+                                                    aria-controls="accordion-2 .item-3"
+                                                    href="div#accordion-2 .item-3">Size</a>
                                 </h5>
                             </div>
                             <div class="collapse item-3" role="tabpanel" data-parent="#accordion-2">
@@ -1190,7 +1265,7 @@ pg_close($link);
                         </div>
 
                         <label style="color: rgb(114,120,126);font-size: 14px;">Password</label> <span
-                            class="help-block" id="password-error" style="float: right"></span>
+                                class="help-block" id="password-error" style="float: right"></span>
                         <div class="form-group">
                             <input class="border rounded border-light form-control" type="password" id="popup_password"
                                    style="font-size: 14px;height: 40px;background-color: rgb(220,225,232);" required=""

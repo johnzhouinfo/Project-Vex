@@ -1,0 +1,27 @@
+<svg width="105.5099609375px" height="63.2224853515625px" xmlns="http://www.w3.org/2000/svg"
+     viewBox="197.24501953125 43.38875732421875 105.5099609375 63.2224853515625" style="background: rgba(0, 0, 0, 0);"
+     preserveAspectRatio="xMidYMid">
+    <defs>
+        <filter id="editing-hole" x="-100%" y="-100%" width="300%" height="300%">
+            <feFlood flood-color="#000" result="black"></feFlood>
+            <feMorphology operator="dilate" radius="2" in="SourceGraphic" result="erode"></feMorphology>
+            <feGaussianBlur in="erode" stdDeviation="4" result="blur"></feGaussianBlur>
+            <feOffset in="blur" dx="2" dy="2" result="offset"></feOffset>
+            <feComposite operator="atop" in="offset" in2="black" result="merge"></feComposite>
+            <feComposite operator="in" in="merge" in2="SourceGraphic" result="inner-shadow"></feComposite>
+        </filter>
+    </defs>
+    <g filter="url(#editing-hole)">
+        <g transform="translate(218.19999980926514, 84.94499969482422)">
+            <path d="M2.29 0L2.29-19.89L5.05-19.89L5.05-2.41L15.25-2.41L15.25 0L2.29 0ZM18.79 0L18.79-19.89L21.55-19.89L21.55 0L18.79 0ZM32.05 0L24.65-19.89L27.64-19.89L32.89-5.42L33.87-2.76L34.02-2.76L35.00-5.48L40.22-19.89L43.07-19.89L35.67 0L32.05 0ZM45.82 0L45.82-19.89L61.13-19.89L61.13-17.49L48.58-17.49L48.58-11.37L59.86-11.37L59.86-8.96L48.58-8.96L48.58-2.41L61.31-2.41L61.31 0L45.82 0Z"
+                  fill="#ccc"></path>
+        </g>
+    </g>
+    <style>text {
+        font-size: 64px;
+        font-family: Arial Black;
+        dominant-baseline: central;
+        text-anchor: middle;
+        }
+    </style>
+</svg>

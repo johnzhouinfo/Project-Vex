@@ -14,7 +14,7 @@ body {
 /*}*/
 
 
-#vex-builder div {
+#vex-component, #vex-toolbar, #vex-page, #vex-left-top-project-list, #vex-page div {
     position: absolute;
     /*border: 1px solid #000000;*/
 }
@@ -34,7 +34,7 @@ body {
 }
 
 #vex-component, #vex-toolbar, #vex-page, #vex-left-top-project-list {
-    border: 1px solid #000000;
+    border: 1px solid #ddd;
     top: 50px;
     bottom: 0;
 }
@@ -47,6 +47,7 @@ body {
     height: 300px;
     left: 0;
     overflow: auto;
+    background-color: #fafbfc;
 }
 
 #vex-component {
@@ -55,7 +56,14 @@ body {
     overflow: auto;
 }
 
+#vex-component .search, #vex-left-top-project-list .search {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0px
+}
+
 #vex-toolbar {
+    background-color: #fafbfc;
     width: 360px;
     right: 0;
     overflow: scroll;
@@ -69,6 +77,13 @@ body {
 #vex-page {
     left: 300px;
     right: 360px;
+
+}
+
+#vex-page iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
 }
 
 .component img, .component p {
@@ -112,12 +127,31 @@ body {
     background-color: #ebf1fb;
 }
 
+#product-list li {
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    border-color: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 5px 0px;
 
+}
 
 .product-list-btn {
     border: none;
     background: none;
     -webkit-appearance: none;
+}
+
+#product-list li:hover {
+    background-color: #ebf1fb;
+}
+
+#product-list li a:hover {
+    cursor: pointer;
+}
+
+#product-list .disabled {
+    color: gray;
+    cursor: no-drop;
 }
 
 .clear-backspace {
@@ -261,4 +295,17 @@ body {
 
 #template-list > li > img:hover {
     background-color: #4285f4;
+}
+
+.product-list-is-live:checked + .slider {
+    background-color: #30D158;
+}
+
+.product-list-is-live:focus + .slider {
+    box-shadow: 0 0 1px #30D158;
+}
+
+.live-text {
+    width: 30px;
+    padding-bottom: 4px;
 }

@@ -37,14 +37,29 @@ $('.drop').load(function () {
             $selectBox.css({
                 height: (rect.height + 8) + "px",
                 width: (rect.width + 8) + "px",
-                top: (rect.top - 2) + "px",
-                left: (rect.left - 2) + "px",
+                top: (rect.top - 4) + "px",
+                left: (rect.left - 4) + "px",
                 display: 'block',
             });
             $controlPanel = $('#select-actions');
             $controlPanel.css({
                 display: 'block',
             });
+            if (selectTarget.tagName.toLocaleLowerCase() !== 'body') {
+                $("#select-tag-name").css('left', '105px');
+            } else {
+                $("#select-tag-name").css('left', '0px');
+            }
+            if (rect.top + $(".drop").contents().find("body").scrollTop() < 24) {
+                $controlPanel.css('top', '0px');
+                $("#wysiwyg-editor").css('top', '0px');
+                $("#select-tag-name").css('top', '0px');
+            } else {
+                $controlPanel.css('top', '-25px');
+                $("#wysiwyg-editor").css('top', '-25px');
+                $("#select-tag-name").css('top', '-25px');
+            }
+
             if (event.target.tagName.toLocaleLowerCase() === 'body') {
                 $controlPanel.css({
                     display: 'none',
@@ -52,8 +67,8 @@ $('.drop').load(function () {
             }
 
             //Adding offset value to the select-box when scroll event happened
-            var x = parseInt($selectBox.css('top'));
-            var y = parseInt($selectBox.css('left'));
+            x = parseInt($selectBox.css('top'));
+            y = parseInt($selectBox.css('left'));
             var topPosition = $($(".drop").get(0).contentWindow).scrollTop();
             var leftPosition = $($(".drop").get(0).contentWindow).scrollLeft();
             $($(".drop").get(0).contentWindow).scroll(function () {
@@ -113,6 +128,9 @@ function resizeSelectBox(element) {
         left: (rect.left - 2) + "px",
         display: 'block',
     });
+    //update the offset value
+    x = parseInt($selectBox.css('top'));
+    y = parseInt($selectBox.css('left'));
     //Update the code in the drag element
     $("#drag-content").attr('data-insert-html', element.outerHTML);
     //Update changed element to the selectTarget in dragdrop.js
@@ -127,6 +145,25 @@ function resizeSelectBox(element) {
  */
 GetInsertionCSS = function () {
     var styles = "img, a {user-select: none;-webkit-user-drag: none;}" +
+        "/* width */\n" +
+        "::-webkit-scrollbar {\n" +
+        "    width: 10px;\n" +
+        "}\n" +
+        "\n" +
+        "/* Track */\n" +
+        "::-webkit-scrollbar-track {\n" +
+        "    background: #f1f1f1;\n" +
+        "}\n" +
+        "\n" +
+        "/* Handle */\n" +
+        "::-webkit-scrollbar-thumb {\n" +
+        "    background: #888;\n" +
+        "}\n" +
+        "\n" +
+        "/* Handle on hover */\n" +
+        "::-webkit-scrollbar-thumb:hover {\n" +
+        "    background: #555;\n" +
+        "}" +
         ".reserved-drop-marker{width:100%;height:2px;background:#00a8ff;position:absolute}.reserved-drop-marker::after,.reserved-drop-marker::before{content:'';background:#00a8ff;height:7px;width:7px;position:absolute;border-radius:50%;top:-2px}.reserved-drop-marker::before{left:0}.reserved-drop-marker::after{right:0}";
     styles += "[data-dragcontext-marker],[data-sh-parent-marker]{outline:#19cd9d solid 2px;text-align:center;position:absolute;z-index:123456781;pointer-events:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}[data-dragcontext-marker] [data-dragcontext-marker-text],[data-sh-parent-marker] [data-sh-parent-marker-text]{background:#19cd9d;color:#fff;padding:2px 10px;display:inline-block;font-size:14px;position:relative;top:-24px;min-width:121px;font-weight:700;pointer-events:none;z-index:123456782}[data-dragcontext-marker].invalid{outline:#dc044f solid 2px}[data-dragcontext-marker].invalid [data-dragcontext-marker-text]{background:#dc044f}[data-dragcontext-marker=body]{outline-offset:-2px}[data-dragcontext-marker=body] [data-dragcontext-marker-text]{top:0;}";
     styles += '.drop-marker{pointer-events:none;}.drop-marker.horizontal{background:#00adff;position:absolute;height:2px;list-style:none;visibility:visible!important;box-shadow:0 1px 2px rgba(255,255,255,.4),0 -1px 2px rgba(255,255,255,.4);z-index:123456789;text-align:center}.drop-marker.horizontal.topside{margin-top:0}.drop-marker.horizontal.bottomside{margin-top:2px}.drop-marker.horizontal:before{content:"";width:8px;height:8px;background:#00adff;border-radius:8px;margin-top:-3px;float:left;box-shadow:0 1px 2px rgba(255,255,255,.4),0 -1px 2px rgba(255,255,255,.4)}.drop-marker.horizontal:after{content:"";width:8px;height:8px;background:#00adff;border-radius:8px;margin-top:-3px;float:right;box-shadow:0 1px 2px rgba(255,255,255,.4),0 -1px 2px rgba(255,255,255,.4)}.drop-marker.vertical{height:50px;list-style:none;border:1px solid #00ADFF;position:absolute;margin-left:3px;display:inline;box-shadow:1px 0 2px rgba(255,255,255,.4),-1px 0 2px rgba(255,255,255,.4)}.drop-marker.vertical.leftside{margin-left:0}.drop-marker.vertical.rightside{margin-left:3px}.drop-marker.vertical:before{content:"";width:8px;height:8px;background:#00adff;border-radius:8px;margin-top:-4px;top:0;position:absolute;margin-left:-4px;box-shadow:1px 0 2px rgba(255,255,255,.4),-1px 0 2px rgba(255,255,255,.4)}.drop-marker.vertical:after{content:"";width:8px;height:8px;background:#00adff;border-radius:8px;margin-left:-4px;bottom:-4px;position:absolute;box-shadow:1px 0 2px rgba(255,255,255,.4),-1px 0 2px rgba(255,255,255,.4)}';
@@ -221,7 +258,7 @@ $("#component-search").on("keyup", function () {
     var value = $(this).val().toLowerCase();
     filterUl(value);
 
-});
+})
 
 /**
  * Filter the components by input the keyword
@@ -234,13 +271,13 @@ function filterUl(value) {
             var padrao = new RegExp(value, "i");
             return padrao.test(item);
         }).closest("li").show();
-};
+}
 
 /**
  * Reset search button
  */
 $("#clear-component-search-input").on("click", function () {
-    $("#component-search").val("");
+    $("#component-search").val("").focus();
     filterUl("");
 });
 
@@ -266,6 +303,8 @@ function changeLiveStatus(event) {
     $.ajax({
         type: "POST",
         url: "./lib/updateLive.php",
+        async: true,
+        timeout: 5000,
         data: {
             id: productId,
             value: checked
@@ -274,12 +313,17 @@ function changeLiveStatus(event) {
             var data = JSON.parse(data);
             if (data.status == true) {
                 var status = data.page_status === "true" ? "LIVE" : "OFFLINE";
+                $($($(event.target).get(0).nextElementSibling).find(".live-text"))
+                    .css("display", checked ? "" : "none");
                 swal("Success!", "Your page now " + status, "success");
             } else {
                 swal("Update page failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
                 $(event.target).attr("checked", !checked);
             }
         },
+        error: function (jqXHR, textStatus, errorThrown) {
+            swal("Server Error: " + textStatus, jqXHR.status + " " + errorThrown, "error");
+        }
     });
 }
 
@@ -329,7 +373,7 @@ function loadPage(event) {
  */
 function deleteProduct(event) {
     var productId = $(event.target).attr("productId");
-    var parent = $($(event.target).get(0).parentElement).get(0).parentElement;
+    var parent = $($($(event.target).get(0).parentElement).get(0).parentElement).get(0).parentElement;
     // Delete the created page
     swal({
             title: "Are you sure?",
@@ -356,6 +400,8 @@ function deleteProduct(event) {
                     $.ajax({
                         type: "POST",
                         url: "./lib/deletePage.php",
+                        async: true,
+                        timeout: 5000,
                         data: {
                             id: productId,
                         },
@@ -372,6 +418,9 @@ function deleteProduct(event) {
                                 }, 1000);
                             }
                         },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            swal("Server Error: " + textStatus, jqXHR.status + " " + errorThrown, "error");
+                        }
                     });
                 }
             }
@@ -394,7 +443,7 @@ function shareURL(id) {
  * @param event
  */
 function saveOrUpdate(event) {
-    if ($(".drop").attr("src") == "page.php?id=0") {
+    if ($(".drop").attr("src") == "page.php?id=0" || $(".drop").attr("src") == "./page.php?id=0") {
         return
     }
     var id = $(".drop").attr("product-id");
@@ -410,6 +459,8 @@ function saveOrUpdate(event) {
     $.ajax({
         type: "POST",
         url: url,
+        async: true,
+        timeout: 5000,
         data: {
             type: isCreate ? "save" : "update",
             id: id,
@@ -423,17 +474,20 @@ function saveOrUpdate(event) {
                 console.log(data.product_id);
                 if (isCreate) {
                     var productId = data.product_id;
+
                     $("#product-list [new = 'true'] .product-list-name").attr("id", "product-id-" + productId).attr("productId", productId);
                     $("#product-list [new = 'true'] .product-list-is-live").attr("productId", productId).removeAttr("disabled");
-                    $("#product-list [new = 'true'] .product-list-share").attr("onclick", "shareURL(" + productId + ")").removeAttr("disabled");
-                    $("#product-list [new = 'true'] .product-list-delete").attr("productId", productId).removeAttr("disabled");
-                    $("#product-list [new = 'true'] .product-list-delete i").attr("productId", productId);
+                    $("#product-list [new = 'true'] .product-list-share").attr("onclick", "shareURL(" + productId + ")").removeClass("disabled");
+                    $("#product-list [new = 'true'] .product-list-change-name").attr("product-id", productId);
                     $("#product-list [new = 'true']").removeAttr("new");
                     $(".drop").attr("product-id", productId);
                 }
             } else {
                 swal("Save page failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
             }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            swal("Server Error: " + textStatus, jqXHR.status + " " + errorThrown, "error");
         }
     });
 }
@@ -504,13 +558,38 @@ $("#popup_create_page_BTN").on("click", function () {
     } else {
         var result = $("#template-list li .highlight").attr("page-src");
         $(".drop").attr("src", result).attr("product-id", "");
-        var html = "<li new='true'>" +
-            " <a id = 'product-id-'  href='' class='product-list-name' onclick='loadPage(event)' productId=''>" + name + "</a>" +
-            "<input class='product-list-is-live' onChange='changeLiveStatus(event)' productId='' type='checkbox' disabled>" +
-            "<button class='product-list-share product-list-btn' onclick='shareURL()' disabled><i class=\"fa fa-link\"></i></button>" +
-            "<button class='product-list-delete product-list-btn' onclick='deleteProduct(event)' productId=''><i class=\"fa fa-trash\" productId=''></i></button>" +
-            "<button class='product-list-change-name product-list-btn' onclick='initChangeName(event)' data-toggle=\"modal\" data-target=\"#change_name_modal\"><i class=\"fa fa-pencil\" product-name='" + name + "' product-id=''></i></button>" +
-            "</li>";
+        // var html = "<li new='true'>" +
+        //     " <a id = 'product-id-'  href='' class='product-list-name' onclick='loadPage(event)' productId=''>" + name + "</a>" +
+        //     "<input class='product-list-is-live' onChange='changeLiveStatus(event)' productId='' type='checkbox' disabled>" +
+        //     "<button class='product-list-share product-list-btn' onclick='shareURL()' disabled><i class=\"fa fa-link\"></i></button>" +
+        //     "<button class='product-list-delete product-list-btn' onclick='deleteProduct(event)' productId=''><i class=\"fa fa-trash\" productId=''></i></button>" +
+        //     "<button class='product-list-change-name product-list-btn' onclick='initChangeName(event)' data-toggle=\"modal\" data-target=\"#change_name_modal\"><i class=\"fa fa-pencil\" product-name='" + name + "' product-id=''></i></button>" +
+        //     "</li>";
+        var html = "<li new='true' style=\"padding: 5px 10px;margin: 5px 10px; border-style: solid; border-width: 1px; border-radius: 5px\">\n" +
+            "                    <img src =\"img/file.svg\" alt=\"page\" width=\"19px\" style=\"padding-bottom: 2px\">\n" +
+            "                    <a id='product-id-'  class='product-list product-list-name' onclick='loadPage(event)' productId=''>" + name + "</a>\n" +
+            "                    <div class=\"product-option\" style=\"float: right\">\n" +
+            "                        <label class=\"switch\" style=\"margin-top: 2px;\" title='Make page live, save this page first'>\n" +
+            "                            <input class='product-list-is-live product-list-name' onChange='changeLiveStatus(event)' productId='' type='checkbox' disabled>\n" +
+            "                            <span class=\"slider round\"><img src='img/LIVE.svg' class='live-text' style='display: none'></span>\n" +
+            "                        </label>\n" +
+            "                        <a href=\"#\" class=\"\" data-toggle=\"dropdown\" style=\"margin: 4px\"><button class=\"product-list-btn\" style=\"width: 20px\"><strong>&#8942;</strong></button></a>\n" +
+            "                        <div class=\"dropdown-menu\">\n" +
+            "                            <a role=\"presentation\" class='dropdown-item product-list-share product-list-btn disabled' onclick='shareURL()'>\n" +
+            "                                <i class=\"fa fa-link\"></i>\n" +
+            "                                 Share URL\n" +
+            "                            </a>\n" +
+            "                            <a role=\"presentation\" class='dropdown-item product-list-change-name product-list-btn' onclick='initChangeName(event)' product-name='" + name + "' product-id='' data-toggle=\"modal\" data-target =\"#change_name_modal\">\n" +
+            "                                <i class=\"fa fa-pencil\"></i>\n" +
+            "                                 Rename\n" +
+            "                            </a>\n" +
+            "                            <a role=\"presentation\" class='dropdown-item product-list-delete product-list-btn' onclick='deleteProduct(event)' productId=''>\n" +
+            "                                <i class=\"fa fa-trash\" style=\"color: red\" productId=''></i>\n" +
+            "                                 Delete\n" +
+            "                            </a>\n" +
+            "                        </div>\n" +
+            "                </li>";
+
         $("#product-list").append(html);
         $("#popup_new_page_name").val("");
         $("#template-list li .highlight").attr("class", "");
