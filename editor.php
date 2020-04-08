@@ -284,10 +284,10 @@ pg_close($link);
             if (isset($_GET["id"])) {
                 if (pg_num_rows($loadPageResult) == 0) {
                     if (isset($_SESSION["admin"])) {
-                        echo "<script>alert('Page does not exist!');</script>";
+                        echo "<script>setTimeout(function() {swal('Failed!', 'Page doesn\'t exist!', 'error');},100)</script>";
                         echo "<iframe class=\"drop\" style=\"width:100%;height:100%;\" src=\"page.php?id=0\" product-id=\"\"></iframe>";
                     } else {
-                        echo "<script>alert('You don\'t have permission!');</script>";
+                        echo "<script>setTimeout(function() {swal('Failed!', 'You don\'t have permission!', 'error');},100)</script>";
                         echo "<iframe class=\"drop\" style=\"width:100%;height:100%;\" src=\"page.php?id=0\" product-id=\"\"></iframe>";
                     }
                 } else {

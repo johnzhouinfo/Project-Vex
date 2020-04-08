@@ -485,7 +485,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                     }
                     pagination(total_page);
                 } else
-                    alert(dataResult.msg);
+                    swal("Failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
 
             },
             error: function (jqXHR, textStatus, errorThrown) {

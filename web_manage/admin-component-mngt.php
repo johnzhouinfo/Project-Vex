@@ -400,7 +400,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                     }
                     pagination(total_page);
                 } else
-                    alert(dataResult.msg);
+                    swal("Failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 swal("Server Error: " + textStatus, jqXHR.status + " " + errorThrown, "error");
@@ -618,7 +618,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                                 console.log(hostname);
                                 $("#inputImage").attr("src", hostname + data.msg);
                             } else {
-                                alert("Error Code: " + data.code + "\nDescription: " + data.msg);
+                                swal("Failed!", "Error Code: " + data.code + "\nDescription: " + data.msg, "error");
                             }
                         },
                     });

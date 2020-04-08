@@ -289,7 +289,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                     var icon_url = dataResult.icon == null ? "../img/empty-avatar.png" : dataResult.icon.trim();
                     $("#profile_avatar").attr("src", icon_url);
                 } else
-                    alert(dataResult.msg);
+                    swal("Failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
 
             }
         })
@@ -459,7 +459,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                             updateIcon(hostname + data.msg);
                             $("#profile-icon").attr("src", hostname + data.msg);
                         } else {
-                            swal("File type incorrect", "We only support jpg, jpeg, png format.", "error");
+                            swal("Failed!", "Error Code: " + data.code + "\nDescription: " + data.msg, "error");
                         }
                     },
                 });
@@ -467,7 +467,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             });
             FR.readAsDataURL(this.files[0]);
         } else {
-            alert("File type incorrect");
+            swal("File type incorrect", "We only support jpg, jpeg, png format.", "error");
         }
     }
 

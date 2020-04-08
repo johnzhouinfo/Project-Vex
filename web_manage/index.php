@@ -23,6 +23,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
     <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="assets/css/styles.min.css">
+    <link rel="stylesheet" href="../lib/css/sweetalert.css">
 </head>
 
 <body id="page-top"
@@ -221,6 +222,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
 <script src="assets/js/script.min.js"></script>
+<script src="../lib/js/sweetalert.min.js"></script>
 <script>
 
     $(this).on("load", function () {
@@ -245,7 +247,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                 if (dataResult.status) {
                     $("#user-size").text(dataResult.result.trim());
                 } else
-                    alert(dataResult.msg);
+                    swal("Failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
 
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -269,7 +271,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                 if (dataResult.status) {
                     $("#page-size").text(dataResult.result.trim());
                 } else
-                    alert(dataResult.msg);
+                    swal("Failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
 
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -293,7 +295,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                 if (dataResult.status) {
                     $("#live-size").text(dataResult.result.trim());
                 } else
-                    alert(dataResult.msg);
+                    swal("Failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
 
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -317,7 +319,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                 if (dataResult.status) {
                     $("#ticket-size").text(dataResult.result.trim());
                 } else
-                    alert(dataResult.msg);
+                    swal("Failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
 
             },
             error: function (jqXHR, textStatus, errorThrown) {
