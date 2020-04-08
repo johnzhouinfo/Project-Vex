@@ -71,17 +71,13 @@ session_start();
                          ?>" alt="">
                 </a>
                 <div role="menu" class="dropdown-menu shadow dropdown-menu-right animated--grow-in">
-                    <a role="presentation" class="dropdown-item" href="#">
+                    <a id="profile-btn" role="presentation" class="dropdown-item" href="#">
                         <i class="fa fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                          Profile
                     </a>
-                    <a role="presentation" class="dropdown-item" href="#">
-                        <i class="fa fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                         Settings
-                    </a>
-                    <a role="presentation" class="dropdown-item" href="#">
+                    <a id="project-btn" role="presentation" class="dropdown-item" href="#">
                         <i class="fa fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                         Project
+                         Projects
                     </a>
                     <div class="dropdown-divider"></div>
                     <a id="logout-btn" role="presentation" class="dropdown-item" href="#">

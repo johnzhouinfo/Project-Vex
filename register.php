@@ -13,6 +13,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = trim($_POST["username"]);
     if (empty($username)) {
         $username_err = "Please enter a username.";
+    } else if (!preg_match("/^[A-Za-z0-9]+$/", $username)) {
+        $username_err = "Username cannot contains special character.";
     } else {
         // Prepare a select statement
         $sql = "SELECT user_id FROM vex_user WHERE username = $1";
@@ -76,7 +78,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Check input errors before inserting in database
-    if (empty($username_err) && empty($email_err) && empty($password_err) && empty($confirm_password_err) && empty($captcha_err)) {
+    if (empty($username_err) && empty($email_err) && empty($password_err) && empty($confirm_password_err) &&
+        empty($captcha_err)) {
 
         // Prepare an insert statement
         $sql = "INSERT INTO vex_user (username, password, name, email, create_time) VALUES ($1, $2, $3, $4, $5)";

@@ -257,8 +257,7 @@ function updateTagNameDisplayer(element) {
 $("#component-search").on("keyup", function () {
     var value = $(this).val().toLowerCase();
     filterUl(value);
-
-})
+});
 
 /**
  * Filter the components by input the keyword
@@ -302,10 +301,11 @@ function changeLiveStatus(event) {
     var checked = $(event.target).is(":checked");
     $.ajax({
         type: "POST",
-        url: "./lib/updateLive.php",
+        url: "./lib/project.php",
         async: true,
         timeout: 5000,
         data: {
+            type: "live",
             id: productId,
             value: checked
         },
@@ -399,10 +399,11 @@ function deleteProduct(event) {
                     //The page in the database
                     $.ajax({
                         type: "POST",
-                        url: "./lib/deletePage.php",
+                        url: "./lib/project.php",
                         async: true,
                         timeout: 5000,
                         data: {
+                            type: "delete",
                             id: productId,
                         },
                         success: function (data) {
@@ -449,13 +450,13 @@ function saveOrUpdate(event) {
     var id = $(".drop").attr("product-id");
     var productName = $("#product-id-" + id).html() == undefined ? "My Page" : $("#product-id-" + id).html();
     var isCreate = id == "";
-    var url = "./lib/savePage.php";
+    var url = "./lib/project.php";
 
     var page = $(".drop").contents().find("html").clone();
     $(page).find("[data-reserved-styletag]").remove();
     $(page).find("[data-dragcontext-marker]").remove();
     page = "<!DOCTYPE html><html>" + $(page).html() + "</html>";
-    page = page.replace(/'/g, "\'\'");
+    // page = page.replace(/'/g, "\'\'");
     $.ajax({
         type: "POST",
         url: url,
@@ -479,6 +480,7 @@ function saveOrUpdate(event) {
                     $("#product-list [new = 'true'] .product-list-is-live").attr("productId", productId).removeAttr("disabled");
                     $("#product-list [new = 'true'] .product-list-share").attr("onclick", "shareURL(" + productId + ")").removeClass("disabled");
                     $("#product-list [new = 'true'] .product-list-change-name").attr("product-id", productId);
+                    $("#product-list [new = 'true'] .product-list-delete").attr("productId", productId);
                     $("#product-list [new = 'true']").removeAttr("new");
                     $(".drop").attr("product-id", productId);
                 }
@@ -521,10 +523,38 @@ function initChangeName(event) {
 /**
  * Change the product name
  */
-$("#popup_save_name_BTN").on("click", function () {
-    console.log("Change product name");
-    $("#product-id-" + $("#popup_change_name").attr("product-id")).text($("#popup_change_name").val());
-    $("#close-save-name-form").click();
+$("#popup_save_name_BTN").on("click", function (event) {
+    var id = $("#popup_change_name").attr("product-id");
+    var isCreate = id == "";
+    if (isCreate) {
+        $("#product-id-" + $("#popup_change_name").attr("product-id")).text($("#popup_change_name").val());
+        $("#close-save-name-form").click();
+    } else {
+        $.ajax({
+            type: "POST",
+            url: "./lib/project.php",
+            async: true,
+            timeout: 5000,
+            data: {
+                type: "rename",
+                id: id,
+                name: $("#popup_change_name").val(),
+            },
+            success: function (data) {
+                var data = JSON.parse(data);
+                if (data.status == true) {
+                    $("#product-id-" + $("#popup_change_name").attr("product-id")).text($("#popup_change_name").val());
+                    $("#close-save-name-form").click();
+                } else {
+                    swal("Failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                swal("Server Error: " + textStatus, jqXHR.status + " " + errorThrown, "error");
+            }
+        });
+    }
+
 
 });
 

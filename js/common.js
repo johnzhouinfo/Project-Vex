@@ -114,4 +114,16 @@ $("#logout-btn").on("click", function () {
             swal("Server Error: " + textStatus, jqXHR.status + " " + errorThrown, "error");
         }
     });
-})
+});
+
+/**
+ * User-nav-bar btn click
+ */
+$("#profile-btn").on("click", function () {
+    window.open("./user/user_profile.php");
+});
+
+$("#project-btn").on("click", function () {
+    window.open("./user/admin-project-mngt.php");
+});
+

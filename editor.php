@@ -1,9 +1,8 @@
 <?php
 session_start();
-setcookie('key', 'value', time() + (7 * 24 * 3600), "/; SameSite=None; Secure");
 require_once "./lib/config.php";
 $pageId = 0;
-$componentResult = pg_query($link, "SELECT * FROM vex_component WHERE is_delete = false AND is_enable = true");
+$componentResult = pg_query($link, "SELECT * FROM vex_component WHERE is_delete = false AND is_enable = true ORDER BY component_id");
 if (isset($_SESSION["id"])) {
     $userId = $_SESSION["id"];
     $projectResult = pg_query($link, "SELECT product_id, product_name, is_live FROM vex_product WHERE user_id = $userId AND is_delete = false ORDER BY create_time");
@@ -12,6 +11,8 @@ if (!$componentResult) {
     echo "An error occurred.\n";
     exit;
 }
+
+//Open project from the user_profile or admin_project_mngt URL with get request.
 if (isset($_GET["id"])) {
     $pageId = $_GET["id"];
     if (isset($_SESSION["loggedin"])) {
@@ -26,7 +27,6 @@ if (isset($_GET["id"])) {
         echo "<script>setTimeout(function() {
                       swal(\"Failed!\", \"You don't have permission!\", \"error\");
                     },100)</script>";
-        echo "<script>alert('You don\'t have permission');</script>";
         $pageId = 0;
     }
 
@@ -50,7 +50,6 @@ pg_close($link);
 
     <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="lib/css/styles.css">
-    <!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">-->
     <link rel="stylesheet" href="lib/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="lib/css/Features-Clean.css">
     <link rel="stylesheet" href="lib/css/Footer-Basic.css">
@@ -129,17 +128,17 @@ pg_close($link);
                                      ?>" alt="">
                             </a>
                             <div role="menu" class="dropdown-menu shadow dropdown-menu-right animated--grow-in">
-                                <a role="presentation" class="dropdown-item" href="#">
+                                <a id="profile-btn" role="presentation" class="dropdown-item" href="#">
                                     <i class="fa fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                      Profile
                                 </a>
-                                <a role="presentation" class="dropdown-item" href="#">
-                                    <i class="fa fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                     Settings
-                                </a>
-                                <a role="presentation" class="dropdown-item" href="#">
+                                <a id="project-btn" role="presentation" class="dropdown-item" href="#">
                                     <i class="fa fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                     Project
+                                     Projects
+                                </a>
+                                <a id="password-btn" role="presentation" class="dropdown-item" href="#">
+                                    <i class="fa fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                     Password
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a id="logout-btn" role="presentation" class="dropdown-item" href="#">
@@ -249,7 +248,7 @@ pg_close($link);
             <?php
             while ($row = pg_fetch_array($componentResult)) {
                 $name = $row['component_name'];
-                $code = $row['code'];
+                $code = str_replace("\"", "'", $row['code']);
                 $icon = $row['icon'] == null ? "./img/empty-avatar.png" : $row['icon'];
                 echo " <li draggable=\"true\" data-insert-html=\"$code\"><img src=\"$icon\"></i>
                 <p>$name</p></li>";
@@ -461,11 +460,7 @@ pg_close($link);
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Src</label>
                                             <div class="col-sm-10"><input class="form-control element-attribute"
                                                                           type="text" id="attribute-video-src"
-                                                                          attr-data-type="src"><input type="file"
-                                                                                                      class="upload-btn"
-                                                                                                      accept="video/*"
-                                                                                                      data-type="src"
-                                                                                                      attr-type="attribute">
+                                                                          attr-data-type="src">
                                             </div>
                                         </div>
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Width</label>

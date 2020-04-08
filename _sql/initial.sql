@@ -53,3 +53,22 @@ WITH (
     OIDS = FALSE
 )
 TABLESPACE pg_default;
+
+CREATE TABLE public.vex_ticket
+(
+    ticket_id serial NOT NULL PRIMARY KEY,
+    user_id integer,
+	name character(255),
+	email character(255),
+    title character(255),
+    msg text,
+	reply text,
+	reply_by integer,
+    create_time timestamp,
+	update_time timestamp,
+    is_solve boolean DEFAULT false,
+    is_delete boolean DEFAULT false
+)
+WITH (
+    OIDS = FALSE
+)
