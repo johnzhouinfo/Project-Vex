@@ -332,10 +332,9 @@ function changeLiveStatus(event) {
  * @param id
  */
 function loadPage(event) {
-    //TODO if there is unsaved element, alert
     event.preventDefault();
     var hasCreated = $("#product-list [new = 'true']");
-    var hasUnsaved;
+    var hasUnsaved = undo_manager.hasUndo();
     var id = $(event.target).attr("productId");
     if (id == undefined || id == "") {
         return
@@ -357,6 +356,28 @@ function loadPage(event) {
                         $(".drop").attr("src", "page.php?id=" + id);
                         $(".drop").attr("product-id", id);
                         hasCreated.remove();
+                    }
+                });
+        } else if (hasUnsaved) {
+            swal({
+                    title: "Are you sure?",
+                    text: "Unsaved element will be removed!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                    closeOnConfirm: true,
+                    closeOnCancel: true
+                },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        $(".drop").attr("src", "page.php?id=" + id);
+                        $(".drop").attr("product-id", id);
+                        hasCreated.remove();
+                        undoBtn.classList['add']('disable');
+                        redoBtn.classList['add']('disable');
+                        undo_manager.clear();
                     }
                 });
         } else {
@@ -475,7 +496,6 @@ function saveOrUpdate(event) {
                 console.log(data.product_id);
                 if (isCreate) {
                     var productId = data.product_id;
-
                     $("#product-list [new = 'true'] .product-list-name").attr("id", "product-id-" + productId).attr("productId", productId);
                     $("#product-list [new = 'true'] .product-list-is-live").attr("productId", productId).removeAttr("disabled");
                     $("#product-list [new = 'true'] .product-list-share").attr("onclick", "shareURL(" + productId + ")").removeClass("disabled");
@@ -484,6 +504,9 @@ function saveOrUpdate(event) {
                     $("#product-list [new = 'true']").removeAttr("new");
                     $(".drop").attr("product-id", productId);
                 }
+                undoBtn.classList['add']('disable');
+                redoBtn.classList['add']('disable');
+                undo_manager.clear();
             } else {
                 swal("Save page failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
             }
@@ -503,9 +526,11 @@ function saveOrUpdate(event) {
  * Click logout in the editor page, remove the product list and redirect the inner page to default
  */
 $("#logout-btn").on("click", function () {
-    //TODO reset all
     $("#product-list").empty();
     $(".drop").attr("src", "./page.php?=0");
+    undoBtn.classList['add']('disable');
+    redoBtn.classList['add']('disable');
+    undo_manager.clear();
     resetData();
 });
 
@@ -572,14 +597,46 @@ $("#template-list > li > img").on("click", function (event) {
 $("#popup_create_page_BTN").on("click", function () {
     //TODO if there is unsaved element it need popup alert
     var hasCreated = $("#product-list [new = 'true']");
-    var hasUnsaved;
+    var hasUnsaved = undo_manager.hasUndo();
     if (hasCreated.length != 0) {
-        if (confirm(" You have an unsaved product.\n Unsaved page will be removed\n Do you still want to continue?  ")) {
-            hasCreated.remove();
-        } else {
-            $("#close-new-page-form").click();
-            return
-        }
+        swal({
+                title: "Are you sure?",
+                text: "You have an unsaved product.\n Unsaved page will be removed\n Do you still want to continue?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                closeOnConfirm: true,
+                closeOnCancel: true
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    hasCreated.remove();
+                } else
+                    return;
+            });
+    } else if (hasUnsaved) {
+        swal({
+                title: "Are you sure?",
+                text: "Unsaved element will be removed!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                closeOnConfirm: true,
+                closeOnCancel: true
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    hasCreated.remove();
+                    undoBtn.classList['add']('disable');
+                    redoBtn.classList['add']('disable');
+                    undo_manager.clear();
+                } else
+                    return;
+            });
     }
     $("#page-name-error").text("");
     var name = $("#popup_new_page_name").val();
