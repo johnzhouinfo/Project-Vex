@@ -79,11 +79,11 @@ pg_close($link);
                 <div class="collapse navbar-collapse" id="navcol-1">
                     <ul class="nav navbar-nav"></ul>
                 </div>
-                <div class="collapse navbar-collapse undo-container" style="position: relative;">
-                    <input id="undo" class="undo-redo disable" value="undo" type="button">
-                    <input id="redo" class="undo-redo disable" value="redo" type="button">
-                    <input onclick="saveOrUpdate(event)" type="button" value="Save">
-                </div>
+                <!--                <div class="collapse navbar-collapse undo-container" style="position: relative;">-->
+                <!--                    <input id="undo" class="undo-redo disable" value="undo" type="button">-->
+                <!--                    <input id="redo" class="undo-redo disable" value="redo" type="button">-->
+                <!--                    <input onclick="saveOrUpdate(event)" type="button" value="Save">-->
+                <!--                </div>-->
                 <ul class="nav navbar-nav">
                     <li class="nav-item" role="presentation">
                         <div id="login-btn-group" style="position: relative; height: 40px; display:
@@ -153,12 +153,18 @@ pg_close($link);
         </nav>
     </div>
 
-
+    <div class="search"
+         style="position: absolute; background-color: #f7f9ff; height: 40px; width:300px; padding: 4px; border-top: 1px solid #ddd;">
+        Project
+        <button class="btn btn-outline-dark border rounded-0" data-toggle="modal" data-target="#new_page_modal"
+                type="button"
+                style="font-size: 10px; margin-left: 80px;" title="New Project">
+            <i class="fa fa-plus" style="font-size: 10px;"></i>
+        </button>
+        <!--        <button data-toggle="modal" data-target="#new_page_modal">New Page</button>-->
+    </div>
     <div id="vex-left-top-project-list">
-        <div class="search">
-            Project List
-            <button data-toggle="modal" data-target="#new_page_modal">New Page</button>
-        </div>
+
 
         <div>
             <ul id="product-list">
@@ -169,13 +175,6 @@ pg_close($link);
                         $productId = $row['product_id'];
                         $isLive = $row['is_live'] == "t" ? "Checked" : "";
                         $isLiveStatus = $row['is_live'] == "t" ? "" : "none";
-//                        echo "<li>";
-//                        echo " <a id = 'product-id-$productId'  href='' class='product-list' onclick='loadPage(event)' productId='$productId'>$productName</a>";
-//                        echo "<input class='product-list-is-live' onChange='changeLiveStatus(event)' productId='$productId' type='checkbox' $isLive>";
-//                        echo "<button class='product-list-share product-list-btn' onclick='shareURL($productId)'><i class=\"fa fa-link\"></i></button>";
-//                        echo "<button class='product-list-delete product-list-btn' onclick='deleteProduct(event)' productId='$productId'><i class=\"fa fa-trash\" productId='$productId'></i></button>";
-//                        echo "<button class='product-list-change-name product-list-btn' onclick='initChangeName(event)' data-toggle=\"modal\" data-target=\"#change_name_modal\"><i class=\"fa fa-pencil\" product-name='$productName' product-id='$productId'></i></button>";
-//                        echo "<span>&#8942;</span></li>";
                         $code = "<li style=\"padding: 5px 10px;margin: 5px 10px; border-style: solid; border-width: 1px; border-radius: 5px\">
                     <img src =\"img/file.svg\" alt=\"page\" width=\"19px\" style=\"padding-bottom: 2px\">
                     <a id='product-id-$productId'  class='product-list product-list-name' onclick='loadPage(event)' productId='$productId' >$productName</a>
@@ -204,38 +203,13 @@ pg_close($link);
 
                     }
                 }
-
                 ?>
-                <!--                <li style="padding: 5px 10px; margin: 5px 10px; border-style: solid; border-width: 1px; border-radius: 5px">-->
-                <!--                    <img src ="img/file.svg" alt="page" width="19px" style="padding-bottom: 2px">-->
-                <!--                    <a id='product-id-$productId'  class='product-list' onclick='loadPage(event)' productId='$productId'>$productName</a>-->
-                <!--                    <div class="product-option" style="float: right">-->
-                <!--                        <label class="switch" style="margin-top: 2px;">-->
-                <!--                            <input class='product-list-is-live' onChange='changeLiveStatus(event)' productId='$productId' type='checkbox' $isLive>-->
-                <!--                            <span class="slider round"></span>-->
-                <!--                        </label>-->
-                <!--                        <a href="#" data-toggle="dropdown" style="margin: 4px; padding: 0 2px;"><button class="product-list-btn" style="width: 20px" ><strong>&#8942;</strong></button></a>-->
-                <!--                        <div class="dropdown-menu">-->
-                <!--                            <a role="presentation" class='dropdown-item product-list-share product-list-btn' onclick='shareURL($productId)'>-->
-                <!--                                <i class="fa fa-link"></i>-->
-                <!--                                 Share URL-->
-                <!--                            </a>-->
-                <!--                            <a role="presentation" class='dropdown-item product-list-change-name product-list-btn' onclick='initChangeName(event)' data-toggle="modal" data-target="#change_name_modal">-->
-                <!--                                <i class="fa fa-pencil" product-name='$productName' product-id='$productId'></i>-->
-                <!--                                 Rename-->
-                <!--                            </a>-->
-                <!--                            <a role="presentation" class='dropdown-item product-list-delete product-list-btn' onclick='deleteProduct(event)' productId='$productId'>-->
-                <!--                                <i class="fa fa-trash" style="color: red" productId='$productId'></i>-->
-                <!--                                 Delete-->
-                <!--                            </a>-->
-                <!--                        </div>-->
-                <!--                </li>-->
-
-
             </ul>
         </div>
     </div>
-
+    <div style="position: absolute; background-color: #f7f9ff; top: 350px; width: 300px; padding: 7px; height: 40px; border-right: 1px solid #ddd;">
+        Components
+    </div>
     <div id="vex-component">
         <div class="search">
             <input id="component-search" class="form-control form-control-sm component-search"
@@ -256,12 +230,42 @@ pg_close($link);
             ?>
         </ul>
     </div>
+
+    <div id="vex-nav-tool" class="">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <button class="btn btn-light undo-redo disable" title="Undo" id="undo"
+                            style="background-color: white">
+                        <i class="fa fa-undo"></i>
+                    </button>
+
+                    <button class="btn btn-light undo-redo disable" title="Redo" id="redo"
+                            style="background-color: white">
+                        <i class="fa fa-repeat"></i>
+                    </button>
+
+                </div>
+                <div class="col-md-4 text-center">
+                    <button class="btn btn-light" onclick="saveOrUpdate(event)" title="Save" id="save-btn"
+                            style="background-color: white">
+                        <i class="fa fa-save"></i>
+                    </button>
+
+                    <button class="btn btn-light" title="Download" id="download-btn" style="background-color: white">
+                        <i class="fa fa-download"></i>
+                    </button>
+                </div>
+                <div class="col-md-4 text-center"></div>
+            </div>
+        </div>
+    </div>
     <div id="vex-page">
         <div id="iframe-wapper" style="width:100%;height:100%">
             <div id="iframe-layer">
                 <div id="select-box" style="display: none; pointer-events:none;">
 
-                    <div id="wysiwyg-editor" style="pointer-events:auto; display: none;">
+                    <div id="select-editor" style="pointer-events:auto; display: none;">
                         <a id="bold-btn" draggable="false" href="" title="Bold"><i><strong>B</strong></i></a>
                         <a id="italic-btn" draggable="false" href="" title="Italic"><i>I</i></a>
                         <a id="underline-btn" draggable="false" href="" title="Underline"><u>u</u></a>

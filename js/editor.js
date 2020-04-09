@@ -52,11 +52,11 @@ $('.drop').load(function () {
             }
             if (rect.top + $(".drop").contents().find("body").scrollTop() < 24) {
                 $controlPanel.css('top', '0px');
-                $("#wysiwyg-editor").css('top', '0px');
+                $("#select-editor").css('top', '0px');
                 $("#select-tag-name").css('top', '0px');
             } else {
                 $controlPanel.css('top', '-25px');
-                $("#wysiwyg-editor").css('top', '-25px');
+                $("#select-editor").css('top', '-25px');
                 $("#select-tag-name").css('top', '-25px');
             }
 
