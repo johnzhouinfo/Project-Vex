@@ -43,6 +43,7 @@ try {
                                     'name' => $name,
                                     'icon' => $icon,
                                     'project' => $projectResult,
+                                    'is_admin' => $result_array[5] == 0,
                                     'msg' => "Login Successfully.",
                                     'code' => 200
                                 )

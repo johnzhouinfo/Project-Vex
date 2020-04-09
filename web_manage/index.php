@@ -116,12 +116,12 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                                 </a>
                                 <div class="dropdown-menu border rounded-0 shadow-sm dropdown-menu-right animated--grow-in"
                                      role="menu" style="color: rgb(62,63,69);">
-                                    <a class="dropdown-item" role="presentation" href="user_profile.php"
+                                    <a class="dropdown-item" role="presentation" href="../user/user_profile.php"
                                        style="font-size: 14px;color: rgb(133,135,150);">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"
                                            style="color: rgb(44,44,47);"></i>
                                         &nbsp;Profile</a>
-                                    <a class="dropdown-item" role="presentation" href="user_project.php"
+                                    <a class="dropdown-item" role="presentation" href="../user/user_project.php"
                                        style="font-size: 14px;color: rgb(133,135,150);">
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                         &nbsp;Project

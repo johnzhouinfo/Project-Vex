@@ -71,6 +71,16 @@ session_start();
                          ?>" alt="">
                 </a>
                 <div role="menu" class="dropdown-menu shadow dropdown-menu-right animated--grow-in">
+                    <a id="manage-btn" role="presentation" class="dropdown-item" href="#"
+                       style="display: <?php
+                       if (isset($_SESSION["admin"]) && $_SESSION["admin"] == true)
+                           echo "";
+                       else
+                           echo "none";
+                       ?>">
+                        <i class="fa fa-wrench fa-sm fa-fw mr-2 text-gray-400"></i>
+                         Web Manage
+                    </a>
                     <a id="profile-btn" role="presentation" class="dropdown-item" href="#">
                         <i class="fa fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                          Profile

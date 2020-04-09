@@ -94,6 +94,16 @@ session_start();
                                 </a>
                                 <div class="dropdown-menu border rounded-0 shadow-sm dropdown-menu-right animated--grow-in"
                                      role="menu" style="color: rgb(62,63,69);">
+                                    <a id="manage-btn" role="presentation" class="dropdown-item" href="../web_manage/"
+                                       style="font-size: 14px;color: rgb(133,135,150); display: <?php
+                                       if (isset($_SESSION["admin"]) && $_SESSION["admin"] == true)
+                                           echo "";
+                                       else
+                                           echo "none";
+                                       ?>">
+                                        <i class="fa fa-wrench fa-sm fa-fw mr-2 text-gray-400"></i>
+                                         Web Manage
+                                    </a>
                                     <a class="dropdown-item" role="presentation" href="user_profile.php"
                                        style="font-size: 14px;color: rgb(133,135,150);">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"
@@ -101,7 +111,7 @@ session_start();
                                         &nbsp;Profile</a>
                                     <a class="dropdown-item" role="presentation" href="user_project.php"
                                        style="font-size: 14px;color: rgb(133,135,150);">
-                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        <i class="fa fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                         &nbsp;Project
                                     </a>
                                     <div class="dropdown-divider"></div>

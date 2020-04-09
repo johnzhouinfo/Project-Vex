@@ -27,7 +27,7 @@ $("#popup_loginBTN").on("click", function (event) {
 
                 var data = JSON.parse(data);
                 console.log(data);
-                if (data.status == true) {
+                if (data.status) {
                     $("#close-login-form").click();
                     $("#login-btn-group").css("display", "none");
                     $("#user-btn-group").css("display", "");
@@ -36,6 +36,11 @@ $("#popup_loginBTN").on("click", function (event) {
                     $("#user-avatar").attr("src", icon);
                     $("#popup_username").val("");
                     $("#popup_password").val("");
+                    if (data.is_admin) {
+                        $("#manage-btn").css("display", "");
+                    } else
+                        $("#manage-btn").css("display", "none");
+
                     console.log(event.originalEvent.view.location.pathname);
                     if (event.originalEvent.view.location.pathname.includes("/editor.php")) {
                         console.log(data.project);
@@ -124,6 +129,10 @@ $("#profile-btn").on("click", function () {
 });
 
 $("#project-btn").on("click", function () {
-    window.open("./user/admin-project-mngt.php");
+    window.open("./user/user_project.php");
+});
+
+$("#manage-btn").on("click", function () {
+    window.open("./web_manage/");
 });
 

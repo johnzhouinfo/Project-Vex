@@ -117,6 +117,11 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                                 </a>
                                 <div class="dropdown-menu border rounded-0 shadow-sm dropdown-menu-right animated--grow-in"
                                      role="menu" style="color: rgb(62,63,69);">
+                                    <a id="manage-btn" role="presentation" class="dropdown-item" href="index.php"
+                                       style="font-size: 14px;color: rgb(133,135,150);">
+                                        <i class="fa fa-wrench fa-sm fa-fw mr-2 text-gray-400"></i>
+                                         Web Manage
+                                    </a>
                                     <a class="dropdown-item" role="presentation" href="../user/user_profile.php"
                                        style="font-size: 14px;color: rgb(133,135,150);">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"
@@ -195,34 +200,6 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                                 </tr>
                                 </thead>
                                 <tbody id="project-list" class="text-center">
-                                <tr>
-                                    <td style="font-size: 12px;padding: 17px;">1111111</td>
-                                    <td style="font-size: 12px;padding: 17px;">System sign-in</td>
-                                    <td style="font-size: 12px;padding: 17px;">yc88io</td>
-                                    <td style="font-size: 12px;padding: 17px;">2020.3.30</td>
-                                    <td style="font-size: 12px;">
-                                        <div class="toggle"><input type="radio" id="cond_new" name="bike_cond"
-                                                                   checked="checked"><label
-                                                    id="pending_sts_tkt_btn_admin_pg"
-                                                    for="cond_new">Pending</label><input type="radio" id="cond_used"
-                                                                                         name="bike_cond"><label
-                                                    id="solved_sts_tkt_btn_admin_pg"
-                                                    for="cond_used">Solved</label></div>
-                                    </td>
-                                    <td style="font-size: 12px;">
-                                        <div class="btn-group" role="group" style="font-size: 12px;">
-                                            <button class="btn" data-toggle="tooltip" data-bs-tooltip=""
-                                                    data-bs-hover-animate="pulse" id="reply_tkt_btn_admin_pg"
-                                                    type="button" style="font-size: 12px;" title="Reply"><i
-                                                        class="fas fa-reply"></i></button>
-                                            <button
-                                                    class="btn" data-bs-hover-animate="pulse"
-                                                    id="delete_tkt_btn_admin_pg" type="button" style="font-size: 12px;">
-                                                <i class="fa fa-remove" data-toggle="tooltip" data-bs-tooltip=""
-                                                   title="Delete"></i></button>
-                                        </div>
-                                    </td>
-                                </tr>
                                 </tbody>
                                 <tfoot>
                                 <tr>
