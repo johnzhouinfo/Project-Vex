@@ -14,7 +14,7 @@ body {
 /*}*/
 
 
-#vex-builder div {
+#vex-component, #vex-toolbar, #vex-page, #vex-left-top-project-list, #vex-page div, #vex-nav-tool {
     position: absolute;
     /*border: 1px solid #000000;*/
 }
@@ -27,15 +27,37 @@ body {
 }
 
 #vex-nav {
-    height: 50px;
+    height: 80px;
     width: 100%;
     margin-left: 0;
     top: 0;
 }
 
-#vex-component, #vex-toolbar, #vex-page, #vex-left-top-project-list {
-    border: 1px solid #000000;
-    top: 50px;
+#vex-nav .container-fluid {
+    padding-top: 30px;
+    padding-left: 50px;
+    padding-right: 100px;
+}
+
+#vex-component, #vex-toolbar, #vex-left-top-project-list {
+    border: 1px solid #ddd;
+    top: 80px;
+    bottom: 0;
+}
+
+#vex-left-top-project-list {
+    top: 120px;
+}
+
+#vex-nav-tool {
+    height: 40px;
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;;
+}
+
+#vex-page {
+    border: 1px solid #ddd;
+    top: 120px;
     bottom: 0;
 }
 
@@ -44,18 +66,26 @@ body {
 }
 
 #vex-left-top-project-list {
-    height: 300px;
+    height: 230px;
     left: 0;
     overflow: auto;
+    /*background-color: #fafbfc;*/
 }
 
 #vex-component {
-    top: 350px;
+    top: 390px;
     left: 0;
     overflow: auto;
 }
 
+#vex-component .search, #vex-left-top-project-list .search {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0px
+}
+
 #vex-toolbar {
+    /*background-color: #fafbfc;*/
     width: 360px;
     right: 0;
     overflow: scroll;
@@ -66,9 +96,16 @@ body {
 
 }
 
-#vex-page {
+#vex-page, #vex-nav-tool {
     left: 300px;
     right: 360px;
+
+}
+
+#vex-page iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
 }
 
 .component img, .component p {
@@ -89,7 +126,7 @@ body {
     list-style: none;
     padding: 3%;
     height: 100%;
-    background-color: #fafbfc;
+    /*background-color: #fafbfc;*/
 }
 
 #drag-list-container > li {
@@ -112,12 +149,31 @@ body {
     background-color: #ebf1fb;
 }
 
+#product-list li {
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    border-color: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 5px 0px;
 
+}
 
 .product-list-btn {
     border: none;
     background: none;
     -webkit-appearance: none;
+}
+
+#product-list li:hover {
+    background-color: #ebf1fb;
+}
+
+#product-list li a:hover {
+    cursor: pointer;
+}
+
+#product-list .disabled {
+    color: gray;
+    cursor: no-drop;
 }
 
 .clear-backspace {
@@ -203,7 +259,7 @@ body {
     border-radius: 3px 0px 0px 0px;
 }
 
-#wysiwyg-editor {
+#select-editor {
     position: absolute;
     left: -2px;
     top: -25px;
@@ -224,7 +280,7 @@ body {
     border-radius: 0px 3px 0px 0px;
 }
 
-#select-actions > a, #wysiwyg-editor > a {
+#select-actions > a, #select-editor > a {
     pointer-events: auto;
     color: #fff;
     font-size: 16px;
@@ -261,4 +317,22 @@ body {
 
 #template-list > li > img:hover {
     background-color: #4285f4;
+}
+
+.product-list-is-live:checked + .slider {
+    background-color: #30D158;
+}
+
+.product-list-is-live:focus + .slider {
+    box-shadow: 0 0 1px #30D158;
+}
+
+.live-text {
+    width: 30px;
+    padding-bottom: 4px;
+}
+
+#vex-nav-tool button {
+    margin-top: 5px;
+    border: 1px solid #ddd;
 }

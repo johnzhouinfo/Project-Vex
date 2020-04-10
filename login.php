@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             // If the user is administrator or not
                             if ($result_array[5] == 0) {
                                 $_SESSION["admin"] = true;
-                                header("location: ./web_manage/admin.php");
+                                header("location: ./web_manage/");
                             } else {
                                 header("location: ./editor.php");
                             }
