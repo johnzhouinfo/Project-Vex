@@ -353,9 +353,17 @@ function loadPage(event) {
                 },
                 function (isConfirm) {
                     if (isConfirm) {
+                        $(".product-list-name").css("color", "#000000");
+                        $(event.target).css("color", "#007bff");
                         $(".drop").attr("src", "page.php?id=" + id);
                         $(".drop").attr("product-id", id);
+                        $("#download-btn").removeAttr("disabled");
+                        $("#preview-btn").removeAttr("disabled");
+                        $("#save-btn").removeAttr("disabled");
                         hasCreated.remove();
+                        undoBtn.classList['add']('disable');
+                        redoBtn.classList['add']('disable');
+                        undo_manager.clear();
                     }
                 });
         } else if (hasUnsaved) {
@@ -372,8 +380,13 @@ function loadPage(event) {
                 },
                 function (isConfirm) {
                     if (isConfirm) {
+                        $(".product-list-name").css("color", "#000000");
+                        $(event.target).css("color", "#007bff");
                         $(".drop").attr("src", "page.php?id=" + id);
                         $(".drop").attr("product-id", id);
+                        $("#download-btn").removeAttr("disabled");
+                        $("#preview-btn").removeAttr("disabled");
+                        $("#save-btn").removeAttr("disabled");
                         hasCreated.remove();
                         undoBtn.classList['add']('disable');
                         redoBtn.classList['add']('disable');
@@ -381,8 +394,16 @@ function loadPage(event) {
                     }
                 });
         } else {
+            $(".product-list-name").css("color", "#000000");
+            $(event.target).css("color", "#007bff");
             $(".drop").attr("src", "page.php?id=" + id);
             $(".drop").attr("product-id", id);
+            $("#download-btn").removeAttr("disabled");
+            $("#preview-btn").removeAttr("disabled");
+            $("#save-btn").removeAttr("disabled");
+            undoBtn.classList['add']('disable');
+            redoBtn.classList['add']('disable');
+            undo_manager.clear();
         }
     }
 }
@@ -415,6 +436,9 @@ function deleteProduct(event) {
                     setTimeout(function () {
                         swal("Deleted!", "Your page has been deleted!", "success");
                         $(".drop").attr("src", "./page.php?id=0").attr("product-id", "");
+                        $("#download-btn").attr("disabled", "");
+                        $("#preview-btn").attr("disabled", "");
+                        $("#save-btn").attr("disabled", "");
                     }, 500);
                 } else {
                     //The page in the database
@@ -432,6 +456,9 @@ function deleteProduct(event) {
                             if (data.status == true) {
                                 setTimeout(function () {
                                     swal("Deleted!", "Your page has been deleted!", "success");
+                                    $("#download-btn").attr("disabled", "");
+                                    $("#preview-btn").attr("disabled", "");
+                                    $("#save-btn").attr("disabled", "");
                                     $(parent).remove();
                                 }, 1000);
                             } else {
@@ -474,10 +501,11 @@ function saveOrUpdate(event) {
     var url = "./lib/project.php";
 
     var page = $(".drop").contents().find("html").clone();
+    //Save the title
+    $(page).find("title").get(0).text = productName;
     $(page).find("[data-reserved-styletag]").remove();
     $(page).find("[data-dragcontext-marker]").remove();
     page = "<!DOCTYPE html><html>" + $(page).html() + "</html>";
-    // page = page.replace(/'/g, "\'\'");
     $.ajax({
         type: "POST",
         url: url,
@@ -528,6 +556,10 @@ function saveOrUpdate(event) {
 $("#logout-btn").on("click", function () {
     $("#product-list").empty();
     $(".drop").attr("src", "./page.php?=0");
+    $(".drop").attr("project-id", "");
+    $("#download-btn").attr("disabled", "");
+    $("#preview-btn").attr("disabled", "");
+    $("#save-btn").attr("disabled", "");
     undoBtn.classList['add']('disable');
     redoBtn.classList['add']('disable');
     undo_manager.clear();
@@ -595,7 +627,6 @@ $("#template-list > li > img").on("click", function (event) {
  * Create the new product page
  */
 $("#popup_create_page_BTN").on("click", function () {
-    //TODO if there is unsaved element it need popup alert
     var hasCreated = $("#product-list [new = 'true']");
     var hasUnsaved = undo_manager.hasUndo();
     if (hasCreated.length != 0) {
@@ -645,16 +676,17 @@ $("#popup_create_page_BTN").on("click", function () {
     } else {
         var result = $("#template-list li .highlight").attr("page-src");
         $(".drop").attr("src", result).attr("product-id", "");
-        // var html = "<li new='true'>" +
-        //     " <a id = 'product-id-'  href='' class='product-list-name' onclick='loadPage(event)' productId=''>" + name + "</a>" +
-        //     "<input class='product-list-is-live' onChange='changeLiveStatus(event)' productId='' type='checkbox' disabled>" +
-        //     "<button class='product-list-share product-list-btn' onclick='shareURL()' disabled><i class=\"fa fa-link\"></i></button>" +
-        //     "<button class='product-list-delete product-list-btn' onclick='deleteProduct(event)' productId=''><i class=\"fa fa-trash\" productId=''></i></button>" +
-        //     "<button class='product-list-change-name product-list-btn' onclick='initChangeName(event)' data-toggle=\"modal\" data-target=\"#change_name_modal\"><i class=\"fa fa-pencil\" product-name='" + name + "' product-id=''></i></button>" +
-        //     "</li>";
+        $(".product-list-name").css("color", "#000000");
+        if (isLoggined) {
+            $("#download-btn").removeAttr("disabled");
+            $("#preview-btn").removeAttr("disabled");
+            $("#save-btn").removeAttr("disabled");
+        } else {
+            $("#preview-btn").removeAttr("disabled");
+        }
         var html = "<li new='true' style=\"padding: 5px 10px;margin: 5px 10px; border-style: solid; border-width: 1px; border-radius: 5px\">\n" +
             "                    <img src =\"img/file.svg\" alt=\"page\" width=\"19px\" style=\"padding-bottom: 2px\">\n" +
-            "                    <a id='product-id-'  class='product-list product-list-name' onclick='loadPage(event)' productId=''>" + name + "</a>\n" +
+            "                    <a id='product-id-'  class='product-list product-list-name' onclick='loadPage(event)' productId='' style='color: #007bff'>" + name + "</a>\n" +
             "                    <div class=\"product-option\" style=\"float: right\">\n" +
             "                        <label class=\"switch\" style=\"margin-top: 2px;\" title='Make page live, save this page first'>\n" +
             "                            <input class='product-list-is-live product-list-name' onChange='changeLiveStatus(event)' productId='' type='checkbox' disabled>\n" +
@@ -690,4 +722,140 @@ $("#register").on("click", function (event) {
     event.preventDefault();
     window.open("register.php?redirect=true");
     $("#home_login").click();
-})
+});
+
+$("#help-btn").on("click", function () {
+    $("#inputName").val("");
+    $("#inputEmail").val("");
+    $("#inputTitle").val("");
+    $("#inputMsg").val("");
+
+    $.ajax({
+        url: "lib/account.php/",
+        type: "GET",
+        cache: false,
+        data: {
+            type: "user",
+        },
+        success: function (data) {
+            console.log(data);
+            var dataResult = JSON.parse(data);
+            if (dataResult.status) {
+                $("#inputName").val(dataResult.name.trim());
+                $("#inputEmail").val(dataResult.email.trim());
+            }
+
+        }
+    });
+    $("#help-hidden-btn").click();
+});
+
+$("#popup_contact_submit").on("click", function () {
+    var name = $("#inputName").val();
+    var email = $("#inputEmail").val();
+    var title = $("#inputTitle").val();
+    var message = $("#inputMsg").val();
+    $("#contact-email-error").text("");
+    $("#contact-msg-error").text("");
+    $("#contact-name-error").text("");
+    $("#contact-title-error").text("");
+    if (name.trim() === "") {
+        $("#contact-name-error").text("Name required.");
+    } else if (!validateEmail(email)) {
+        $("#contact-email-error").text("Email required.");
+    } else if (title.trim() === "") {
+        $("#contact-title-error").text("Title required.");
+    } else if (message.trim() === "") {
+        $("#contact-msg-error").text("Message cannot be empty.");
+    } else {
+        $.ajax({
+            url: "lib/ticket.php/",
+            type: "POST",
+            cache: false,
+            data: {
+                type: "insert",
+                name: name,
+                email: email,
+                title: title,
+                message: message,
+            },
+            success: function (data) {
+                var dataResult = JSON.parse(data);
+                if (dataResult.status) {
+                    swal("Success", "The ticket has been created. Ticket ID: " + dataResult.ticket_id + ".\n We will reply soon", "success");
+                    $("#close-contact-form").click();
+                } else
+                    swal("Failed!", dataResult.msg, "error");
+
+            }
+        })
+    }
+});
+
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
+
+// preview the component that user input
+$("#preview-btn").on("click", function () {
+    var html = $(".drop").contents().find("html").clone();
+    $(html).find("[data-reserved-styletag]").remove();
+    $(html).find("[data-dragcontext-marker]").remove();
+    OpenWindowWithPost(html.html());
+});
+
+// Open a preview page through post request
+function OpenWindowWithPost(html) {
+    var form = document.createElement("form");
+    form.setAttribute("method", "post");
+    form.setAttribute("action", "preview.php");
+    form.setAttribute("target", "Preview");
+
+    var input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = "preview";
+    input.value = html;
+    form.appendChild(input);
+
+    document.body.appendChild(form);
+    window.open("preview.php", "Preview");
+    form.submit();
+    document.body.removeChild(form);
+}
+
+$("#download-btn").on("click", function () {
+    var html = $(".drop").contents().find("html").clone();
+    $(html).find("[data-reserved-styletag]").remove();
+    $(html).find("[data-dragcontext-marker]").remove();
+    var name = $(html).find("title").get(0).text;
+    html = "<!DOCTYPE html><html>" + $(html).html() + "</html>"
+
+    download(html, name);
+});
+
+// Download page
+function download(html, name) {
+    var form = document.createElement("form");
+    form.setAttribute("method", "post");
+    form.setAttribute("action", "lib/download.php");
+    form.setAttribute("target", "Download");
+
+    var input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = "code";
+    input.value = html;
+    form.appendChild(input);
+
+    var input2 = document.createElement('input');
+    input2.type = 'hidden';
+    input2.name = "name";
+    input2.value = name;
+    form.appendChild(input2);
+
+    document.body.appendChild(form);
+    window.open("lib/download.php", "Download");
+    form.submit();
+    document.body.removeChild(form);
+}

@@ -268,20 +268,43 @@ function update_user($id, $name, $email, $password, $enable, $admin, $link) {
     }
 
     if ($stmt = pg_prepare($link, "update_user", $sql)) {
-
         if ($result = pg_execute($link, "update_user", $insertion)) {
-            if (pg_affected_rows($result) == 1) {
-                echo json_encode(
-                    array(
-                        'status' => true,
-                        'msg' => "Update User Info successfully",
-                        'code' => 200,
-                    )
-                );
+            //if disable the user, user's page also need disabled
+            if ($enable == "false") {
+                $sql2 = "UPDATE vex_product SET is_live = false where user_id = $1";
+                if ($stmt2 = pg_prepare($link, "disable_user_all_page", $sql2)) {
+                    if ($result2 = pg_execute($link, "disable_user_all_page", array($id))) {
+                        pg_query("commit");
+                        echo json_encode(
+                            array(
+                                'status' => true,
+                                'msg' => "Update User Info and Disable User successfully",
+                                'code' => 200,
+                            )
+                        );
+                    } else {
+                        //Case when failed at update at multi sql lines, it needs rollback to prevent data loss.
+                        pg_query("rollback");
+                        throw new Exception("Disable user's all page failed, User ID: $id", 102);
+                    }
+                } else {
+                    throw new Exception("Database Schema Exception: $sql2", 1010);
+                }
             } else {
-                throw new Exception("Update password failed, id:$id", 1010);
+                if (pg_affected_rows($result) == 1) {
+                    echo json_encode(
+                        array(
+                            'status' => true,
+                            'msg' => "Update User Info successfully",
+                            'code' => 200,
+                        )
+                    );
+                } else {
+                    throw new Exception("Update user failed, id:$id", 1010);
+                }
             }
         }
     } else
         throw new Exception("Database Schema Exception: $sql", 123);
+
 }

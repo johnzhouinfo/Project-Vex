@@ -28,6 +28,7 @@ $("#popup_loginBTN").on("click", function (event) {
                 var data = JSON.parse(data);
                 console.log(data);
                 if (data.status) {
+                    isLoggined = true;
                     $("#close-login-form").click();
                     $("#login-btn-group").css("display", "none");
                     $("#user-btn-group").css("display", "");
@@ -48,14 +49,7 @@ $("#popup_loginBTN").on("click", function (event) {
                             var array = data.project[i];
                             var isChecked = array.is_live == "t" ? "checked" : "";
                             var isCheckedText = array.is_live == "t" ? "" : "none";
-                            // var html = "<li>" +
-                            //     " <a id = 'product-id-" + array.product_id + "'  href='' class='product-list' onclick='loadPage(event)' productId='" + array.product_id + "'>" + array.product_name + "</a>" +
-                            //     "<input class='product-list-is-live' onChange='changeLiveStatus(event)' productId='" + array.product_id + "' type='checkbox' " + isChecked + ">" +
-                            //     "<button class='product-list-share product-list-btn' onclick='shareURL(" + array.product_id + ")'><i class=\"fa fa-link\"></i></button>" +
-                            //     "<button class='product-list-delete product-list-btn' onclick='deleteProduct(event)' productId='" + array.product_id + "'><i class=\"fa fa-trash\" productId='" + array.product_id + "'></i></button>" +
-                            //     "<button class='product-list-change-name product-list-btn' onclick='initChangeName(event)' data-toggle=\"modal\" data-target=\"#change_name_modal\"><i class=\"fa fa-pencil\" product-name='" + array.product_name + "' product-id='" + array.product_id + "'></i></button>" +
-                            //     "</li>";
-                            var html = "<li new='true' style=\"padding: 5px 10px;margin: 5px 10px; border-style: solid; border-width: 1px; border-radius: 5px\">\n" +
+                            var html = "<li style=\"padding: 5px 10px;margin: 5px 10px; border-style: solid; border-width: 1px; border-radius: 5px\">\n" +
                                 "                    <img src =\"img/file.svg\" alt=\"page\" width=\"19px\" style=\"padding-bottom: 2px\">\n" +
                                 "                    <a id='product-id-" + array.product_id + "'  class='product-list product-list-name' onclick='loadPage(event)' productId='" + array.product_id + "'>" + array.product_name + "</a>\n" +
                                 "                    <div class=\"product-option\" style=\"float: right\">\n" +
@@ -107,6 +101,7 @@ $("#logout-btn").on("click", function () {
         timeout: 5000,
         success: function (data) {
             console.log(data);
+            isLoggined = false;
             var data = JSON.parse(data);
             if (data.status == true) {
                 $("#login-btn-group").css("display", "flex");

@@ -2,10 +2,13 @@
 error_reporting(E_ERROR | E_PARSE);
 // Include config file
 require_once "../lib/config.php";
+require_once "../lib/mailer.php";
 // Initialize the session
 session_start();
 try {
-    if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST["type"] === "insert") {
+        create_ticket($_POST["name"], $_POST["email"], $_POST["title"], $_POST["message"], $link);
+    } else if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
         $id = $_SESSION["id"];
         if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["type"])) {
             if (isset($_SESSION["admin"]) && isset($_SESSION["admin"]) === true) {
@@ -24,8 +27,6 @@ try {
         } else {
             $post_type = $_POST["type"];
             switch ($post_type) {
-                case "insert":
-                    break;
                 case "update":
                     update_ticket($_POST["id"], $_POST["reply"], $_POST["solve"], $link);
                     break;
@@ -49,6 +50,39 @@ try {
 } finally {
     pg_close($link);
     exit;
+}
+
+
+function create_ticket($name, $email, $title, $message, $link) {
+    if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)
+        $id = $_SESSION["id"];
+    else
+        $id = null;
+    // Prepare an insert statement
+    $sql = "INSERT INTO vex_ticket (user_id, name, email, title, msg, create_time) VALUES ($1, $2, $3, $4, $5, $6) RETURNING ticket_id";
+
+    if ($stmt = pg_prepare($link, "insert_ticket", $sql)) {
+        // Attempt to execute the prepared statement
+        if ($result = pg_execute($link, "insert_ticket", array($id, $name, $email, $title, $message, date('Y-m-d h:i:s')))) {
+            if (!$result) {
+                throw new Exception("Create Ticket failed", 400);
+            }
+            if (!$result || pg_affected_rows($result) == 0) {
+                throw new Exception("Save Record in Database failed. ", 102);
+            } else {
+                $ticket_id = pg_fetch_row($result)[0];
+                sendMail($email, $message, $ticket_id);
+                echo json_encode(
+                    array(
+                        'status' => true,
+                        'msg' => "Submit Successfully.",
+                        'code' => 200,
+                        'ticket_id' => $ticket_id,
+                    )
+                );
+            }
+        }
+    }
 }
 
 
@@ -84,6 +118,23 @@ function update_ticket($id, $reply, $solve, $link) {
     if (!(isset($_SESSION["admin"]) && isset($_SESSION["admin"]) === true)) {
         throw new Exception("You don't have permission.", 1010);
     }
+    // Get ticket info
+    $sql = "select email, msg from vex_ticket where ticket_id = $1";
+    if ($stmt = pg_prepare($link, "get_reply_ticket", $sql)) {
+        // Execute sql
+        if ($result = pg_execute($link, "get_reply_ticket", array($id))) {
+            if (pg_num_rows($result) == 1) {
+                $result_array = pg_fetch_array($result, null, PGSQL_ASSOC);
+                $email = $result_array[0];
+                $msg = $result_array[1];
+            } else {
+                throw new Exception("Ticket doesn't exist, ticketId $id", 1000);
+            }
+        }
+    } else
+        throw new Exception("Database Schema Exception: $sql", 123);
+
+    //Update ticket
     $sql = "UPDATE vex_ticket SET reply = $1, reply_by = $2, update_time = $3, is_solve = $4 WHERE ticket_id = $5 AND is_delete = false";
     if ($stmt = pg_prepare($link, "update_ticket", $sql)) {
         // Execute sql
@@ -95,6 +146,7 @@ function update_ticket($id, $reply, $solve, $link) {
             if (!$result || pg_affected_rows($result) == 0) {
                 throw new Exception("Update Record in Database failed. ", 102);
             } else {
+                sendReplyMail($email, $msg, $reply, $_SESSION["name"], $id, $solve ? "Solved" : "Unsolved");
                 echo json_encode(
                     array(
                         'status' => true,
@@ -196,12 +248,12 @@ function retrieve_ticket($id, $link) {
                     array(
                         'status' => true,
                         'data' => $result_array,
-                        'msg' => "Fetch user info successfully.",
+                        'msg' => "Fetch Ticket successfully.",
                         'code' => 200
                     )
                 );
             } else {
-                throw new Exception("User doesn't exist, userId $id", 1000);
+                throw new Exception("Ticket doesn't exist, ticketId $id", 1000);
             }
         }
     } else

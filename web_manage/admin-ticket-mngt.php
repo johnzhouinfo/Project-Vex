@@ -15,7 +15,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Table - Brand</title>
+    <title>Ticket Management</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
@@ -248,7 +248,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                         <div class="modal-content">
                             <div class="modal-header" style="width: 648px;height: 75px;">
                                 <h1 class="display-4 modal-title" style="font-size: 33px;">Ticket</h1>
-                                <button type="button" class="close" id="close-user-form" data-dismiss="modal"
+                                <button type="button" class="close" id="close-contact-form" data-dismiss="modal"
                                         aria-label="Close"><span aria-hidden="true">×</span></button>
                             </div>
                             <div class="modal-body" id="popup_momorizeCheck"
@@ -547,11 +547,13 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                 id: $("#staticTicketID").val(),
                 reply: $("#inputReplyMsg").val(),
                 solve: $("#solve-switch").prop("checked"),
+                email: $("#staticEmail").val(),
             },
             success: function (data) {
                 var dataResult = JSON.parse(data);
                 if (dataResult.status === true) {
                     swal("Success", "Ticket has been updated", "success");
+                    $("#close-contact-form").click();
                     loadList();
                 } else {
                     swal("Update Failed!", dataResult.msg, "error");

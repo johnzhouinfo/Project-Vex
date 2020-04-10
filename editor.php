@@ -3,6 +3,10 @@ session_start();
 require_once "./lib/config.php";
 $pageId = 0;
 $componentResult = pg_query($link, "SELECT * FROM vex_component WHERE is_delete = false AND is_enable = true ORDER BY component_id");
+if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == true) {
+    echo "<script>var isLoggined = true;</script>";
+} else
+    echo "<script>var isLoggined = false;</script>";
 if (isset($_SESSION["id"])) {
     $userId = $_SESSION["id"];
     $projectResult = pg_query($link, "SELECT product_id, product_name, is_live FROM vex_product WHERE user_id = $userId AND is_delete = false ORDER BY create_time");
@@ -167,7 +171,6 @@ pg_close($link);
                 style="font-size: 10px; margin-left: 80px;" title="New Project">
             <i class="fa fa-plus" style="font-size: 10px;"></i>
         </button>
-        <!--        <button data-toggle="modal" data-target="#new_page_modal">New Page</button>-->
     </div>
     <div id="vex-left-top-project-list">
 
@@ -237,7 +240,7 @@ pg_close($link);
         </ul>
     </div>
 
-    <div id="vex-nav-tool" class="">
+    <div id="vex-nav-tool">
         <div class="container">
             <div class="row">
                 <div class="col-md-4 text-center">
@@ -253,16 +256,32 @@ pg_close($link);
 
                 </div>
                 <div class="col-md-4 text-center">
-                    <button class="btn btn-light" onclick="saveOrUpdate(event)" title="Save" id="save-btn"
-                            style="background-color: white">
+                    <button class="btn btn-light " title="Preview" id="preview-btn" style="background-color: white"
+                            disabled>
+                        <i class="fa fa-eye"></i>
+                    </button>
+                    <button class="btn btn-light " onclick="saveOrUpdate(event)" title="Save" id="save-btn"
+                            style="background-color: white" disabled>
                         <i class="fa fa-save"></i>
                     </button>
 
-                    <button class="btn btn-light" title="Download" id="download-btn" style="background-color: white">
+                    <button class="btn btn-light " title="Download" id="download-btn" style="background-color: white"
+                            disabled>
                         <i class="fa fa-download"></i>
                     </button>
+
                 </div>
-                <div class="col-md-4 text-center"></div>
+                <div class="col-md-4 text-center">
+                    <button class="btn btn-light" title="Tutorial" id="tut-btn" style="background-color: white">
+                        <i class="fa fa-question-circle-o"></i>
+                    </button>
+                    <button class="btn btn-light" title="Get Support" id="help-btn" style="background-color: white"
+                    >
+                        <img class="icon-help" src="img/help-icon.png" width="13.7" height="16">
+                    </button>
+                    <button style="display: none" data-toggle="modal" id="help-hidden-btn"
+                            data-target="#get_support_modal"></button>
+                </div>
             </div>
         </div>
     </div>
@@ -1361,12 +1380,76 @@ pg_close($link);
                                  page-src="4">
                             <span>tmp1</span>
                         </li>
+                        <li>
+                            <img class="" src="img/empty-avatar.png" width="150" height="100"
+                                 page-src="4">
+                            <span>tmp1</span>
+                        </li>
                     </ul>
 
                 </div>
                 <div class="modal-footer" style="width: 648px;">
                     <button class="btn btn-primary btn-block border rounded" id="popup_create_page_BTN" type="submit"
                             style="height: 45px;">Create
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade border rounded" role="dialog" tabindex="-1" id="get_support_modal"
+         style="padding: 100px;margin: 0px;width: 100%;height: 100%;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="width: 498px;height: 75px;">
+                    <h1 class="display-4 modal-title" style="font-size: 33px;">Contact Us</h1>
+                    <button type="button" class="close" id="close-contact-form" data-dismiss="modal"
+                            aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body" id="popup_momorizeCheck"
+                     style="width: 498px;background-color: #f6f5fb;">
+
+                    <form>
+                        <div class="form-group row">
+                            <label for="inputName" class="col-sm-2 col-form-label">Name</label>
+                            <div class="col-sm-10">
+                                <span class="help-block" id="contact-name-error" style="float: right"></span>
+                                <input type="text" class="form-control" id="inputName" placeholder="Your Name"
+                                       style="font-size: 14px;height: 40px;background-color: rgb(220,225,232);">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+                            <div class="col-sm-10">
+                                <span class="help-block" id="contact-email-error" style="float: right"></span>
+                                <input type="text" class="form-control" id="inputEmail" placeholder="Email Address"
+                                       style="font-size: 14px;height: 40px;background-color: rgb(220,225,232);">
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputTitle" class="col-sm-2 col-form-label">Title</label>
+                            <div class="col-sm-10">
+                                <span class="help-block" id="contact-title-error" style="float: right"></span>
+                                <input type="text" class="form-control" id="inputTitle" placeholder="Title"
+                                       style="font-size: 14px;height: 40px;background-color: rgb(220,225,232);">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputMsg" class="col-sm-2 col-form-label">Message</label>
+                            <div class="col-sm-10">
+                                <span class="help-block" id="contact-msg-error" style="float: right"></span>
+                                <textarea type="text" class="form-control-plaintext" id="inputMsg"
+                                          style="height: 200px; border: 1px solid; border-radius: 5px; background-color: white"></textarea>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+                <div class="modal-footer" style="width: 498px;">
+                    <button class="btn btn-primary btn-block border rounded" id="popup_contact_submit" type="submit"
+                            style="height: 45px;">Submit
                     </button>
                 </div>
             </div>
