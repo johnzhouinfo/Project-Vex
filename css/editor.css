@@ -293,6 +293,13 @@ body {
     margin: 13px 13px;
 }
 
+/* For Edge */
+@supports (-ms-ime-align:auto) {
+    #template-list > li {
+        display: inline-grid;
+    }
+}
+
 #template-list > li > .highlight {
     background-color: #4285f4;
 }

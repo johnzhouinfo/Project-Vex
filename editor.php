@@ -92,11 +92,6 @@ pg_close($link);
                 <div class="collapse navbar-collapse" id="navcol-1">
                     <ul class="nav navbar-nav"></ul>
                 </div>
-                <!--                <div class="collapse navbar-collapse undo-container" style="position: relative;">-->
-                <!--                    <input id="undo" class="undo-redo disable" value="undo" type="button">-->
-                <!--                    <input id="redo" class="undo-redo disable" value="redo" type="button">-->
-                <!--                    <input onclick="saveOrUpdate(event)" type="button" value="Save">-->
-                <!--                </div>-->
                 <ul class="nav navbar-nav">
                     <li class="nav-item" role="presentation">
                         <div id="login-btn-group" style="position: relative; height: 40px; display:
