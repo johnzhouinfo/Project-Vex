@@ -24,10 +24,10 @@ try {
             }
         }
     }
+    pg_close($link);
+    exit;
 } catch (Exception $e) {
 
-} finally {
-    pg_close($link);
 }
 
 
@@ -95,7 +95,7 @@ function get_num_lives($link) {
 }
 
 function get_num_tickets($link) {
-    $sql = "SELECT count(*) AS amount FROM vex_ticket WHERE is_solve = false";
+    $sql = "SELECT count(*) AS amount FROM vex_ticket WHERE is_solve = false AND is_delete = false";
     if ($stmt = pg_prepare($link, "fetch_total_num_of_ticket", $sql)) {
         // Execute sql
         if ($result = pg_execute($link, "fetch_total_num_of_ticket", array())) {

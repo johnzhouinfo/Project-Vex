@@ -22,7 +22,7 @@ function sendMail($email, $msg, $id) {
 }
 
 function sendReplyMail($email, $msg, $reply, $reply_by, $id, $status) {
-    $subject = "Ticket REQ-" . $id . " has been created.";
+    $subject = "Ticket REQ-" . $id . " has been replied";
     $message = '<html><body>';
     $message .= '<p>Hello,</p>';
     $message .= '<p>Your Ticket <strong>REQ-' . $id . '</strong> has been replied by <strong>' . $reply_by .

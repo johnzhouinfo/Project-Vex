@@ -71,6 +71,6 @@ function pageNotFound($page_id)
  */
 function redirectWelcomePage()
 {
-    header("location: ./model/demo/Welcome.html");
+    header("location: ./model/template/blank.html");
     exit();
 }

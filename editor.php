@@ -5,8 +5,9 @@ $pageId = 0;
 $componentResult = pg_query($link, "SELECT * FROM vex_component WHERE is_delete = false AND is_enable = true ORDER BY component_id");
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == true) {
     echo "<script>var isLoggined = true;</script>";
-} else
-    echo "<script>var isLoggined = false;</script>";
+} else {
+    echo "<script>var isLoggined = false; </script>";
+}
 if (isset($_SESSION["id"])) {
     $userId = $_SESSION["id"];
     $projectResult = pg_query($link, "SELECT product_id, product_name, is_live FROM vex_product WHERE user_id = $userId AND is_delete = false ORDER BY create_time");
@@ -26,7 +27,15 @@ if (isset($_GET["id"])) {
             $sql = "SELECT * from vex_product WHERE product_id = $pageId AND user_id = $userId AND is_delete = false";
         }
         $loadPageResult = pg_query($link, $sql);
-
+        echo "<script>
+			document.addEventListener('DOMContentLoaded',function() {
+				
+				document.getElementById('download-btn').removeAttribute('disabled');
+				document.getElementById('save-btn').removeAttribute('disabled');
+				document.getElementById('preview-btn').removeAttribute('disabled');
+            
+            });
+            </script>";
     } else {
         echo "<script>setTimeout(function() {
                       swal(\"Failed!\", \"You don't have permission!\", \"error\");
@@ -62,6 +71,7 @@ pg_close($link);
     <link rel="stylesheet" href="lib/css/Registration-Form-with-Photo.css">
     <link rel="stylesheet" href="lib/css/sweetalert.css">
     <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/tutorial.css">
     <script src="https://rawgit.com/ArthurClemens/Javascript-Undo-Manager/master/lib/undomanager.js"></script>
 
     <base href="">
@@ -223,7 +233,7 @@ pg_close($link);
         <div class="search">
             <input id="component-search" class="form-control form-control-sm component-search"
                    placeholder="Search components" type="text">
-            <button id="clear-component-search-input" class="clear-backspace">
+            <button id="clear-component-search-input" class="clear-backspace" style="padding-top: 5px">
                 <i class="fa fa-close"></i>
             </button>
         </div>
@@ -663,6 +673,13 @@ pg_close($link);
                                         <div class="form-group"><label class="text-nowrap col-sm-2">Value</label>
                                             <div class="col-sm-10"><input class="form-control element-attribute"
                                                                           type="text" id="attribute-input-value"
+                                                                          attr-data-type="value"></div>
+                                        </div>
+                                    </form>
+                                    <form class="form-horizontal" id="placeholder">
+                                        <div class="form-group"><label class="text-nowrap col-sm-2">Placeholder </label>
+                                            <div class="col-sm-10"><input class="form-control element-attribute"
+                                                                          type="text" id="attribute-input-placeholder"
                                                                           attr-data-type="value"></div>
                                         </div>
                                     </form>
@@ -1359,34 +1376,71 @@ pg_close($link);
                                    name="projectname" placeholder="Name">
                         </div>
                     </form>
-                    <ul id="template-list" style="display: contents">
-                        <li>
-                            <img id="template-default" class="highlight" src="img/white.jpg" width="150" height="100"
-                                 page-src="./model/template/blank.html">
-                            <span>Blank</span>
-                        </li>
-                        <li>
-                            <img class="" src="img/empty-avatar.png" width="150" height="100"
-                                 page-src="2">
-                            <span>tmp1</span>
-                        </li>
-                        <li>
-                            <img class="" src="img/empty-avatar.png" width="150" height="100"
-                                 page-src="3">
-                            <span>tmp1</span>
-                        </li>
-                        <li>
-                            <img class="" src="img/empty-avatar.png" width="150" height="100"
-                                 page-src="4">
-                            <span>tmp1</span>
-                        </li>
-                        <li>
-                            <img class="" src="img/empty-avatar.png" width="150" height="100"
-                                 page-src="4">
-                            <span>tmp1</span>
-                        </li>
-                    </ul>
-
+                    <div style="max-height: 300px; overflow: auto;">
+                        <ul id="template-list" style="display: contents">
+                            <li>
+                                <img id="template-default template" class="highlight" src="img/white.jpg" width="150"
+                                     height="100"
+                                     page-src="./model/template/blank.html">
+                                <span>Blank</span>
+                            </li>
+                            <li>
+                                <img class="template" src="img/web-page.png" width="150" height="100"
+                                     page-src="./model/template/web-page.html">
+                                <span>Web Page</span>
+                            </li>
+                            <li>
+                                <img class="template" src="img/product.png" width="150" height="100"
+                                     page-src="./model/template/product.html">
+                                <span>Product</span>
+                            </li>
+                            <li>
+                                <img class="template" src="img/blog.png" width="150" height="100"
+                                     page-src="./model/template/blog.html">
+                                <span>Blog</span>
+                            </li>
+                            <li>
+                                <img class="template" src="img/cv.png" width="150" height="100"
+                                     page-src="./model/template/cv.html">
+                                <span>CV</span>
+                            </li>
+                            <li>
+                                <img class="template" src="img/wedding.png" width="150" height="100"
+                                     page-src="./model/template/wedding.html">
+                                <span>Wedding</span>
+                            </li>
+                            <li>
+                                <img class="template" src="img/gourmet-catering.png" width="150" height="100"
+                                     page-src="./model/template/gourmet-catering.html">
+                                <span>Gourment Catering</span>
+                            </li>
+                            <li>
+                                <img class="template" src="img/architect.png" width="150" height="100"
+                                     page-src="./model/template/architect.html">
+                                <span>Architect</span>
+                            </li>
+                            <li>
+                                <img class="template" src="img/photo.png" width="150" height="100"
+                                     page-src="./model/template/photo.html">
+                                <span>Photo</span>
+                            </li>
+                            <li>
+                                <img class="template" src="img/portfolio.png" width="150" height="100"
+                                     page-src="./model/template/portfolio.html">
+                                <span>Portfolio</span>
+                            </li>
+                            <li>
+                                <img class="template" src="img/dark-portfolio.png" width="150" height="100"
+                                     page-src="./model/template/dark-portfolio.html">
+                                <span>Dark Portfolio</span>
+                            </li>
+                            <li>
+                                <img class="template" src="img/b&w-portfolio.png" width="150" height="100"
+                                     page-src="./model/template/b&w-portfolio.html">
+                                <span>B&W Portfolio</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="modal-footer" style="width: 648px;">
                     <button class="btn btn-primary btn-block border rounded" id="popup_create_page_BTN" type="submit"
@@ -1455,6 +1509,81 @@ pg_close($link);
             </div>
         </div>
     </div>
+    <div class="help">
+        <a href="###" class="close" title="Close">×</a>
+        <div id="step1" class="step" step="1" style="top: 2px;left:calc(100% / 2 - 180px);width:300px">
+
+            <p style="padding-top: 20px;">
+                <span class="h2" style="text-align: center">Welcome</span><br>
+                A new way to design your website.<br>
+                Let's take a look.
+
+                <a href="###" class="next">Next</a>
+            </p>
+        </div>
+
+        <div id="step2" class="step" step="2" style="top:200px;left:320px;width:250px">
+            <b class="jt jt_left" style="top:20px;left:-40px"></b>
+            <p>
+                <span class="h1">①</span><span class="h2">Project</span><br>
+                After you have your own pages, they will be shown here. you can click to modify the page
+                information.<br>
+                (e.g. Share Link to your friends, colleagues).
+
+                <a href="###" class="next">Next</a>
+            </p>
+        </div>
+        <div id="step3" class="step" step="3" style="top:300px;left:100px;width:250px">
+            <b class="jt jt_right" style="top:20px;left:250px"></b>
+            <p>
+                <span class="h1">②</span><span class="h2">Workspace</span><br>
+                This is your working page area, a pre-coded template will load for you, or you may create a blank page
+                as you wish.
+
+                <a href="###" class="next">Next</a>
+            </p>
+        </div>
+        <div id="step4" class="step" step="4" style="top:500px;left:320px;width:250px">
+            <b class="jt jt_left" style="top:20px;left:-40px"></b>
+            <p>
+                <span class="h1">③</span><span class="h2">Components</span><br>
+                Those are pre-designed HTML elements, you can drag one of the element and drop in the workspace area to
+                design your favour page.
+
+                <a href="###" class="next">Next</a>
+            </p>
+        </div>
+
+
+        <div id="step5" class="step" step="5" style="top:300px;right:380px;width:350px">
+            <b class="jt jt_right" style="top:20px;left:350px"></b>
+            <p>
+                <span class="h1">④</span><span class="h2">Attributes</span><br>
+                This section which can let you to change the element's attributes, e.g. changing the background colour,
+                font size, style, etc.<br>
+                <a href="###" class="next">Next</a>
+            </p>
+        </div>
+
+        <div id="step6" class="step" step="6" style="top:140px;left:calc(100% / 2 - 180px);width:300px">
+            <b class="jt jt_top" style="left:130px;top:-40px"></b>
+            <p>
+                <span class="h1">⑤</span><span class="h2">Toolbar</span><br>
+                The top toolbar could let you save/download your designed page(Log in required) and preview page.
+                <a href="###" class="next">Next</a>
+            </p>
+        </div>
+        <div id="step7" class="step" step="7" style="top:132px;left:95px;width:250px">
+            <b class="jt jt_top" style="left:40px;top:-40px"></b>
+            <p>
+                <span class="h1">⑥</span><span class="h2">Create</span><br>
+                Let's select a template and design your first page.<br>
+                Enjoy!
+
+                <a href="###" class="over">Let's start</a>
+            </p>
+        </div>
+    </div>
 </div>
 
 <script src="lib/js/jquery.min.js"></script>
@@ -1468,7 +1597,7 @@ pg_close($link);
 <script src="lib/js/dragdrop.js"></script>
 <script src="lib/js/attribute-management.js"></script>
 <script src="lib/js/undo_redo.js"></script>
-
+<script src="js/tutorial.js"></script>
 
 </body>
 </html>

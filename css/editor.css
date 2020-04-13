@@ -290,7 +290,7 @@ body {
 
 #template-list > li {
     display: inline-grid;
-    margin: 15px 15px;
+    margin: 13px 13px;
 }
 
 #template-list > li > .highlight {

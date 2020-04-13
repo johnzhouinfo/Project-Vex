@@ -39,6 +39,8 @@ try {
     } else {
         throw new Exception("You haven't logged in.", 1010);
     }
+    pg_close($link);
+    exit;
 } catch (Exception $e) {
     echo json_encode(
         array(
@@ -47,9 +49,6 @@ try {
             'code' => $e->getCode()
         )
     );
-} finally {
-    pg_close($link);
-    exit;
 }
 
 
@@ -118,6 +117,8 @@ function update_ticket($id, $reply, $solve, $link) {
     if (!(isset($_SESSION["admin"]) && isset($_SESSION["admin"]) === true)) {
         throw new Exception("You don't have permission.", 1010);
     }
+    $email = "";
+    $msg = "";
     // Get ticket info
     $sql = "select email, msg from vex_ticket where ticket_id = $1";
     if ($stmt = pg_prepare($link, "get_reply_ticket", $sql)) {
@@ -125,7 +126,8 @@ function update_ticket($id, $reply, $solve, $link) {
         if ($result = pg_execute($link, "get_reply_ticket", array($id))) {
             if (pg_num_rows($result) == 1) {
                 $result_array = pg_fetch_array($result, null, PGSQL_ASSOC);
-                $email = $result_array[0];
+                $email = trim($result_array[0]);
+
                 $msg = $result_array[1];
             } else {
                 throw new Exception("Ticket doesn't exist, ticketId $id", 1000);

@@ -92,6 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo "<script>setTimeout(function() {
                       swal(\"Success!\", \"This page will close at 5 sec.\", \"success\");
                     },100)</script>";
+
                     echo "<script>setTimeout(function() {
                       window.close();
                     },5000);</script>";

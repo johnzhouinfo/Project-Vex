@@ -43,6 +43,8 @@ try {
     } else {
         throw new Exception("You haven't logged in.", 1010);
     }
+    pg_close($link);
+    exit;
 } catch (Exception $e) {
     echo json_encode(
         array(
@@ -51,9 +53,6 @@ try {
             'code' => $e->getCode()
         )
     );
-} finally {
-    pg_close($link);
-    exit;
 }
 
 function change_live($id, $productId, $value, $link) {

@@ -231,7 +231,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                     <div class="modal-content">
                         <div class="modal-header" style="width: 648px;height: 75px;">
                             <h1 class="display-4 modal-title" style="font-size: 33px;">Component</h1>
-                            <button type="button" class="close" id="close-user-form" data-dismiss="modal"
+                            <button type="button" class="close" id="close-component-form" data-dismiss="modal"
                                     aria-label="Close"><span aria-hidden="true">×</span></button>
                         </div>
                         <div class="modal-body" id="popup_momorizeCheck"
@@ -529,6 +529,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                     } else {
                         swal("Success", "This Component has been updated", "success");
                     }
+                    $("#close-component-form").click();
                     loadList();
                 } else {
                     swal("Update Failed!", dataResult.msg, "error");
@@ -597,6 +598,10 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
         $("#inputImage").attr("src", "../img/empty-avatar.png");
         $("#component-code-field").val("");
         $("#component-enable").prop("checked", false);
+        $("#inputImage-btn").val("");
+        //Reset field;
+        TLN.remove_line_numbers("component-code-field");
+        TLN.append_line_numbers("component-code-field");
     }
 
     /**

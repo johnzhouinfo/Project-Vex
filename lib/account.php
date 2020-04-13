@@ -39,7 +39,8 @@ try {
                     break;
             }
         }
-
+        pg_close($link);
+        exit;
     } else {
         throw new Exception("You haven't logged in.", 1010);
     }
@@ -51,9 +52,6 @@ try {
             'code' => $e->getCode()
         )
     );
-} finally {
-    pg_close($link);
-    exit;
 }
 
 function retrieve_all_user($link) {
@@ -259,6 +257,8 @@ function update_password($id, $oldPassword, $newPassword, $link) {
 }
 
 function update_user($id, $name, $email, $password, $enable, $admin, $link) {
+    if ($id == $_SESSION["id"])
+        throw new Exception("Preventing disable yourself, change profile in this page were disabled, please change your information by click your icon in top-right corner.", 0);
     if ($password == "") {
         $sql = "UPDATE vex_user SET name = $1, email = $2, is_enable = $3, type = $4 where user_id = $5";
         $insertion = array($name, $email, $enable, $admin, $id);
