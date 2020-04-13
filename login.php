@@ -7,7 +7,7 @@ session_start();
 // Check if the user is already logged in, if yes then redirect him to specific page
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     if (isset($_SESSION["admin"]) && isset($_SESSION["admin"]) === true) {
-        header("location: ./web_manage/admin.php");
+        header("location: ./web_manage/");
     } else {
         header("location: ./editor.php");
     }
@@ -94,6 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="lib/css/Registration-Form-with-Photo.css">
     <link rel="stylesheet" href="lib/css/styles.css">
     <link rel="stylesheet" href="css/common.css">
+    <link rel="icon" href="img/Vex_Three.gif">
 </head>
 
 <body>

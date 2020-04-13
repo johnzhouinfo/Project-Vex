@@ -58,7 +58,7 @@ pg_close($link);
 
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
+    <link rel="icon" href="img/Vex_Three.gif">
 
 
     <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
@@ -74,7 +74,6 @@ pg_close($link);
     <link rel="stylesheet" href="css/tutorial.css">
     <script src="https://rawgit.com/ArthurClemens/Javascript-Undo-Manager/master/lib/undomanager.js"></script>
 
-    <base href="">
     <title>Vex</title>
 
     <link href="css/editor.css" rel="stylesheet">

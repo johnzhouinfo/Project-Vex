@@ -28,14 +28,20 @@ try {
                                 $_SESSION["admin"] = true;
                             }
                             //fetch the user related products
-                            $result = pg_query($link, "SELECT product_id, product_name, is_live FROM vex_product WHERE user_id = $user_id AND is_delete = false ORDER BY create_time");
-                            if (!$result) {
+                            $sql = "SELECT product_id, product_name, is_live FROM vex_product WHERE user_id = $1 AND is_delete = false ORDER BY create_time";
+                            if ($stmt = pg_prepare($link, "find_user_pages", $sql)) {
+                                // Execute sql
+                                if ($result = pg_execute($link, "find_user_pages", array($user_id))) {
+                                    $projectResult = array();
+                                    while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
+                                        $projectResult[] = $row;
+                                    }
+                                }
+                            } else
                                 throw new Exception("Get product list failed, userId: $user_id", 400);
-                            }
-                            $projectResult = array();
-                            while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
-                                $projectResult[] = $row;
-                            }
+
+//                            $result = pg_query($link, "SELECT product_id, product_name, is_live FROM vex_product WHERE user_id = $user_id AND is_delete = false ORDER BY create_time");
+
 
                             echo json_encode(
                                 array(

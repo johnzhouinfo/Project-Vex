@@ -19,6 +19,7 @@ session_start();
     <link rel="stylesheet" href="../lib/css/Toggle-Switch.css">
     <link rel="stylesheet" href="assets/css/styles.min.css">
     <link rel="stylesheet" href="../lib/css/sweetalert.css">
+    <link rel="icon" href="../img/Vex_Three.gif">
 </head>
 
 <body id="page-top"

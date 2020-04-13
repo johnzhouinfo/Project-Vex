@@ -125,6 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="lib/css/styles.css">
     <link rel="stylesheet" href="lib/css/sweetalert.css">
     <link rel="stylesheet" href="css/common.css">
+    <link rel="icon" href="img/Vex_Three.gif">
 </head>
 
 <body>
