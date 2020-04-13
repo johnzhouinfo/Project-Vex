@@ -1,5 +1,4 @@
 <?php
-error_reporting(E_ERROR | E_PARSE);
 // Include config file
 require_once "../lib/config.php";
 // Initialize the session
@@ -16,8 +15,11 @@ try {
                 case "admin":
                     if ((isset($_SESSION["admin"]) && isset($_SESSION["admin"]) === true))
                         retrieve_all_project_list($link);
-                    else
+                    else {
+                        writeInfo("Access Project Page Denied, uid: $id");
                         throw new Exception("You don't have permission.", 1010);
+                    }
+
                     break;
             }
         } else {
@@ -71,11 +73,15 @@ function change_live($id, $productId, $value, $link) {
                         )
                     );
                 } else {
-                    throw new Exception("Update live failed, id:$productId, status:$value", 1010);
+                    writeErr("Update live failed, id:$productId, status:$value");
+                    throw new Exception("Update live failed", 1010);
                 }
             }
-        } else
-            throw new Exception("Database Schema Exception: $sql", 123);
+        } else {
+            writeErr("Database Schema Exception: $sql");
+            throw new Exception("Internal Server Error", 123);
+        }
+
     } else {
         //Make sure user can only change their own pages
         $sql = "UPDATE vex_product SET is_live =$1 WHERE product_id = $2 AND user_id = $3";
@@ -83,6 +89,7 @@ function change_live($id, $productId, $value, $link) {
             // Execute sql
             if ($result = pg_execute($link, "update_live_user", array($value, $productId, $id))) {
                 if (pg_affected_rows($result) == 1) {
+                    writeInfo("Update live status, uid:$id, pid:$productId, status:$value");
                     echo json_encode(
                         array(
                             'status' => true,
@@ -91,11 +98,14 @@ function change_live($id, $productId, $value, $link) {
                         )
                     );
                 } else {
-                    throw new Exception("Update live failed, id:$productId, status:$value", 1010);
+                    writeErr("Update live failed, uid: $id pid:$productId, status:$value");
+                    throw new Exception("Update live failed", 1010);
                 }
             }
-        } else
-            throw new Exception("Database Schema Exception: $sql", 123);
+        } else {
+            writeErr("Database Schema Exception: $sql");
+            throw new Exception("Internal Server Error", 123);
+        }
     }
 }
 
@@ -107,6 +117,7 @@ function rename_page($id, $productId, $name, $link) {
             // Execute sql
             if ($result = pg_execute($link, "update_page_name_admin", array($name, $productId))) {
                 if (pg_affected_rows($result) == 1) {
+                    writeInfo("Update page name, uid: $id, pid: $productId, name: $name");
                     echo json_encode(
                         array(
                             'status' => true,
@@ -115,11 +126,14 @@ function rename_page($id, $productId, $name, $link) {
                         )
                     );
                 } else {
-                    throw new Exception("Update page name failed, id:$productId, name:$name", 1010);
+                    writeErr("Update page name failed, uid:$id, pid:$productId, name:$name");
+                    throw new Exception("Update page name failed!", 1010);
                 }
             }
-        } else
-            throw new Exception("Database Schema Exception: $sql", 123);
+        } else {
+            writeErr("Database Schema Exception: $sql");
+            throw new Exception("Internal Server Error", 123);
+        }
     } else {
         //Make sure user can only change their own pages
         $sql = "UPDATE vex_product SET product_name = $1 WHERE product_id = $2 AND user_id = $3 AND is_delete = false";
@@ -127,6 +141,7 @@ function rename_page($id, $productId, $name, $link) {
             // Execute sql
             if ($result = pg_execute($link, "update_page_name_user", array($name, $productId, $id))) {
                 if (pg_affected_rows($result) == 1) {
+                    writeInfo("Update page name, uid: $id, pid: $productId, name: $name");
                     echo json_encode(
                         array(
                             'status' => true,
@@ -135,11 +150,14 @@ function rename_page($id, $productId, $name, $link) {
                         )
                     );
                 } else {
-                    throw new Exception("Update page name failed, id:$productId, name:$name", 1010);
+                    writeErr("Update page name failed, uid:$id, pid:$productId, name:$name");
+                    throw new Exception("Update page name failed!", 1010);
                 }
             }
-        } else
-            throw new Exception("Database Schema Exception: $sql", 123);
+        } else {
+            writeErr("Database Schema Exception: $sql");
+            throw new Exception("Internal Server Error", 123);
+        }
     }
 }
 
@@ -150,20 +168,25 @@ function save_page($id, $code, $name, $link) {
         $date = date('Y-m-d h:i:s');
         if ($result = pg_execute($link, "save_page", array($id, $name, $code, $date))) {
             if (pg_affected_rows($result) == 1) {
+                $pid = pg_fetch_row($result)[0];
+                writeInfo("Save page, uid:$id, pid:$pid");
                 echo json_encode(
                     array(
                         'status' => true,
                         'msg' => "Save page successfully",
                         'code' => 200,
-                        'product_id' => pg_fetch_row($result)[0]
+                        'product_id' => $pid
                     )
                 );
             } else {
-                throw new Exception("Save page failed, Page Name:$name", 1010);
+                writeErr("Save page failed, uid: $id, name:$name");
+                throw new Exception("Save page failed!", 1010);
             }
         }
-    } else
-        throw new Exception("Database Schema Exception: $sql", 123);
+    } else {
+        writeErr("Database Schema Exception: $sql");
+        throw new Exception("Internal Server Error", 123);
+    }
 }
 
 function update_page($id, $code, $productId, $link) {
@@ -174,6 +197,7 @@ function update_page($id, $code, $productId, $link) {
             // Execute sql
             if ($result = pg_execute($link, "update_page_admin", array($code, $productId))) {
                 if (pg_affected_rows($result) == 1) {
+                    writeInfo("Update page code, uid:$id, pid:$productId");
                     echo json_encode(
                         array(
                             'status' => true,
@@ -183,11 +207,14 @@ function update_page($id, $code, $productId, $link) {
                         )
                     );
                 } else {
-                    throw new Exception("Update page failed, id:$productId", 1010);
+                    writeErr("Update page failed, uid:$id, pid:$productId");
+                    throw new Exception("Update page failed", 1010);
                 }
             }
-        } else
-            throw new Exception("Database Schema Exception: $sql", 123);
+        } else {
+            writeErr("Database Schema Exception: $sql");
+            throw new Exception("Internal Server Error", 123);
+        }
     } else {
         //Make sure user can only change their own pages
         $sql = "UPDATE vex_product SET code = $1 WHERE product_id = $2 AND user_id = $3 AND is_delete = false RETURNING product_id";
@@ -195,6 +222,7 @@ function update_page($id, $code, $productId, $link) {
             // Execute sql
             if ($result = pg_execute($link, "update_page_user", array($code, $productId, $id))) {
                 if (pg_affected_rows($result) == 1) {
+                    writeInfo("Update page, uid:$id, pid:$productId");
                     echo json_encode(
                         array(
                             'status' => true,
@@ -204,11 +232,14 @@ function update_page($id, $code, $productId, $link) {
                         )
                     );
                 } else {
-                    throw new Exception("Update page failed, id:$productId", 1010);
+                    writeErr("Update page failed, uid:$id, pid:$productId");
+                    throw new Exception("Update page failed", 1010);
                 }
             }
-        } else
-            throw new Exception("Database Schema Exception: $sql", 123);
+        } else {
+            writeErr("Database Schema Exception: $sql");
+            throw new Exception("Internal Server Error", 123);
+        }
     }
 }
 
@@ -221,6 +252,7 @@ function delete_page($user_id, $productId, $link) {
             // Execute sql
             if ($result = pg_execute($link, "delete_page", array($productId))) {
                 if (pg_affected_rows($result) == 1) {
+                    writeInfo("Delete page, uid:$user_id, pid:$productId");
                     echo json_encode(
                         array(
                             'status' => true,
@@ -229,11 +261,14 @@ function delete_page($user_id, $productId, $link) {
                         )
                     );
                 } else {
-                    throw new Exception("Delete page failed, id:$productId", 1010);
+                    writeErr("Update page failed, uid:$user_id, pid:$productId");
+                    throw new Exception("Delete page failed", 1010);
                 }
             }
-        } else
-            throw new Exception("Database Schema Exception: $sql", 123);
+        } else {
+            writeErr("Database Schema Exception: $sql");
+            throw new Exception("Internal Server Error", 123);
+        }
     } else {
         //Make sure user can only change their own pages
         $sql = "UPDATE vex_product SET is_delete = true WHERE product_id = $1 AND user_id = $2";
@@ -241,6 +276,7 @@ function delete_page($user_id, $productId, $link) {
             // Execute sql
             if ($result = pg_execute($link, "delete_page_user", array($productId, $user_id))) {
                 if (pg_affected_rows($result) == 1) {
+                    writeInfo("Delete page, uid:$user_id, pid:$productId");
                     echo json_encode(
                         array(
                             'status' => true,
@@ -249,11 +285,14 @@ function delete_page($user_id, $productId, $link) {
                         )
                     );
                 } else {
+                    writeErr("Update page failed, uid:$user_id, pid:$productId");
                     throw new Exception("Delete page failed, id:$productId", 1010);
                 }
             }
-        } else
-            throw new Exception("Database Schema Exception: $sql", 123);
+        } else {
+            writeErr("Database Schema Exception: $sql");
+            throw new Exception("Internal Server Error", 123);
+        }
 
     }
 }
@@ -287,7 +326,8 @@ function retrieve_project_list($id, $link) {
         // Execute sql
         if ($result = pg_execute($link, "fetch_user_total_num_of_page", array($id))) {
             if (!$result) {
-                throw new Exception("Get product list failed, userId: $id", 400);
+                writeErr("Count product list failed, uid: $id");
+                throw new Exception("Count product list failed!", 400);
             }
             $total_page = pg_fetch_row($result)[0];
             if ($total_page) {
@@ -314,7 +354,8 @@ function retrieve_project_list($id, $link) {
                 if ($result = pg_execute($link, "fetch_user_pages", array($id, ("%" . $keyword .
                     "%"), $page_size, (($page - 1) * $page_size)))) {
                     if (!$result) {
-                        throw new Exception("Get product list failed, userId: $id", 400);
+                        writeErr("Get product list failed, uid: $id");
+                        throw new Exception("Get product list failed!", 400);
                     }
                     $projectResult = array();
                     while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
@@ -330,11 +371,15 @@ function retrieve_project_list($id, $link) {
                         )
                     );
                 }
-            } else
-                throw new Exception("Database Schema Exception: $sql", 123);
+            } else {
+                writeErr("Database Schema Exception: $sql");
+                throw new Exception("Internal Server Error", 123);
+            }
         }
-    } else
-        throw new Exception("Database Schema Exception: $sql", 123);
+    } else {
+        writeErr("Database Schema Exception: $sql");
+        throw new Exception("Internal Server Error", 123);
+    }
 
 
 }
@@ -349,8 +394,11 @@ function retrieve_all_project_list($link) {
         $valid_columns = array('product_id', 'product_name');
         if (in_array($_GET['sort'], $valid_columns))
             $sort = $_GET["sort"];
-        else
+        else {
+            writeErr("Invalid sorting field sort: " . $_GET["sort"]);
             throw new Exception("Invalid sorting field", 1000);
+        }
+
     } else
         $sort = "product_id";
 
@@ -367,7 +415,8 @@ function retrieve_all_project_list($link) {
         // Execute sql
         if ($result = pg_execute($link, "fetch_total_num_of_page", array())) {
             if (!$result) {
-                throw new Exception("Get all products list failed", 400);
+                writeErr("Count all products list failed");
+                throw new Exception("Count all products list failed", 400);
             }
             $total_page = pg_fetch_row($result)[0];
             if ($total_page) {
@@ -391,6 +440,7 @@ function retrieve_all_project_list($link) {
                 if ($result = pg_execute($link, "fetch_all_pages", array(("%" . $keyword .
                     "%"), $page_size, (($page - 1) * $page_size)))) {
                     if (!$result) {
+                        writeErr("Get all product list failed");
                         throw new Exception("Get all product list failed", 400);
                     }
                     $projectResult = array();
@@ -407,11 +457,15 @@ function retrieve_all_project_list($link) {
                         )
                     );
                 }
-            } else
-                throw new Exception("Database Schema Exception: $sql", 123);
+            } else {
+                writeErr("Database Schema Exception: $sql");
+                throw new Exception("Internal Server Error", 123);
+            }
         }
-    } else
-        throw new Exception("Database Schema Exception: $sql", 123);
+    } else {
+        writeErr("Database Schema Exception: $sql");
+        throw new Exception("Internal Server Error", 123);
+    }
 
 
 }

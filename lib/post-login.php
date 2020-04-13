@@ -37,12 +37,10 @@ try {
                                         $projectResult[] = $row;
                                     }
                                 }
-                            } else
-                                throw new Exception("Get product list failed, userId: $user_id", 400);
-
-//                            $result = pg_query($link, "SELECT product_id, product_name, is_live FROM vex_product WHERE user_id = $user_id AND is_delete = false ORDER BY create_time");
-
-
+                            } else {
+                                writeErr("Get product list failed, userId: $user_id");
+                                throw new Exception("Get product list failed", 400);
+                            }
                             echo json_encode(
                                 array(
                                     'status' => true,
@@ -69,7 +67,8 @@ try {
             pg_close($link);
         }
     } else {
-        throw new Exception("You have already logged in.", 300);
+        writeErr("Database Schema Exception: $sql");
+        throw new Exception("Internal Server Error", 123);
     }
 } catch (Exception $e) {
     echo json_encode(

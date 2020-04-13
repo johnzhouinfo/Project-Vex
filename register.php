@@ -1,7 +1,6 @@
 <?php
 // Include config file
 require_once "./lib/config.php";
-
 // Define variables and initialize with empty values
 $username = $password = $confirm_password = $email = $captcha = "";
 $username_err = $password_err = $confirm_password_err = $email_err = $captcha_err = "";
@@ -82,12 +81,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         empty($captcha_err)) {
 
         // Prepare an insert statement
-        $sql = "INSERT INTO vex_user (username, password, name, email, create_time) VALUES ($1, $2, $3, $4, $5)";
+        $sql = "INSERT INTO vex_user (username, password, name, email, create_time) VALUES ($1, $2, $3, $4, $5) RETURNING user_id";
 
         if ($stmt = pg_prepare($link, "insert_user", $sql)) {
             // Attempt to execute the prepared statement
             if ($result = pg_execute($link, "insert_user", array($username, hash("sha256", trim($_POST["password"])), $username, trim($_POST["email"]), date('Y-m-d h:i:s')))) {
                 // Redirect to login page
+                writeInfo("Created User, uid:" . pg_fetch_row($result)[0]);
                 if (isset($_GET["redirect"]) && $_GET["redirect"] == "true") {
                     echo "<script>setTimeout(function() {
                       swal(\"Success!\", \"This page will close at 5 sec.\", \"success\");
@@ -97,10 +97,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                       window.close();
                     },5000);</script>";
                 } else {
-                    header("location: ./login.php");
+                    echo "<script>setTimeout(function() {
+                      swal(\"Success!\", \"This page will close at 5 sec.\", \"success\");
+                    },100)</script>";
+                    echo "<script>setTimeout(function() {
+                      window.location.replace('./login.php')
+                    },5000);</script>";
                 }
             } else {
-                echo "Something went wrong. Please try again later.";
+                writeErr("Create User Failed!, username:$username");
+                echo "<script>setTimeout(function() {
+                      swal(\"Failed!\", \"Create User Failed! Please Try again.\", \"Error\");
+                    },100)</script>";
             }
         }
     }
