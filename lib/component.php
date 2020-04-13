@@ -172,7 +172,7 @@ function retrieve_component_list_with_page($link) {
         if (in_array($_GET['sort'], $valid_columns))
             $sort = $_GET["sort"];
         else {
-            writeErr("Invalid sorting field: " . $_GET["sort"] . " uid: " . $_SESSION["id"]);
+            writeErr("Invalid Component Sorting Field: " . $_GET["sort"] . " uid: " . $_SESSION["id"]);
             throw new Exception("Invalid sorting field", 1000);
         }
 

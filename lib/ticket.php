@@ -1,4 +1,6 @@
 <?php
+//NOTE - Needs remove at deployment, since local doesn't have mail() function enable, which sandcastle has been configured
+error_reporting(E_ERROR | E_PARSE);
 // Include config file
 require_once "../lib/config.php";
 require_once "../lib/mailer.php";
@@ -150,11 +152,8 @@ function update_ticket($id, $reply, $solve, $link) {
         // Execute sql
         $date = date('Y-m-d h:i:s');
         if ($result = pg_execute($link, "update_ticket", array($reply, $_SESSION["id"], $date, $solve, $id))) {
-            if (!$result) {
-                writeErr("Update Ticket failed, tid: $id, uid: " . $_SESSION["id"]);
-                throw new Exception("Update Ticket failed", 400);
-            }
             if (!$result || pg_affected_rows($result) == 0) {
+                writeErr("Update Ticket failed, tid: $id, uid: " . $_SESSION["id"]);
                 throw new Exception("Update Record in Database failed. ", 102);
             } else {
                 writeInfo("Update Ticket, tid:$id, uid: " . $_SESSION["id"]);
@@ -185,7 +184,7 @@ function retrieve_ticket_list($link) {
         if (in_array($_GET['sort'], $valid_columns))
             $sort = $_GET["sort"];
         else {
-            writeErr("Invalid ticket sorting field, sort: " . $_GET["sort"]);
+            writeErr("Invalid Ticket Sorting Field: " . $_GET["sort"] . " uid: " . $_SESSION["id"]);
             throw new Exception("Invalid sorting field", 1000);
         }
 

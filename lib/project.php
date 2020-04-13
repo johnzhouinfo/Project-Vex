@@ -65,6 +65,7 @@ function change_live($id, $productId, $value, $link) {
             // Execute sql
             if ($result = pg_execute($link, "update_live_admin", array($value, $productId))) {
                 if (pg_affected_rows($result) == 1) {
+                    writeInfo("Update live status, uid:$id, pid:$productId, status:$value");
                     echo json_encode(
                         array(
                             'status' => true,
@@ -197,7 +198,7 @@ function update_page($id, $code, $productId, $link) {
             // Execute sql
             if ($result = pg_execute($link, "update_page_admin", array($code, $productId))) {
                 if (pg_affected_rows($result) == 1) {
-                    writeInfo("Update page code, uid:$id, pid:$productId");
+                    writeInfo("Update page, uid:$id, pid:$productId");
                     echo json_encode(
                         array(
                             'status' => true,
@@ -308,8 +309,10 @@ function retrieve_project_list($id, $link) {
         $valid_columns = array('product_id', 'product_name');
         if (in_array($_GET['sort'], $valid_columns))
             $sort = $_GET["sort"];
-        else
+        else {
+            writeErr("Invalid Product Sorting Field: " . $_GET["sort"] . " uid: " . $_SESSION["id"]);
             throw new Exception("Invalid sorting field", 1000);
+        }
     } else
         $sort = "product_id";
 
