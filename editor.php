@@ -73,6 +73,7 @@ pg_close($link);
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/tutorial.css">
     <script src="https://rawgit.com/ArthurClemens/Javascript-Undo-Manager/master/lib/undomanager.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 
     <title>Vex</title>
 
@@ -170,11 +171,14 @@ pg_close($link);
     <div class="search"
          style="position: absolute; background-color: #f7f9ff; height: 40px; width:300px; padding: 4px; border-top: 1px solid #ddd;">
         Project
-        <button class="btn btn-outline-dark border rounded-0" data-toggle="modal" data-target="#new_page_modal"
-                type="button"
-                style="font-size: 10px; margin-left: 80px;" title="New Project">
+        <span class="btn-wapper d-inline-block" data-toggle="tooltip" data-placement="top" title="New Project">
+            <button class="btn btn-outline-dark border rounded-0" data-toggle="modal" data-target="#new_page_modal"
+                    type="button"
+                    style="font-size: 10px; margin: 1px 80px;" title="New Project">
             <i class="fa fa-plus" style="font-size: 10px;"></i>
         </button>
+        </span>
+
     </div>
     <div id="vex-left-top-project-list">
 
@@ -248,41 +252,51 @@ pg_close($link);
         <div class="container">
             <div class="row">
                 <div class="col-md-4 text-center">
-                    <button class="btn btn-light undo-redo disable" title="Undo" id="undo"
-                            style="background-color: white">
-                        <i class="fa fa-undo"></i>
-                    </button>
-
-                    <button class="btn btn-light undo-redo disable" title="Redo" id="redo"
-                            style="background-color: white">
-                        <i class="fa fa-repeat"></i>
-                    </button>
-
+                    <span class="btn-wapper d-inline-block" data-toggle="tooltip" data-placement="top" title="Undo">
+                        <button class="btn btn-light undo-redo disable" id="undo" style="background-color: white">
+                            <i class="fa fa-undo"></i>
+                        </button>
+                    </span>
+                    <span class="btn-wapper d-inline-block" data-toggle="tooltip" data-placement="top"
+                          data-bs-hover-animate="pulse" title="Redo">
+                        <button class="btn btn-light undo-redo disable" id="redo" style="background-color: white">
+                            <i class="fa fa-repeat"></i>
+                        </button>
+                    </span>
                 </div>
                 <div class="col-md-4 text-center">
-                    <button class="btn btn-light " title="Preview" id="preview-btn" style="background-color: white"
-                            disabled>
-                        <i class="fa fa-eye"></i>
-                    </button>
-                    <button class="btn btn-light " onclick="saveOrUpdate(event)" title="Save" id="save-btn"
-                            style="background-color: white" disabled>
-                        <i class="fa fa-save"></i>
-                    </button>
+                    <span class="btn-wapper d-inline-block" title="Preview" data-toggle="tooltip" data-placement="top">
+                        <button class="btn btn-light" id="preview-btn" style="background-color: white"
+                                disabled>
+                            <i class="fa fa-eye"></i>
+                        </button>
+                    </span>
+                    <span class="btn-wapper d-inline-block" data-toggle="tooltip" data-placement="top" title="Save">
+                        <button class="btn btn-light " onclick="saveOrUpdate(event)" id="save-btn"
+                                style="background-color: white" disabled>
+                            <i class="fa fa-save"></i>
+                        </button>
+                    </span>
 
-                    <button class="btn btn-light " title="Download" id="download-btn" style="background-color: white"
-                            disabled>
-                        <i class="fa fa-download"></i>
-                    </button>
-
+                    <span class="btn-wapper d-inline-block" data-toggle="tooltip" data-placement="top" title="Download">
+                        <button class="btn btn-light " id="download-btn" style="background-color: white" disabled>
+                            <i class="fa fa-download"></i>
+                        </button>
+                    </span>
                 </div>
                 <div class="col-md-4 text-center">
-                    <button class="btn btn-light" title="Tutorial" id="tut-btn" style="background-color: white">
-                        <i class="fa fa-question-circle-o"></i>
-                    </button>
-                    <button class="btn btn-light" title="Get Support" id="help-btn" style="background-color: white"
-                    >
-                        <img class="icon-help" src="img/help-icon.png" width="13.7" height="16">
-                    </button>
+                    <span class="btn-wapper d-inline-block" data-toggle="tooltip" data-placement="top" title="Tutorial">
+                        <button class="btn btn-light" id="tut-btn" style="background-color: white">
+                            <i class="fa fa-question-circle-o"></i>
+                        </button>
+                    </span>
+                    <span class="btn-wapper d-inline-block" title="Get Support" data-toggle="tooltip"
+                          data-placement="top">
+                        <button class="btn btn-light" id="help-btn" style="background-color: white">
+                            <img class="icon-help" src="img/help-icon.png" width="13.7" height="16">
+                        </button>
+                    </span>
+
                     <button style="display: none" data-toggle="modal" id="help-hidden-btn"
                             data-target="#get_support_modal"></button>
                 </div>

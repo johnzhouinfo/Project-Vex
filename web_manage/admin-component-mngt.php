@@ -397,13 +397,14 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                             "<td>" +
                             "<button class=\"btn\" onclick='changeComponent(" + dataResult.project[i].component_id + ")' data-toggle=\"tooltip\" data-bs-tooltip=\"\" data-bs-hover-animate=\"pulse\" id=\"properties_cmpnt_btn_admin_pg\" type=\"button\" style=\"font-size: 12px;\" title=\"Properties\">" +
                             "<i class=\"fas fa-cog\" onclick='changeComponent(" + dataResult.project[i].component_id + ")'></i></button>" +
-                            "<button class=\"btn\" onclick='deleteComponent(event)' component-id='" + dataResult.project[i].component_id + "' data-bs-hover-animate=\"pulse\" id=\"delete_cmpnt_btn_admin_pg\" type=\"button\" style=\"font-size: 12px;\">" +
-                            "<i class=\"fa fa-remove\" onclick='deleteComponent(event)' component-id='" + dataResult.project[i].component_id + "' data-toggle=\"tooltip\" data-bs-tooltip=\"\" title=\"Delete\"></i>" +
+                            "<button class=\"btn\" onclick='deleteComponent(event)' component-id='" + dataResult.project[i].component_id + "' data-toggle=\"tooltip\" data-bs-tooltip=\"\" data-bs-hover-animate=\"pulse\" title=\"Delete\" id=\"delete_cmpnt_btn_admin_pg\" type=\"button\" style=\"font-size: 12px;\">" +
+                            "<i class=\"fa fa-remove\" onclick='deleteComponent(event)' component-id='" + dataResult.project[i].component_id + "'></i>" +
                             "</button>" +
                             "</td>" +
                             "</tr>";
                         $("#project-list").append(html);
                     }
+                    $('[data-toggle="tooltip"]').tooltip();
                     pagination(total_page);
                 } else
                     swal("Failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");

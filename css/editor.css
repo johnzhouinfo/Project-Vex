@@ -340,6 +340,6 @@ body {
 }
 
 #vex-nav-tool button {
-    margin-top: 5px;
+    margin: 5px 2px;
     border: 1px solid #ddd;
 }

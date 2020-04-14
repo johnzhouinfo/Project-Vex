@@ -176,7 +176,8 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                                            style="font-size: 14px;background-color: rgb(246,248,254);padding: 4px 8px;"
                                            placeholder="Search Users">
                                     <button class="btn btn-outline-dark border rounded-0"
-                                            id="search" type="button" style="font-size: 12px;"><i
+                                            id="Search" data-toggle="tooltip"
+                                            data-bs-tooltip="" title="Search" type="button" style="font-size: 12px;"><i
                                                 class="fa fa-search"></i></button>
                                 </div>
                             </div>
@@ -396,11 +397,12 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                             "<td style=\"padding: 17px;\">" + user_type + "</td>" +
                             "<td style=\"padding: 17px;\">" + user_status + "</td>" +
                             "<td style=\"padding: 17px;\">" +
-                            "<div class=\"btn-group\" role=\"group\" style=\"font-size: 12px;\"><button class=\"btn\" data-toggle=\"tooltip\" data-bs-tooltip=\"\" data-bs-hover-animate=\"pulse\" id=\"properties_usr_btn_admin_pg\" type=\"button\" style=\"font-size: 12px;\" title=\"Change settings\" onclick='changeAccount(" + dataResult.project[i].user_id + ")' " + is_self + "><i class=\"fas fa-cogs\"></i></button></div>" +
+                            "<div class=\"btn-group\" role=\"group\" style=\"font-size: 12px;\"><button class=\"btn\" data-toggle=\"tooltip\" data-bs-tooltip=\"\" data-bs-hover-animate=\"pulse\" id=\"properties_usr_btn_admin_pg\" type=\"button\" style=\"font-size: 12px;\" title=\"Change\" onclick='changeAccount(" + dataResult.project[i].user_id + ")' " + is_self + "><i class=\"fas fa-cogs\"></i></button></div>" +
                             "</td><td></td>" +
                             "</tr>";
                         $("#project-list").append(html);
                     }
+                    $('[data-toggle="tooltip"]').tooltip();
                     pagination(total_page);
                 } else
                     swal("Failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");

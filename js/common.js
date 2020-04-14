@@ -45,6 +45,11 @@ $("#popup_loginBTN").on("click", function (event) {
                     console.log(event.originalEvent.view.location.pathname);
                     if (event.originalEvent.view.location.pathname.includes("/editor.php")) {
                         console.log(data.project);
+                        if ($(".drop").attr("src") !== "page.php?id=0" || $(".drop").attr("src") == "./page.php?id=0") {
+                            $("#download-btn").removeAttr("disabled");
+                            $("#preview-btn").removeAttr("disabled");
+                            $("#save-btn").removeAttr("disabled");
+                        }
                         for (var i = 0; i < data.project.length; i++) {
                             var array = data.project[i];
                             var isChecked = array.is_live == "t" ? "checked" : "";

@@ -163,7 +163,6 @@ function resizeSelectBox(element) {
         display: 'block',
     });
     $($(".drop").get(0).contentWindow).unbind("scroll");
-    console.log(hasFixedProperty(element));
     if (!hasFixedProperty(element)) {
         addScrollEvent();
     }
@@ -913,6 +912,7 @@ function download(html, name) {
 // Preview the template image
 $(document).ready(function () {
     imagePreview();
+    $('[data-toggle="tooltip"]').tooltip();
 });
 
 this.imagePreview = function () {

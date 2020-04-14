@@ -181,7 +181,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                                     <button
                                             class="btn btn-outline-dark border rounded-0" data-toggle="tooltip"
                                             data-bs-tooltip="" id="search" type="button" style="font-size: 12px;"
-                                            title="search"><i class="fa fa-search" data-bs-hover-animate="pulse"
+                                            title="Search"><i class="fa fa-search" data-bs-hover-animate="pulse"
                                                               id="serach_tkt_btn_admin_pg" style="font-size: 12px;"></i>
                                     </button>
                                 </div>
@@ -454,13 +454,14 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                             "<div class=\"btn-group\" role=\"group\" style=\"font-size: 12px;\">" +
                             "<button class=\"btn\" data-toggle=\"tooltip\" data-bs-tooltip=\"\" data-bs-hover-animate=\"pulse\" id=\"reply_tkt_btn_admin_pg\" onclick='reply(" + dataResult.project[i].ticket_id + ")' type=\"button\" style=\"font-size: 12px;\" title=\"Reply\">" +
                             "<i class=\"fas fa-reply\" onclick='reply(" + dataResult.project[i].ticket_id + ")'></i></button>\n" +
-                            "<button class=\"btn\" data-bs-hover-animate=\"pulse\" id=\"delete_tkt_btn_admin_pg\" onclick='deleteTicket(event)' ticket-id='" + dataResult.project[i].ticket_id + "' type=\"button\" style=\"font-size: 12px;\">" +
-                            "<i class=\"fa fa-remove\" onclick='deleteTicket(event)' ticket-id='" + dataResult.project[i].ticket_id + "' data-toggle=\"tooltip\" data-bs-tooltip=\"\" title=\"Delete\"></i></button>\n" +
+                            "<button class=\"btn\" data-bs-hover-animate=\"pulse\" data-toggle=\"tooltip\" data-bs-tooltip=\"\" title=\"Delete\" id=\"delete_tkt_btn_admin_pg\" onclick='deleteTicket(event)' ticket-id='" + dataResult.project[i].ticket_id + "' type=\"button\" style=\"font-size: 12px;\">" +
+                            "<i class=\"fa fa-remove\" onclick='deleteTicket(event)' ticket-id='" + dataResult.project[i].ticket_id + "'></i></button>\n" +
                             "</div>" +
                             "</td>" +
                             "</tr>";
                         $("#project-list").append(html);
                     }
+                    $('[data-toggle="tooltip"]').tooltip();
                     pagination(total_page);
                 } else
                     swal("Failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
