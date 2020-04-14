@@ -162,6 +162,14 @@ function resizeSelectBox(element) {
         left: (rect.left - 2) + "px",
         display: 'block',
     });
+    if (element.tagName.toLocaleLowerCase() === 'body') {
+        $("#select-tag-name").css('left', '0px');
+        $controlPanel.css({
+            display: 'none',
+        });
+    } else {
+        $("#select-tag-name").css('left', '105px');
+    }
     $($(".drop").get(0).contentWindow).unbind("scroll");
     if (!hasFixedProperty(element)) {
         addScrollEvent();
@@ -521,7 +529,28 @@ function deleteProduct(event) {
 function shareURL(id) {
     var hostname = window.location.href.substring(0, window.location.href.indexOf("editor.php"));
     var URL = hostname + "page.php?id=" + id;
-    swal("Here is link", URL, "success");
+    swal({
+            title: "Here is link",
+            text: URL,
+            type: "success",
+            showCancelButton: true,
+            confirmButtonClass: "btn-primary",
+            confirmButtonText: "Copy",
+            cancelButtonText: "Close",
+            closeOnConfirm: false,
+            closeOnCancel: true
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                var $temp = $("<input>");
+                $("body").append($temp);
+                $temp.val(URL).select();
+                document.execCommand("copy");
+                $temp.remove();
+                swal("Success!", "The link has been copied", "success");
+            } else
+                return;
+        });
 }
 
 /**

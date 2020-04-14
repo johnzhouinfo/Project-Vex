@@ -71,6 +71,7 @@ function change_live($id, $productId, $value, $link) {
                             'status' => true,
                             'msg' => "Update live successfully",
                             'code' => 200,
+                            'page_status' => $value,
                         )
                     );
                 } else {
@@ -96,6 +97,7 @@ function change_live($id, $productId, $value, $link) {
                             'status' => true,
                             'msg' => "Update live successfully",
                             'code' => 200,
+                            'page_status' => $value,
                         )
                     );
                 } else {
