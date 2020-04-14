@@ -5,8 +5,9 @@ $pageId = 0;
 $componentResult = pg_query($link, "SELECT * FROM vex_component WHERE is_delete = false AND is_enable = true ORDER BY component_id");
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == true) {
     echo "<script>var isLoggined = true;</script>";
-} else
-    echo "<script>var isLoggined = false;</script>";
+} else {
+    echo "<script>var isLoggined = false; </script>";
+}
 if (isset($_SESSION["id"])) {
     $userId = $_SESSION["id"];
     $projectResult = pg_query($link, "SELECT product_id, product_name, is_live FROM vex_product WHERE user_id = $userId AND is_delete = false ORDER BY create_time");
@@ -26,7 +27,15 @@ if (isset($_GET["id"])) {
             $sql = "SELECT * from vex_product WHERE product_id = $pageId AND user_id = $userId AND is_delete = false";
         }
         $loadPageResult = pg_query($link, $sql);
-
+        echo "<script>
+			document.addEventListener('DOMContentLoaded',function() {
+				
+				document.getElementById('download-btn').removeAttribute('disabled');
+				document.getElementById('save-btn').removeAttribute('disabled');
+				document.getElementById('preview-btn').removeAttribute('disabled');
+            
+            });
+            </script>";
     } else {
         echo "<script>setTimeout(function() {
                       swal(\"Failed!\", \"You don't have permission!\", \"error\");
@@ -49,7 +58,7 @@ pg_close($link);
 
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
+    <link rel="icon" href="img/Vex_Three.gif">
 
 
     <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
@@ -62,9 +71,10 @@ pg_close($link);
     <link rel="stylesheet" href="lib/css/Registration-Form-with-Photo.css">
     <link rel="stylesheet" href="lib/css/sweetalert.css">
     <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/tutorial.css">
     <script src="https://rawgit.com/ArthurClemens/Javascript-Undo-Manager/master/lib/undomanager.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 
-    <base href="">
     <title>Vex</title>
 
     <link href="css/editor.css" rel="stylesheet">
@@ -83,11 +93,6 @@ pg_close($link);
                 <div class="collapse navbar-collapse" id="navcol-1">
                     <ul class="nav navbar-nav"></ul>
                 </div>
-                <!--                <div class="collapse navbar-collapse undo-container" style="position: relative;">-->
-                <!--                    <input id="undo" class="undo-redo disable" value="undo" type="button">-->
-                <!--                    <input id="redo" class="undo-redo disable" value="redo" type="button">-->
-                <!--                    <input onclick="saveOrUpdate(event)" type="button" value="Save">-->
-                <!--                </div>-->
                 <ul class="nav navbar-nav">
                     <li class="nav-item" role="presentation">
                         <div id="login-btn-group" style="position: relative; height: 40px; display:
@@ -166,11 +171,14 @@ pg_close($link);
     <div class="search"
          style="position: absolute; background-color: #f7f9ff; height: 40px; width:300px; padding: 4px; border-top: 1px solid #ddd;">
         Project
-        <button class="btn btn-outline-dark border rounded-0" data-toggle="modal" data-target="#new_page_modal"
-                type="button"
-                style="font-size: 10px; margin-left: 80px;" title="New Project">
+        <span class="btn-wapper d-inline-block" data-toggle="tooltip" data-placement="top" title="New Project">
+            <button class="btn btn-outline-dark border rounded-0" data-toggle="modal" data-target="#new_page_modal"
+                    type="button"
+                    style="font-size: 10px; margin: 1px 80px;" title="New Project">
             <i class="fa fa-plus" style="font-size: 10px;"></i>
         </button>
+        </span>
+
     </div>
     <div id="vex-left-top-project-list">
 
@@ -223,7 +231,7 @@ pg_close($link);
         <div class="search">
             <input id="component-search" class="form-control form-control-sm component-search"
                    placeholder="Search components" type="text">
-            <button id="clear-component-search-input" class="clear-backspace">
+            <button id="clear-component-search-input" class="clear-backspace" style="padding-top: 5px">
                 <i class="fa fa-close"></i>
             </button>
         </div>
@@ -244,41 +252,51 @@ pg_close($link);
         <div class="container">
             <div class="row">
                 <div class="col-md-4 text-center">
-                    <button class="btn btn-light undo-redo disable" title="Undo" id="undo"
-                            style="background-color: white">
-                        <i class="fa fa-undo"></i>
-                    </button>
-
-                    <button class="btn btn-light undo-redo disable" title="Redo" id="redo"
-                            style="background-color: white">
-                        <i class="fa fa-repeat"></i>
-                    </button>
-
+                    <span class="btn-wapper d-inline-block" data-toggle="tooltip" data-placement="top" title="Undo">
+                        <button class="btn btn-light undo-redo disable" id="undo" style="background-color: white">
+                            <i class="fa fa-undo"></i>
+                        </button>
+                    </span>
+                    <span class="btn-wapper d-inline-block" data-toggle="tooltip" data-placement="top"
+                          data-bs-hover-animate="pulse" title="Redo">
+                        <button class="btn btn-light undo-redo disable" id="redo" style="background-color: white">
+                            <i class="fa fa-repeat"></i>
+                        </button>
+                    </span>
                 </div>
                 <div class="col-md-4 text-center">
-                    <button class="btn btn-light " title="Preview" id="preview-btn" style="background-color: white"
-                            disabled>
-                        <i class="fa fa-eye"></i>
-                    </button>
-                    <button class="btn btn-light " onclick="saveOrUpdate(event)" title="Save" id="save-btn"
-                            style="background-color: white" disabled>
-                        <i class="fa fa-save"></i>
-                    </button>
+                    <span class="btn-wapper d-inline-block" title="Preview" data-toggle="tooltip" data-placement="top">
+                        <button class="btn btn-light" id="preview-btn" style="background-color: white"
+                                disabled>
+                            <i class="fa fa-eye"></i>
+                        </button>
+                    </span>
+                    <span class="btn-wapper d-inline-block" data-toggle="tooltip" data-placement="top" title="Save">
+                        <button class="btn btn-light " onclick="saveOrUpdate(event)" id="save-btn"
+                                style="background-color: white" disabled>
+                            <i class="fa fa-save"></i>
+                        </button>
+                    </span>
 
-                    <button class="btn btn-light " title="Download" id="download-btn" style="background-color: white"
-                            disabled>
-                        <i class="fa fa-download"></i>
-                    </button>
-
+                    <span class="btn-wapper d-inline-block" data-toggle="tooltip" data-placement="top" title="Download">
+                        <button class="btn btn-light " id="download-btn" style="background-color: white" disabled>
+                            <i class="fa fa-download"></i>
+                        </button>
+                    </span>
                 </div>
                 <div class="col-md-4 text-center">
-                    <button class="btn btn-light" title="Tutorial" id="tut-btn" style="background-color: white">
-                        <i class="fa fa-question-circle-o"></i>
-                    </button>
-                    <button class="btn btn-light" title="Get Support" id="help-btn" style="background-color: white"
-                    >
-                        <img class="icon-help" src="img/help-icon.png" width="13.7" height="16">
-                    </button>
+                    <span class="btn-wapper d-inline-block" data-toggle="tooltip" data-placement="top" title="Tutorial">
+                        <button class="btn btn-light" id="tut-btn" style="background-color: white">
+                            <i class="fa fa-question-circle-o"></i>
+                        </button>
+                    </span>
+                    <span class="btn-wapper d-inline-block" title="Get Support" data-toggle="tooltip"
+                          data-placement="top">
+                        <button class="btn btn-light" id="help-btn" style="background-color: white">
+                            <img class="icon-help" src="img/help-icon.png" width="13.7" height="16">
+                        </button>
+                    </span>
+
                     <button style="display: none" data-toggle="modal" id="help-hidden-btn"
                             data-target="#get_support_modal"></button>
                 </div>
@@ -666,6 +684,13 @@ pg_close($link);
                                                                           attr-data-type="value"></div>
                                         </div>
                                     </form>
+                                    <form class="form-horizontal" id="placeholder">
+                                        <div class="form-group"><label class="text-nowrap col-sm-2">Placeholder </label>
+                                            <div class="col-sm-10"><input class="form-control element-attribute"
+                                                                          type="text" id="attribute-input-placeholder"
+                                                                          attr-data-type="value"></div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -726,13 +751,15 @@ pg_close($link);
                                                         class="text-nowrap d-inline col-sm-2">Left</label>
                                                 <div class="col-sm-10"><input class="form-control element-style"
                                                                               type="text" id="style-left"
-                                                                              style-data-type="left"></div>
+                                                                              style-data-type="left" placeholder="px">
+                                                </div>
                                             </div>
                                             <div class="form-group"><label
                                                         class="text-nowrap d-inline col-sm-2">Top</label>
                                                 <div class="col-sm-10"><input class="form-control element-style"
                                                                               type="text" id="style-top"
-                                                                              style-data-type="top"></div>
+                                                                              style-data-type="top" placeholder="px">
+                                                </div>
                                             </div>
                                             <div class="form-group"><label
                                                         class="text-nowrap d-inline col-sm-2">Float</label>
@@ -761,13 +788,15 @@ pg_close($link);
                                                         class="text-nowrap d-inline col-sm-2">Right</label>
                                                 <div class="col-sm-10"><input class="form-control element-style"
                                                                               type="text" id="style-right"
-                                                                              style-data-type="right"></div>
+                                                                              style-data-type="right" placeholder="px">
+                                                </div>
                                             </div>
                                             <div class="form-group"><label
                                                         class="text-nowrap d-inline col-sm-2">Bottom</label>
                                                 <div class="col-sm-10"><input class="form-control element-style"
                                                                               type="text" id="style-bottom"
-                                                                              style-data-type="bottom"></div>
+                                                                              style-data-type="bottom" placeholder="px">
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
@@ -933,7 +962,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-width"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="width"></div>
+                                                                               style-data-type="width" placeholder="px">
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group"><label class="text-nowrap col-sm-2">Min
@@ -942,7 +972,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-min-width"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="min-width"></div>
+                                                                               style-data-type="min-width"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group"><label class="text-nowrap col-sm-2">Max
@@ -951,7 +982,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-max-width"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="max-width"></div>
+                                                                               style-data-type="max-width"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                         </form>
@@ -961,7 +993,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-height"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="height"></div>
+                                                                               style-data-type="height"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group"><label class="text-nowrap col-sm-2">Min
@@ -970,7 +1003,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-min-height"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="min-height"></div>
+                                                                               style-data-type="min-height"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group"><label class="text-nowrap col-sm-2">Max
@@ -979,7 +1013,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-max-height"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="max-height"></div>
+                                                                               style-data-type="max-height"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                         </form>
@@ -1002,7 +1037,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-margin-top"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="margin-top"></div>
+                                                                               style-data-type="margin-top"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group"><label class="text-nowrap col-sm-2">Bottom</label>
@@ -1010,7 +1046,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-margin-bottom"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="margin-bottom"></div>
+                                                                               style-data-type="margin-bottom"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                         </form>
@@ -1020,7 +1057,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-margin-right"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="margin-right"></div>
+                                                                               style-data-type="margin-right"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group"><label class="text-nowrap col-sm-2">Left</label>
@@ -1028,7 +1066,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-margin-left"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="margin-left"></div>
+                                                                               style-data-type="margin-left"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                         </form>
@@ -1051,7 +1090,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-padding-top"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="padding-top"></div>
+                                                                               style-data-type="padding-top"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group"><label class="text-nowrap col-sm-2">Bottom</label>
@@ -1059,7 +1099,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-padding-bottom"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="padding-bottom"></div>
+                                                                               style-data-type="padding-bottom"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                         </form>
@@ -1069,7 +1110,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-padding-right"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="padding-right"></div>
+                                                                               style-data-type="padding-right"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group"><label class="text-nowrap col-sm-2">Left</label>
@@ -1077,7 +1119,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-padding-left"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="padding-left"></div>
+                                                                               style-data-type="padding-left"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                         </form>
@@ -1112,7 +1155,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-border-width"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="border-width"></div>
+                                                                               style-data-type="border-width"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                         </form>
@@ -1144,7 +1188,8 @@ pg_close($link);
                                                                                type="text"
                                                                                id="style-border-top-left-radius"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="border-top-left-radius">
+                                                                               style-data-type="border-top-left-radius"
+                                                                               placeholder="px">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1155,7 +1200,8 @@ pg_close($link);
                                                                                type="text"
                                                                                id="style-border-bottom-left-radius"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="border-bottom-left-radius">
+                                                                               style-data-type="border-bottom-left-radius"
+                                                                               placeholder="px">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1168,7 +1214,8 @@ pg_close($link);
                                                                                type="text"
                                                                                id="style-border-top-right-radius"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="border-top-right-radius">
+                                                                               style-data-type="border-top-right-radius"
+                                                                               placeholder="px">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1179,7 +1226,8 @@ pg_close($link);
                                                                                type="text"
                                                                                id="style-border-bottom-right-radius"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="border-bottom-right-radius">
+                                                                               style-data-type="border-bottom-right-radius"
+                                                                               placeholder="px">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1359,34 +1407,71 @@ pg_close($link);
                                    name="projectname" placeholder="Name">
                         </div>
                     </form>
-                    <ul id="template-list" style="display: contents">
-                        <li>
-                            <img id="template-default" class="highlight" src="img/white.jpg" width="150" height="100"
-                                 page-src="./model/template/blank.html">
-                            <span>Blank</span>
-                        </li>
-                        <li>
-                            <img class="" src="img/empty-avatar.png" width="150" height="100"
-                                 page-src="2">
-                            <span>tmp1</span>
-                        </li>
-                        <li>
-                            <img class="" src="img/empty-avatar.png" width="150" height="100"
-                                 page-src="3">
-                            <span>tmp1</span>
-                        </li>
-                        <li>
-                            <img class="" src="img/empty-avatar.png" width="150" height="100"
-                                 page-src="4">
-                            <span>tmp1</span>
-                        </li>
-                        <li>
-                            <img class="" src="img/empty-avatar.png" width="150" height="100"
-                                 page-src="4">
-                            <span>tmp1</span>
-                        </li>
-                    </ul>
-
+                    <div style="max-height: 300px; overflow: auto;">
+                        <ul id="template-list" style="display: contents">
+                            <li>
+                                <img id="template-default template" class="highlight" src="img/white.jpg" width="150"
+                                     height="100"
+                                     page-src="./model/template/blank.html">
+                                <span>Blank</span>
+                            </li>
+                            <li>
+                                <img class="template" src="img/web-page.png" width="150" height="100"
+                                     page-src="./model/template/web-page.html">
+                                <span>Web Page</span>
+                            </li>
+                            <li>
+                                <img class="template" src="img/product.png" width="150" height="100"
+                                     page-src="./model/template/product.html">
+                                <span>Product</span>
+                            </li>
+                            <li>
+                                <img class="template" src="img/blog.png" width="150" height="100"
+                                     page-src="./model/template/blog.html">
+                                <span>Blog</span>
+                            </li>
+                            <li>
+                                <img class="template" src="img/cv.png" width="150" height="100"
+                                     page-src="./model/template/cv.html">
+                                <span>CV</span>
+                            </li>
+                            <li>
+                                <img class="template" src="img/wedding.png" width="150" height="100"
+                                     page-src="./model/template/wedding.html">
+                                <span>Wedding</span>
+                            </li>
+                            <li>
+                                <img class="template" src="img/gourmet-catering.png" width="150" height="100"
+                                     page-src="./model/template/gourmet-catering.html">
+                                <span>Gourment Catering</span>
+                            </li>
+                            <li>
+                                <img class="template" src="img/architect.png" width="150" height="100"
+                                     page-src="./model/template/architect.html">
+                                <span>Architect</span>
+                            </li>
+                            <li>
+                                <img class="template" src="img/photo.png" width="150" height="100"
+                                     page-src="./model/template/photo.html">
+                                <span>Photo</span>
+                            </li>
+                            <li>
+                                <img class="template" src="img/portfolio.png" width="150" height="100"
+                                     page-src="./model/template/portfolio.html">
+                                <span>Portfolio</span>
+                            </li>
+                            <li>
+                                <img class="template" src="img/dark-portfolio.png" width="150" height="100"
+                                     page-src="./model/template/dark-portfolio.html">
+                                <span>Dark Portfolio</span>
+                            </li>
+                            <li>
+                                <img class="template" src="img/b&w-portfolio.png" width="150" height="100"
+                                     page-src="./model/template/b&w-portfolio.html">
+                                <span>B&W Portfolio</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="modal-footer" style="width: 648px;">
                     <button class="btn btn-primary btn-block border rounded" id="popup_create_page_BTN" type="submit"
@@ -1455,6 +1540,81 @@ pg_close($link);
             </div>
         </div>
     </div>
+    <div class="help">
+        <a href="###" class="close" title="Close">×</a>
+        <div id="step1" class="step" step="1" style="top: 2px;left:calc(100% / 2 - 180px);width:300px">
+
+            <p style="padding-top: 20px;">
+                <span class="h2" style="text-align: center">Welcome</span><br>
+                A new way to design your website.<br>
+                Let's take a look.
+
+                <a href="###" class="next">Next</a>
+            </p>
+        </div>
+
+        <div id="step2" class="step" step="2" style="top:200px;left:320px;width:250px">
+            <b class="jt jt_left" style="top:20px;left:-40px"></b>
+            <p>
+                <span class="h1">①</span><span class="h2">Project</span><br>
+                After you have your own pages, they will be shown here. you can click to modify the page
+                information.<br>
+                (e.g. Share Link to your friends, colleagues).
+
+                <a href="###" class="next">Next</a>
+            </p>
+        </div>
+        <div id="step3" class="step" step="3" style="top:300px;left:100px;width:250px">
+            <b class="jt jt_right" style="top:20px;left:250px"></b>
+            <p>
+                <span class="h1">②</span><span class="h2">Workspace</span><br>
+                This is your working page area, a pre-coded template will load for you, or you may create a blank page
+                as you wish.
+
+                <a href="###" class="next">Next</a>
+            </p>
+        </div>
+        <div id="step4" class="step" step="4" style="top:500px;left:320px;width:250px">
+            <b class="jt jt_left" style="top:20px;left:-40px"></b>
+            <p>
+                <span class="h1">③</span><span class="h2">Components</span><br>
+                Those are pre-designed HTML elements, you can drag one of the element and drop in the workspace area to
+                design your favour page.
+
+                <a href="###" class="next">Next</a>
+            </p>
+        </div>
+
+
+        <div id="step5" class="step" step="5" style="top:300px;right:380px;width:350px">
+            <b class="jt jt_right" style="top:20px;left:350px"></b>
+            <p>
+                <span class="h1">④</span><span class="h2">Attributes</span><br>
+                This section which can let you to change the element's attributes, e.g. changing the background colour,
+                font size, style, etc.<br>
+                <a href="###" class="next">Next</a>
+            </p>
+        </div>
+
+        <div id="step6" class="step" step="6" style="top:140px;left:calc(100% / 2 - 180px);width:300px">
+            <b class="jt jt_top" style="left:130px;top:-40px"></b>
+            <p>
+                <span class="h1">⑤</span><span class="h2">Toolbar</span><br>
+                The top toolbar could let you save/download your designed page(Log in required) and preview page.
+                <a href="###" class="next">Next</a>
+            </p>
+        </div>
+        <div id="step7" class="step" step="7" style="top:132px;left:95px;width:250px">
+            <b class="jt jt_top" style="left:40px;top:-40px"></b>
+            <p>
+                <span class="h1">⑥</span><span class="h2">Create</span><br>
+                Let's select a template and design your first page.<br>
+                Enjoy!
+
+                <a href="###" class="over">Let's start</a>
+            </p>
+        </div>
+    </div>
 </div>
 
 <script src="lib/js/jquery.min.js"></script>
@@ -1468,7 +1628,7 @@ pg_close($link);
 <script src="lib/js/dragdrop.js"></script>
 <script src="lib/js/attribute-management.js"></script>
 <script src="lib/js/undo_redo.js"></script>
-
+<script src="js/tutorial.js"></script>
 
 </body>
 </html>

@@ -1,5 +1,4 @@
 <?php
-error_reporting(E_ERROR | E_PARSE);
 // Include config file
 require_once "../lib/config.php";
 // Initialize the session
@@ -24,10 +23,10 @@ try {
             }
         }
     }
+    pg_close($link);
+    exit;
 } catch (Exception $e) {
 
-} finally {
-    pg_close($link);
 }
 
 
@@ -37,6 +36,7 @@ function get_num_users($link) {
         // Execute sql
         if ($result = pg_execute($link, "fetch_total_num_of_user", array())) {
             if (!$result) {
+                writeErr("Get total number of user failed");
                 throw new Exception("Get total number of user failed", 400);
             }
             echo json_encode(
@@ -48,8 +48,11 @@ function get_num_users($link) {
                 )
             );
         }
-    } else
-        throw new Exception("Database Schema Exception: $sql", 123);
+    } else {
+        writeErr("Database Schema Exception: $sql");
+        throw new Exception("Internal Server Error", 123);
+    }
+
 }
 
 function get_num_pages($link) {
@@ -58,6 +61,7 @@ function get_num_pages($link) {
         // Execute sql
         if ($result = pg_execute($link, "fetch_total_num_of_page", array())) {
             if (!$result) {
+                writeErr("Get total number of page failed");
                 throw new Exception("Get total number of page failed", 400);
             }
             echo json_encode(
@@ -69,8 +73,11 @@ function get_num_pages($link) {
                 )
             );
         }
-    } else
-        throw new Exception("Database Schema Exception: $sql", 123);
+    } else {
+        writeErr("Database Schema Exception: $sql");
+        throw new Exception("Internal Server Error", 123);
+    }
+
 }
 
 function get_num_lives($link) {
@@ -79,6 +86,7 @@ function get_num_lives($link) {
         // Execute sql
         if ($result = pg_execute($link, "fetch_total_num_of_live", array())) {
             if (!$result) {
+                writeErr("Get total number of live failed");
                 throw new Exception("Get total number of live failed", 400);
             }
             echo json_encode(
@@ -90,16 +98,19 @@ function get_num_lives($link) {
                 )
             );
         }
-    } else
-        throw new Exception("Database Schema Exception: $sql", 123);
+    } else {
+        writeErr("Database Schema Exception: $sql");
+        throw new Exception("Internal Server Error", 123);
+    }
 }
 
 function get_num_tickets($link) {
-    $sql = "SELECT count(*) AS amount FROM vex_ticket WHERE is_solve = false";
+    $sql = "SELECT count(*) AS amount FROM vex_ticket WHERE is_solve = false AND is_delete = false";
     if ($stmt = pg_prepare($link, "fetch_total_num_of_ticket", $sql)) {
         // Execute sql
         if ($result = pg_execute($link, "fetch_total_num_of_ticket", array())) {
             if (!$result) {
+                writeErr("Get total number of ticket failed");
                 throw new Exception("Get total number of ticket failed", 400);
             }
             echo json_encode(
@@ -111,6 +122,8 @@ function get_num_tickets($link) {
                 )
             );
         }
-    } else
-        throw new Exception("Database Schema Exception: $sql", 123);
+    } else {
+        writeErr("Database Schema Exception: $sql");
+        throw new Exception("Internal Server Error", 123);
+    }
 }

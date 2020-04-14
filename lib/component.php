@@ -1,5 +1,4 @@
 <?php
-//error_reporting(E_ERROR | E_PARSE);
 // Include config file
 require_once "../lib/config.php";
 // Initialize the session
@@ -32,11 +31,18 @@ try {
                         delete_component($_POST["id"], $link);
                         break;
                 }
+            else {
+                writeInfo("Access Component Page Denied, uid: " . $_SESSION["id"]);
+                throw new Exception("You don't have permission.", 1010);
+            }
+
         }
 
     } else {
         throw new Exception("You haven't logged in.", 1010);
     }
+    pg_close($link);
+    exit;
 } catch (Exception $e) {
     echo json_encode(
         array(
@@ -45,9 +51,6 @@ try {
             'code' => $e->getCode()
         )
     );
-} finally {
-    pg_close($link);
-    exit;
 }
 
 function create_component($name, $icon, $html, $enable, $link) {
@@ -55,24 +58,25 @@ function create_component($name, $icon, $html, $enable, $link) {
     if ($stmt = pg_prepare($link, "create_component", $sql)) {
         // Execute sql
         if ($result = pg_execute($link, "create_component", array($name, $icon, $html, $enable))) {
-            if (!$result) {
-                throw new Exception("Create Component failed", 400);
-            }
             if (!$result || pg_affected_rows($result) == 0) {
+                writeErr("Save Record in Database failed. Name: $name");
                 throw new Exception("Save Record in Database failed. ", 102);
             } else {
+                $cid = pg_fetch_row($result)[0];
+                writeInfo("Save Component, cid:$cid");
                 echo json_encode(
                     array(
                         'status' => true,
                         'msg' => "Save Component Successfully.",
                         'code' => 200,
-                        'component_id' => pg_fetch_row($result)[0]
+                        'component_id' => $cid,
                     )
                 );
             }
         }
     } else {
-        throw new Exception("Database Scheme ERROR $sql", 1000);
+        writeErr("Database Scheme ERROR $sql");
+        throw new Exception("Internal Server Error", 1000);
     }
 }
 
@@ -81,12 +85,11 @@ function update_component($id, $name, $icon, $html, $enable, $link) {
     if ($stmt = pg_prepare($link, "update_component", $sql)) {
         // Execute sql
         if ($result = pg_execute($link, "update_component", array($name, $icon, $html, $enable, $id))) {
-            if (!$result) {
-                throw new Exception("Update Component failed", 400);
-            }
             if (!$result || pg_affected_rows($result) == 0) {
+                writeErr("Update Component Failed, cid:$id");
                 throw new Exception("Update Record in Database failed. ", 102);
             } else {
+                writeInfo("Update Component, cid:$id");
                 echo json_encode(
                     array(
                         'status' => true,
@@ -97,7 +100,8 @@ function update_component($id, $name, $icon, $html, $enable, $link) {
             }
         }
     } else {
-        throw new Exception("Database Scheme ERROR $sql", 1000);
+        writeErr("Database Scheme ERROR $sql");
+        throw new Exception("Internal Server Error", 1000);
     }
 }
 
@@ -106,12 +110,11 @@ function delete_component($id, $link) {
     if ($stmt = pg_prepare($link, "delete_component", $sql)) {
         // Execute sql
         if ($result = pg_execute($link, "delete_component", array($id))) {
-            if (!$result) {
-                throw new Exception("Delete Component failed", 400);
-            }
             if (!$result || pg_affected_rows($result) == 0) {
+                writeErr("Delete Record in Database failed. cid:$id");
                 throw new Exception("Delete Record in Database failed. ", 102);
             } else {
+                writeInfo("Deleted Component, cid:$id");
                 echo json_encode(
                     array(
                         'status' => true,
@@ -122,7 +125,8 @@ function delete_component($id, $link) {
             }
         }
     } else {
-        throw new Exception("Database Scheme ERROR $sql", 1000);
+        writeErr("Database Scheme ERROR $sql");
+        throw new Exception("Internal Server Error", 1000);
     }
 }
 
@@ -133,6 +137,8 @@ function retrieve_component_list($link) {
         // Execute sql
         if ($result = pg_execute($link, "fetch_all_component", array())) {
             if (!$result) {
+                $id = $_SESSION["id"];
+                writeErr("Get all component failed, request by uid:$id");
                 throw new Exception("Get all component failed", 400);
             }
             $projectResult = array();
@@ -149,7 +155,8 @@ function retrieve_component_list($link) {
             );
         }
     } else {
-        throw new Exception("Database Scheme ERROR $sql", 1000);
+        writeErr("Database Scheme ERROR $sql");
+        throw new Exception("Internal Server Error", 1000);
     }
 }
 
@@ -164,8 +171,11 @@ function retrieve_component_list_with_page($link) {
         $valid_columns = array('component_id', 'component_name');
         if (in_array($_GET['sort'], $valid_columns))
             $sort = $_GET["sort"];
-        else
+        else {
+            writeErr("Invalid Component Sorting Field: " . $_GET["sort"] . " uid: " . $_SESSION["id"]);
             throw new Exception("Invalid sorting field", 1000);
+        }
+
     } else
         $sort = "component_id";
 
@@ -181,6 +191,7 @@ function retrieve_component_list_with_page($link) {
         // Execute sql
         if ($result = pg_execute($link, "fetch_component_total_num", array())) {
             if (!$result) {
+                writeErr("Count component list failed");
                 throw new Exception("Count component list failed", 400);
             }
             $total_page = pg_fetch_row($result)[0];
@@ -208,6 +219,7 @@ function retrieve_component_list_with_page($link) {
                 if ($result = pg_execute($link, "fetch_component_with_pages", array(("%" . $keyword .
                     "%"), $page_size, (($page - 1) * $page_size)))) {
                     if (!$result) {
+                        writeErr("Get component list failed");
                         throw new Exception("Get component list failed", 400);
                     }
                     $projectResult = array();
@@ -224,11 +236,16 @@ function retrieve_component_list_with_page($link) {
                         )
                     );
                 }
-            } else
-                throw new Exception("Database Schema Exception: $sql", 123);
+            } else {
+                writeErr("Database Schema Exception: $sql");
+                throw new Exception("Internal Server Error", 123);
+            }
+
         }
-    } else
-        throw new Exception("Database Schema Exception: $sql", 123);
+    } else {
+        writeErr("Database Schema Exception: $sql");
+        throw new Exception("Internal Server Error", 123);
+    }
 
 
 }
@@ -239,6 +256,7 @@ function retrieve_component_detail_by_id($id, $link) {
         // Execute sql
         if ($result = pg_execute($link, "fetch_component", array($id))) {
             if (!$result) {
+                writeErr("Get component failed");
                 throw new Exception("Get component failed", 400);
             }
             if (pg_num_rows($result) == 1) {
@@ -259,8 +277,11 @@ function retrieve_component_detail_by_id($id, $link) {
                 throw new Exception("Component doesn't exist, componentID $id", 1000);
             }
         }
-    } else
-        throw new Exception("Database Schema Exception: $sql", 123);
+    } else {
+        writeErr("Database Schema Exception: $sql");
+        throw new Exception("Internal Server Error", 123);
+    }
+
 }
 
 

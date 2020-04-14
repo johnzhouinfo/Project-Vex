@@ -27,6 +27,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
     <link rel="stylesheet" href="../lib/css/Toggle-Switch.css">
     <link rel="stylesheet" href="../lib/css/tln.css">
     <link rel="stylesheet" href="../lib/css/sweetalert.css">
+    <link rel="icon" href="../img/Vex_Three.gif">
 </head>
 
 <body id="page-top"
@@ -231,7 +232,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                     <div class="modal-content">
                         <div class="modal-header" style="width: 648px;height: 75px;">
                             <h1 class="display-4 modal-title" style="font-size: 33px;">Component</h1>
-                            <button type="button" class="close" id="close-user-form" data-dismiss="modal"
+                            <button type="button" class="close" id="close-component-form" data-dismiss="modal"
                                     aria-label="Close"><span aria-hidden="true">×</span></button>
                         </div>
                         <div class="modal-body" id="popup_momorizeCheck"
@@ -396,13 +397,14 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                             "<td>" +
                             "<button class=\"btn\" onclick='changeComponent(" + dataResult.project[i].component_id + ")' data-toggle=\"tooltip\" data-bs-tooltip=\"\" data-bs-hover-animate=\"pulse\" id=\"properties_cmpnt_btn_admin_pg\" type=\"button\" style=\"font-size: 12px;\" title=\"Properties\">" +
                             "<i class=\"fas fa-cog\" onclick='changeComponent(" + dataResult.project[i].component_id + ")'></i></button>" +
-                            "<button class=\"btn\" onclick='deleteComponent(event)' component-id='" + dataResult.project[i].component_id + "' data-bs-hover-animate=\"pulse\" id=\"delete_cmpnt_btn_admin_pg\" type=\"button\" style=\"font-size: 12px;\">" +
-                            "<i class=\"fa fa-remove\" onclick='deleteComponent(event)' component-id='" + dataResult.project[i].component_id + "' data-toggle=\"tooltip\" data-bs-tooltip=\"\" title=\"Delete\"></i>" +
+                            "<button class=\"btn\" onclick='deleteComponent(event)' component-id='" + dataResult.project[i].component_id + "' data-toggle=\"tooltip\" data-bs-tooltip=\"\" data-bs-hover-animate=\"pulse\" title=\"Delete\" id=\"delete_cmpnt_btn_admin_pg\" type=\"button\" style=\"font-size: 12px;\">" +
+                            "<i class=\"fa fa-remove\" onclick='deleteComponent(event)' component-id='" + dataResult.project[i].component_id + "'></i>" +
                             "</button>" +
                             "</td>" +
                             "</tr>";
                         $("#project-list").append(html);
                     }
+                    $('[data-toggle="tooltip"]').tooltip();
                     pagination(total_page);
                 } else
                     swal("Failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
@@ -529,6 +531,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                     } else {
                         swal("Success", "This Component has been updated", "success");
                     }
+                    $("#close-component-form").click();
                     loadList();
                 } else {
                     swal("Update Failed!", dataResult.msg, "error");
@@ -597,6 +600,10 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
         $("#inputImage").attr("src", "../img/empty-avatar.png");
         $("#component-code-field").val("");
         $("#component-enable").prop("checked", false);
+        $("#inputImage-btn").val("");
+        //Reset field;
+        TLN.remove_line_numbers("component-code-field");
+        TLN.append_line_numbers("component-code-field");
     }
 
     /**
@@ -604,13 +611,13 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
      * @param event
      */
     function uploadFile(event) {
-        var fileTypes = ['jpg', 'jpeg', 'png'];
+        var fileTypes = ['jpg', 'jpeg', 'png', 'svg'];
         if (this.files && this.files[0]) {
             var extension = this.files[0].name.split('.').pop().toLowerCase(),  //file extension from input file
                 isSuccess = fileTypes.indexOf(extension) > -1,
                 FileSize = this.files[0].size / 1024 / 1024;
             if (FileSize > 5) {
-                swal("File type incorrect", "File size exceeds 5 MB.", "error");
+                swal("File Oversize", "File size exceeds 5 MB.", "error");
                 $(event.target).val("");
             } else if (isSuccess) {
                 var FR = new FileReader();
@@ -639,7 +646,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                 });
                 FR.readAsDataURL(this.files[0]);
             } else {
-                swal("File type incorrect", "We only support jpg, jpeg, png format.", "error");
+                swal("File type incorrect", "We only support jpg, jpeg, png, svg format.", "error");
             }
 
         }

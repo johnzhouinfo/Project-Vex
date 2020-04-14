@@ -65,20 +65,14 @@ $('.drop').load(function () {
                     display: 'none',
                 });
             }
+            $($(".drop").get(0).contentWindow).unbind("scroll");
+            if (!hasFixedProperty(event.target)) {
+                addScrollEvent();
+            }
 
-            //Adding offset value to the select-box when scroll event happened
-            x = parseInt($selectBox.css('top'));
-            y = parseInt($selectBox.css('left'));
-            var topPosition = $($(".drop").get(0).contentWindow).scrollTop();
-            var leftPosition = $($(".drop").get(0).contentWindow).scrollLeft();
-            $($(".drop").get(0).contentWindow).scroll(function () {
-                $selectBox.css({
-                    top: (x + (topPosition - $($(".drop").get(0).contentWindow).scrollTop())) + "px",
-                    left: (y + (leftPosition - $($(".drop").get(0).contentWindow).scrollLeft())) + "px",
-                })
-            })
         }
     });
+
 
     /**
      * This method will detect the mouse location, it will mark the content (e.g div, form, etc.) when mouse
@@ -108,11 +102,51 @@ $('.drop').load(function () {
                     $(".drop").contents().find("body [data-sh-parent-marker]").first().before($contextMarker);
                 else
                     $(".drop").contents().find("body").append($contextMarker);
+                //Case when the element has fixed position
+                $contextMarker.css("position", "");
+                if (hasFixedProperty(event.target)) {
+                    $contextMarker.css({
+                        height: (rect.height + 4) + "px",
+                        width: (rect.width + 4) + "px",
+                        top: (rect.top - 2) + "px",
+                        left: (rect.left - 2) + "px",
+                        position: "fixed",
+                    });
+                }
             }
         }
     }
 
 });
+
+function addScrollEvent() {
+    //Adding offset value to the select-box when scroll event happened
+    x = parseInt($selectBox.css('top'));
+    y = parseInt($selectBox.css('left'));
+    var topPosition = $($(".drop").get(0).contentWindow).scrollTop();
+    var leftPosition = $($(".drop").get(0).contentWindow).scrollLeft();
+    $($(".drop").get(0).contentWindow).scroll(function () {
+        $selectBox.css({
+            top: (x + (topPosition - $($(".drop").get(0).contentWindow).scrollTop())) + "px",
+            left: (y + (leftPosition - $($(".drop").get(0).contentWindow).scrollLeft())) + "px",
+        })
+
+    })
+}
+
+function hasFixedProperty(element) {
+    var isFixed = false;
+    // Fixed property includes position-fixed in css, and classes stick-top, fixed-top, fixed-bottom in Bootstrap
+    if (window.getComputedStyle(element, null).getPropertyValue("position") == "fixed" || $(element).hasClass("sticky-top") || $(this).hasClass("fixed-top") || $(this).hasClass("fixed-bottom"))
+        isFixed = true;
+    $(element).parents().each(function () {
+        var position = window.getComputedStyle(this, null).getPropertyValue("position");
+        if (position == "fixed" || $(this).hasClass("sticky-top") || $(this).hasClass("fixed-top") || $(this).hasClass("fixed-bottom")) {
+            isFixed = true;
+        }
+    });
+    return isFixed;
+}
 
 /**
  * After attributes were changed, the select-box needs resize
@@ -128,6 +162,10 @@ function resizeSelectBox(element) {
         left: (rect.left - 2) + "px",
         display: 'block',
     });
+    $($(".drop").get(0).contentWindow).unbind("scroll");
+    if (!hasFixedProperty(element)) {
+        addScrollEvent();
+    }
     //update the offset value
     x = parseInt($selectBox.css('top'));
     y = parseInt($selectBox.css('left'));
@@ -496,7 +534,7 @@ function saveOrUpdate(event) {
         return
     }
     var id = $(".drop").attr("product-id");
-    var productName = $("#product-id-" + id).html() == undefined ? "My Page" : $("#product-id-" + id).html();
+    var productName = $("#product-id-" + id).html() == undefined || $("#product-id-" + id).html() == "" ? "My Page" : $("#product-id-" + id).html();
     var isCreate = id == "";
     var url = "./lib/project.php";
 
@@ -627,6 +665,12 @@ $("#template-list > li > img").on("click", function (event) {
  * Create the new product page
  */
 $("#popup_create_page_BTN").on("click", function () {
+    $("#page-name-error").text("");
+    var name = $("#popup_new_page_name").val();
+    if (name == "") {
+        $("#page-name-error").text("Name required");
+        return;
+    }
     var hasCreated = $("#product-list [new = 'true']");
     var hasUnsaved = undo_manager.hasUndo();
     if (hasCreated.length != 0) {
@@ -644,6 +688,7 @@ $("#popup_create_page_BTN").on("click", function () {
             function (isConfirm) {
                 if (isConfirm) {
                     hasCreated.remove();
+                    create_page(name);
                 } else
                     return;
             });
@@ -665,58 +710,61 @@ $("#popup_create_page_BTN").on("click", function () {
                     undoBtn.classList['add']('disable');
                     redoBtn.classList['add']('disable');
                     undo_manager.clear();
+                    create_page(name);
                 } else
                     return;
             });
-    }
-    $("#page-name-error").text("");
-    var name = $("#popup_new_page_name").val();
-    if (name == "") {
-        $("#page-name-error").text("Name required");
     } else {
-        var result = $("#template-list li .highlight").attr("page-src");
-        $(".drop").attr("src", result).attr("product-id", "");
-        $(".product-list-name").css("color", "#000000");
-        if (isLoggined) {
-            $("#download-btn").removeAttr("disabled");
-            $("#preview-btn").removeAttr("disabled");
-            $("#save-btn").removeAttr("disabled");
-        } else {
-            $("#preview-btn").removeAttr("disabled");
-        }
-        var html = "<li new='true' style=\"padding: 5px 10px;margin: 5px 10px; border-style: solid; border-width: 1px; border-radius: 5px\">\n" +
-            "                    <img src =\"img/file.svg\" alt=\"page\" width=\"19px\" style=\"padding-bottom: 2px\">\n" +
-            "                    <a id='product-id-'  class='product-list product-list-name' onclick='loadPage(event)' productId='' style='color: #007bff'>" + name + "</a>\n" +
-            "                    <div class=\"product-option\" style=\"float: right\">\n" +
-            "                        <label class=\"switch\" style=\"margin-top: 2px;\" title='Make page live, save this page first'>\n" +
-            "                            <input class='product-list-is-live product-list-name' onChange='changeLiveStatus(event)' productId='' type='checkbox' disabled>\n" +
-            "                            <span class=\"slider round\"><img src='img/LIVE.svg' class='live-text' style='display: none'></span>\n" +
-            "                        </label>\n" +
-            "                        <a href=\"#\" class=\"\" data-toggle=\"dropdown\" style=\"margin: 4px\"><button class=\"product-list-btn\" style=\"width: 20px\"><strong>&#8942;</strong></button></a>\n" +
-            "                        <div class=\"dropdown-menu\">\n" +
-            "                            <a role=\"presentation\" class='dropdown-item product-list-share product-list-btn disabled' onclick='shareURL()'>\n" +
-            "                                <i class=\"fa fa-link\"></i>\n" +
-            "                                 Share URL\n" +
-            "                            </a>\n" +
-            "                            <a role=\"presentation\" class='dropdown-item product-list-change-name product-list-btn' onclick='initChangeName(event)' product-name='" + name + "' product-id='' data-toggle=\"modal\" data-target =\"#change_name_modal\">\n" +
-            "                                <i class=\"fa fa-pencil\"></i>\n" +
-            "                                 Rename\n" +
-            "                            </a>\n" +
-            "                            <a role=\"presentation\" class='dropdown-item product-list-delete product-list-btn' onclick='deleteProduct(event)' productId=''>\n" +
-            "                                <i class=\"fa fa-trash\" style=\"color: red\" productId=''></i>\n" +
-            "                                 Delete\n" +
-            "                            </a>\n" +
-            "                        </div>\n" +
-            "                </li>";
-
-        $("#product-list").append(html);
-        $("#popup_new_page_name").val("");
-        $("#template-list li .highlight").attr("class", "");
-        $("#template-list #template-default").attr("class", "highlight");
-        $("#close-new-page-form").click();
+        create_page(name);
     }
+
 
 });
+
+function create_page(name) {
+
+    var result = $("#template-list li .highlight").attr("page-src");
+    $(".drop").attr("src", result).attr("product-id", "");
+    $(".product-list-name").css("color", "#000000");
+    if (isLoggined) {
+        $("#download-btn").removeAttr("disabled");
+        $("#preview-btn").removeAttr("disabled");
+        $("#save-btn").removeAttr("disabled");
+    } else {
+        $("#preview-btn").removeAttr("disabled");
+    }
+    var html = "<li new='true' style=\"padding: 5px 10px;margin: 5px 10px; border-style: solid; border-width: 1px; border-radius: 5px\">\n" +
+        "                    <img src =\"img/file.svg\" alt=\"page\" width=\"19px\" style=\"padding-bottom: 2px\">\n" +
+        "                    <a id='product-id-'  class='product-list product-list-name' onclick='loadPage(event)' productId='' style='color: #007bff'>" + name + "</a>\n" +
+        "                    <div class=\"product-option\" style=\"float: right\">\n" +
+        "                        <label class=\"switch\" style=\"margin-top: 2px;\" title='Make page live, save this page first'>\n" +
+        "                            <input class='product-list-is-live product-list-name' onChange='changeLiveStatus(event)' productId='' type='checkbox' disabled>\n" +
+        "                            <span class=\"slider round\"><img src='img/LIVE.svg' class='live-text' style='display: none'></span>\n" +
+        "                        </label>\n" +
+        "                        <a href=\"#\" class=\"\" data-toggle=\"dropdown\" style=\"margin: 4px\"><button class=\"product-list-btn\" style=\"width: 20px\"><strong>&#8942;</strong></button></a>\n" +
+        "                        <div class=\"dropdown-menu\">\n" +
+        "                            <a role=\"presentation\" class='dropdown-item product-list-share product-list-btn disabled' onclick='shareURL()'>\n" +
+        "                                <i class=\"fa fa-link\"></i>\n" +
+        "                                 Share URL\n" +
+        "                            </a>\n" +
+        "                            <a role=\"presentation\" class='dropdown-item product-list-change-name product-list-btn' onclick='initChangeName(event)' product-name='" + name + "' product-id='' data-toggle=\"modal\" data-target =\"#change_name_modal\">\n" +
+        "                                <i class=\"fa fa-pencil\"></i>\n" +
+        "                                 Rename\n" +
+        "                            </a>\n" +
+        "                            <a role=\"presentation\" class='dropdown-item product-list-delete product-list-btn' onclick='deleteProduct(event)' productId=''>\n" +
+        "                                <i class=\"fa fa-trash\" style=\"color: red\" productId=''></i>\n" +
+        "                                 Delete\n" +
+        "                            </a>\n" +
+        "                        </div>\n" +
+        "                </li>";
+
+    $("#product-list").append(html);
+    $("#popup_new_page_name").val("");
+    $("#template-list li .highlight").attr("class", "");
+    $("#template-list #template-default").attr("class", "highlight");
+    $("#close-new-page-form").click();
+
+}
 
 $("#register").on("click", function (event) {
     event.preventDefault();
@@ -782,7 +830,7 @@ $("#popup_contact_submit").on("click", function () {
             success: function (data) {
                 var dataResult = JSON.parse(data);
                 if (dataResult.status) {
-                    swal("Success", "The ticket has been created. Ticket ID: " + dataResult.ticket_id + ".\n We will reply soon", "success");
+                    swal("Success", "The ticket has been created. Ticket ID: " + dataResult.ticket_id + ".\n We will reply via email soon.", "success");
                     $("#close-contact-form").click();
                 } else
                     swal("Failed!", dataResult.msg, "error");
@@ -859,3 +907,40 @@ function download(html, name) {
     form.submit();
     document.body.removeChild(form);
 }
+
+
+// Preview the template image
+$(document).ready(function () {
+    imagePreview();
+    $('[data-toggle="tooltip"]').tooltip();
+});
+
+this.imagePreview = function () {
+    xOffset = -20;
+    yOffset = 40;
+
+    $(".template").hover(function (e) {
+            this.t = this.title;
+            this.title = "";
+            var c = (this.t != "") ? "<br/>" + this.t : "";
+            $("body").append("<p id='preview'><img src='" + this.src + "' alt='Image preview' width='500'  />" + c + "</p>");
+            $("#preview")
+                .css("top", (e.pageY - xOffset) + "px")
+                .css("left", (e.pageX + yOffset) + "px")
+                .css("position", "fixed")
+                .css("z-index", 99999999)
+                .fadeIn("slow");
+        },
+
+        function () {
+            this.title = this.t;
+            $("#preview").remove();
+
+        });
+
+    $(".template").mousemove(function (e) {
+        $("#preview")
+            .css("top", (e.pageY - xOffset) + "px")
+            .css("left", (e.pageX + yOffset) + "px");
+    });
+};

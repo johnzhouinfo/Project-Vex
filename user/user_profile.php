@@ -24,6 +24,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     <link rel="stylesheet" href="assets/css/styles.min.css">
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="../lib/css/sweetalert.css">
+    <link rel="icon" href="../img/Vex_Three.gif">
 
 </head>
 
@@ -446,12 +447,12 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     $("#changeBtn").on("change", uploadFile);
 
     function uploadFile(event) {
-        var fileTypes = ['jpg', 'jpeg', 'png'];
+        var fileTypes = ['jpg', 'jpeg', 'png', 'svg'];
         var extension = this.files[0].name.split('.').pop().toLowerCase(),  //file extension from input file
             isSuccess = fileTypes.indexOf(extension) > -1,
             FileSize = this.files[0].size / 1024 / 1024;
         if (FileSize > 5) {
-            swal("File type incorrect", "File size exceeds 5 MB.", "error");
+            swal("File Oversize", "File size exceeds 5 MB.", "error");
             $(event.target).val("");
         } else if (isSuccess) {
             var FR = new FileReader();
@@ -478,7 +479,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             });
             FR.readAsDataURL(this.files[0]);
         } else {
-            swal("File type incorrect", "We only support jpg, jpeg, png format.", "error");
+            swal("File type incorrect", "We only support jpg, jpeg, png, svg format.", "error");
         }
     }
 

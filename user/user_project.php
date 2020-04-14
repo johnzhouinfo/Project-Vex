@@ -19,6 +19,7 @@ session_start();
     <link rel="stylesheet" href="../lib/css/Toggle-Switch.css">
     <link rel="stylesheet" href="assets/css/styles.min.css">
     <link rel="stylesheet" href="../lib/css/sweetalert.css">
+    <link rel="icon" href="../img/Vex_Three.gif">
 </head>
 
 <body id="page-top"
@@ -318,11 +319,12 @@ session_start();
                             " <span class=\"slider round\"></span></label>\n" +
                             "</td>" +
                             "<td><div class='btn-group' role='group' style='font-size: 12px;'>" +
-                            "<button class=\"btn\" data-toggle=\"tooltip\" data-bs-tooltip=\"\" data-bs-hover-animate=\"pulse\" onclick='changePageName(event)' product-id='" + dataResult.project[i].product_id + "' product-name='" + dataResult.project[i].product_name.trim() + "' type=\"button\" style=\"font-size: 12px;\" title=\"Rename\"><i class=\"fas fa-edit\" product-id='" + dataResult.project[i].product_id + "' product-name='" + dataResult.project[i].product_name.trim() + "' ></i></button>" +
-                            "<button class='btn' data-bs-hover-animate='pulse' id='delete_pg_btn_usr_pg' type='button' onclick='deleteProduct(event)' product-id='" + dataResult.project[i].product_id + "' style='font-size: 12px;'><i class='fa fa-remove' data-toggle='tooltip' data-bs-tooltip='' product-id='" + dataResult.project[i].product_id + "'  title='Delete'></i></button></div></td>" +
+                            "<button class=\"btn\" data-toggle=\"tooltip\" data-placement=\"top\" data-bs-hover-animate=\"pulse\" onclick='changePageName(event)' product-id='" + dataResult.project[i].product_id + "' product-name='" + dataResult.project[i].product_name.trim() + "' type=\"button\" style=\"font-size: 12px;\" title=\"Rename\"><i class=\"fas fa-edit\" product-id='" + dataResult.project[i].product_id + "' product-name='" + dataResult.project[i].product_name.trim() + "' ></i></button>" +
+                            "<button class='btn' data-toggle=\"tooltip\" data-placement=\"top\" data-bs-hover-animate=\"pulse\" title='Delete' id='delete_pg_btn_usr_pg' type='button' onclick='deleteProduct(event)' product-id='" + dataResult.project[i].product_id + "' style='font-size: 12px;'><i class='fa fa-remove' product-id='" + dataResult.project[i].product_id + "'  title='Delete'></i></button></div></td>" +
                             "</tr>";
                         $("#project-list").append(html);
                     }
+                    $('[data-toggle="tooltip"]').tooltip();
                     pagination(total_page);
                 } else
                     swal("Failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
