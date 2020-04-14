@@ -751,13 +751,15 @@ pg_close($link);
                                                         class="text-nowrap d-inline col-sm-2">Left</label>
                                                 <div class="col-sm-10"><input class="form-control element-style"
                                                                               type="text" id="style-left"
-                                                                              style-data-type="left"></div>
+                                                                              style-data-type="left" placeholder="px">
+                                                </div>
                                             </div>
                                             <div class="form-group"><label
                                                         class="text-nowrap d-inline col-sm-2">Top</label>
                                                 <div class="col-sm-10"><input class="form-control element-style"
                                                                               type="text" id="style-top"
-                                                                              style-data-type="top"></div>
+                                                                              style-data-type="top" placeholder="px">
+                                                </div>
                                             </div>
                                             <div class="form-group"><label
                                                         class="text-nowrap d-inline col-sm-2">Float</label>
@@ -786,13 +788,15 @@ pg_close($link);
                                                         class="text-nowrap d-inline col-sm-2">Right</label>
                                                 <div class="col-sm-10"><input class="form-control element-style"
                                                                               type="text" id="style-right"
-                                                                              style-data-type="right"></div>
+                                                                              style-data-type="right" placeholder="px">
+                                                </div>
                                             </div>
                                             <div class="form-group"><label
                                                         class="text-nowrap d-inline col-sm-2">Bottom</label>
                                                 <div class="col-sm-10"><input class="form-control element-style"
                                                                               type="text" id="style-bottom"
-                                                                              style-data-type="bottom"></div>
+                                                                              style-data-type="bottom" placeholder="px">
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
@@ -958,7 +962,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-width"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="width"></div>
+                                                                               style-data-type="width" placeholder="px">
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group"><label class="text-nowrap col-sm-2">Min
@@ -967,7 +972,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-min-width"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="min-width"></div>
+                                                                               style-data-type="min-width"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group"><label class="text-nowrap col-sm-2">Max
@@ -976,7 +982,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-max-width"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="max-width"></div>
+                                                                               style-data-type="max-width"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                         </form>
@@ -986,7 +993,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-height"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="height"></div>
+                                                                               style-data-type="height"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group"><label class="text-nowrap col-sm-2">Min
@@ -995,7 +1003,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-min-height"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="min-height"></div>
+                                                                               style-data-type="min-height"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group"><label class="text-nowrap col-sm-2">Max
@@ -1004,7 +1013,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-max-height"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="max-height"></div>
+                                                                               style-data-type="max-height"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                         </form>
@@ -1027,7 +1037,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-margin-top"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="margin-top"></div>
+                                                                               style-data-type="margin-top"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group"><label class="text-nowrap col-sm-2">Bottom</label>
@@ -1035,7 +1046,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-margin-bottom"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="margin-bottom"></div>
+                                                                               style-data-type="margin-bottom"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                         </form>
@@ -1045,7 +1057,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-margin-right"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="margin-right"></div>
+                                                                               style-data-type="margin-right"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group"><label class="text-nowrap col-sm-2">Left</label>
@@ -1053,7 +1066,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-margin-left"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="margin-left"></div>
+                                                                               style-data-type="margin-left"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                         </form>
@@ -1076,7 +1090,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-padding-top"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="padding-top"></div>
+                                                                               style-data-type="padding-top"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group"><label class="text-nowrap col-sm-2">Bottom</label>
@@ -1084,7 +1099,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-padding-bottom"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="padding-bottom"></div>
+                                                                               style-data-type="padding-bottom"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                         </form>
@@ -1094,7 +1110,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-padding-right"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="padding-right"></div>
+                                                                               style-data-type="padding-right"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group"><label class="text-nowrap col-sm-2">Left</label>
@@ -1102,7 +1119,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-padding-left"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="padding-left"></div>
+                                                                               style-data-type="padding-left"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                         </form>
@@ -1137,7 +1155,8 @@ pg_close($link);
                                                     <div class="d-flex"><input class="form-control element-style"
                                                                                type="text" id="style-border-width"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="border-width"></div>
+                                                                               style-data-type="border-width"
+                                                                               placeholder="px"></div>
                                                 </div>
                                             </div>
                                         </form>
@@ -1169,7 +1188,8 @@ pg_close($link);
                                                                                type="text"
                                                                                id="style-border-top-left-radius"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="border-top-left-radius">
+                                                                               style-data-type="border-top-left-radius"
+                                                                               placeholder="px">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1180,7 +1200,8 @@ pg_close($link);
                                                                                type="text"
                                                                                id="style-border-bottom-left-radius"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="border-bottom-left-radius">
+                                                                               style-data-type="border-bottom-left-radius"
+                                                                               placeholder="px">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1193,7 +1214,8 @@ pg_close($link);
                                                                                type="text"
                                                                                id="style-border-top-right-radius"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="border-top-right-radius">
+                                                                               style-data-type="border-top-right-radius"
+                                                                               placeholder="px">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1204,7 +1226,8 @@ pg_close($link);
                                                                                type="text"
                                                                                id="style-border-bottom-right-radius"
                                                                                style="height: 31px;width: 300%;"
-                                                                               style-data-type="border-bottom-right-radius">
+                                                                               style-data-type="border-bottom-right-radius"
+                                                                               placeholder="px">
                                                     </div>
                                                 </div>
                                             </div>
