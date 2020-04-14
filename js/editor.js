@@ -162,6 +162,14 @@ function resizeSelectBox(element) {
         left: (rect.left - 2) + "px",
         display: 'block',
     });
+    if (element.tagName.toLocaleLowerCase() === 'body') {
+        $("#select-tag-name").css('left', '0px');
+        $controlPanel.css({
+            display: 'none',
+        });
+    } else {
+        $("#select-tag-name").css('left', '105px');
+    }
     $($(".drop").get(0).contentWindow).unbind("scroll");
     if (!hasFixedProperty(element)) {
         addScrollEvent();
