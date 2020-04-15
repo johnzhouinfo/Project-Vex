@@ -807,6 +807,9 @@ function create_page(name) {
         "                        </div>\n" +
         "                </li>";
 
+    undoBtn.classList['add']('disable');
+    redoBtn.classList['add']('disable');
+    undo_manager.clear();
     $("#product-list").append(html);
     $("#popup_new_page_name").val("");
     $("#template-list li .highlight").attr("class", "");
