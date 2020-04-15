@@ -29,7 +29,11 @@ try {
 
 }
 
-
+/**
+ * Return num of users
+ * @param $link
+ * @throws Exception
+ */
 function get_num_users($link) {
     $sql = "SELECT count(*) AS amount FROM vex_user WHERE is_enable = true";
     if ($stmt = pg_prepare($link, "fetch_total_num_of_user", $sql)) {
@@ -55,6 +59,11 @@ function get_num_users($link) {
 
 }
 
+/**
+ * Return num of pages
+ * @param $link
+ * @throws Exception
+ */
 function get_num_pages($link) {
     $sql = "SELECT count(*) AS amount FROM vex_product WHERE is_delete = false";
     if ($stmt = pg_prepare($link, "fetch_total_num_of_page", $sql)) {
@@ -80,6 +89,11 @@ function get_num_pages($link) {
 
 }
 
+/**
+ * Return num of live page
+ * @param $link
+ * @throws Exception
+ */
 function get_num_lives($link) {
     $sql = "SELECT count(*) AS amount FROM vex_product WHERE is_live = true AND is_delete = false";
     if ($stmt = pg_prepare($link, "fetch_total_num_of_live", $sql)) {
@@ -104,6 +118,11 @@ function get_num_lives($link) {
     }
 }
 
+/**
+ * Return num of ticket
+ * @param $link
+ * @throws Exception
+ */
 function get_num_tickets($link) {
     $sql = "SELECT count(*) AS amount FROM vex_ticket WHERE is_solve = false AND is_delete = false";
     if ($stmt = pg_prepare($link, "fetch_total_num_of_ticket", $sql)) {

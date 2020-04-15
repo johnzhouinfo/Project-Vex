@@ -1,5 +1,4 @@
 <?php
-error_reporting(E_ERROR | E_PARSE);
 require_once "../lib/config.php";
 session_start();
 try {
@@ -54,6 +53,11 @@ try {
     );
 }
 
+/**
+ * List all users
+ * @param $link
+ * @throws Exception
+ */
 function retrieve_all_user($link) {
     $keyword = "";
     if (isset($_GET["page"]))
@@ -90,7 +94,6 @@ function retrieve_all_user($link) {
 
                 } else {
                     $page_count = $total_page / $page_size;
-
                 }
 
             } else {
@@ -134,6 +137,12 @@ function retrieve_all_user($link) {
 
 }
 
+/**
+ * List specific user info
+ * @param $id uid
+ * @param $link db
+ * @throws Exception
+ */
 function retrieve_profile($id, $link) {
     // The request is using the GET method
     $sql = "select username, name, email, icon, type, is_enable from vex_user where user_id = $1";
@@ -174,7 +183,6 @@ function retrieve_profile($id, $link) {
  * @param $id id that user logged in
  * @param $name new user's name
  * @param $email new user's email
- * @param $icon new user's icon link
  * @param $link database
  * @throws Exception
  */
@@ -205,6 +213,13 @@ function update_profile($id, $name, $email, $link) {
 
 }
 
+/**
+ * Change user icon
+ * @param $id uid
+ * @param $icon icon url
+ * @param $link db
+ * @throws Exception
+ */
 function update_user_icon($id, $icon, $link) {
     $sql = "UPDATE vex_user SET icon = $1 where user_id = $2";
     if ($stmt = pg_prepare($link, "update_icon", $sql)) {
@@ -279,6 +294,17 @@ function update_password($id, $oldPassword, $newPassword, $link) {
     }
 }
 
+/**
+ * Change user info, admin page
+ * @param $id
+ * @param $name
+ * @param $email
+ * @param $password
+ * @param $enable
+ * @param $admin
+ * @param $link
+ * @throws Exception
+ */
 function update_user($id, $name, $email, $password, $enable, $admin, $link) {
     if ($id == $_SESSION["id"]) {
         writeInfo("Attempt to modify itself in user-mngt, ID: $id");

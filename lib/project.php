@@ -19,7 +19,6 @@ try {
                         writeInfo("Access Project Page Denied, uid: $id");
                         throw new Exception("You don't have permission.", 1010);
                     }
-
                     break;
             }
         } else {
@@ -57,6 +56,14 @@ try {
     );
 }
 
+/**
+ * Change page's live status
+ * @param $id uid
+ * @param $productId pid
+ * @param $value true/false
+ * @param $link database
+ * @throws Exception
+ */
 function change_live($id, $productId, $value, $link) {
     if (isset($_SESSION["admin"]) && $_SESSION["admin"] === true) {
         //Admins have ability to change the state
@@ -112,6 +119,14 @@ function change_live($id, $productId, $value, $link) {
     }
 }
 
+/**
+ * Rename page
+ * @param $id uid
+ * @param $productId pid
+ * @param $name page'name
+ * @param $link database
+ * @throws Exception
+ */
 function rename_page($id, $productId, $name, $link) {
     if (isset($_SESSION["admin"]) && $_SESSION["admin"] === true) {
         //Admins have ability to change the state
@@ -164,6 +179,14 @@ function rename_page($id, $productId, $name, $link) {
     }
 }
 
+/**
+ * Insert page into the database
+ * @param $id uid
+ * @param $code html code
+ * @param $name page name
+ * @param $link database
+ * @throws Exception
+ */
 function save_page($id, $code, $name, $link) {
     $sql = "INSERT INTO vex_product (user_id, product_name, code, create_time) VALUES ($1, $2, $3, $4) RETURNING product_id";
     if ($stmt = pg_prepare($link, "save_page", $sql)) {
@@ -192,6 +215,14 @@ function save_page($id, $code, $name, $link) {
     }
 }
 
+/**
+ * Modify the page
+ * @param $id uid
+ * @param $code html
+ * @param $productId pid
+ * @param $link database
+ * @throws Exception
+ */
 function update_page($id, $code, $productId, $link) {
     if (isset($_SESSION["admin"]) && $_SESSION["admin"] === true) {
         //Admins have ability to change the state
@@ -246,8 +277,14 @@ function update_page($id, $code, $productId, $link) {
     }
 }
 
-function delete_page($user_id, $productId, $link) {
-
+/**
+ * Remove page
+ * @param $id uid
+ * @param $productId pid
+ * @param $link db
+ * @throws Exception
+ */
+function delete_page($id, $productId, $link) {
     if (isset($_SESSION["admin"]) && $_SESSION["admin"] === true) {
         //Admins have ability to change the state
         $sql = "UPDATE vex_product SET is_delete = true WHERE product_id = $1";
@@ -255,7 +292,7 @@ function delete_page($user_id, $productId, $link) {
             // Execute sql
             if ($result = pg_execute($link, "delete_page", array($productId))) {
                 if (pg_affected_rows($result) == 1) {
-                    writeInfo("Delete page, uid:$user_id, pid:$productId");
+                    writeInfo("Delete page, uid:$id, pid:$productId");
                     echo json_encode(
                         array(
                             'status' => true,
@@ -264,7 +301,7 @@ function delete_page($user_id, $productId, $link) {
                         )
                     );
                 } else {
-                    writeErr("Update page failed, uid:$user_id, pid:$productId");
+                    writeErr("Update page failed, uid:$id, pid:$productId");
                     throw new Exception("Delete page failed", 1010);
                 }
             }
@@ -277,9 +314,9 @@ function delete_page($user_id, $productId, $link) {
         $sql = "UPDATE vex_product SET is_delete = true WHERE product_id = $1 AND user_id = $2";
         if ($stmt = pg_prepare($link, "delete_page_user", $sql)) {
             // Execute sql
-            if ($result = pg_execute($link, "delete_page_user", array($productId, $user_id))) {
+            if ($result = pg_execute($link, "delete_page_user", array($productId, $id))) {
                 if (pg_affected_rows($result) == 1) {
-                    writeInfo("Delete page, uid:$user_id, pid:$productId");
+                    writeInfo("Delete page, uid:$id, pid:$productId");
                     echo json_encode(
                         array(
                             'status' => true,
@@ -288,7 +325,7 @@ function delete_page($user_id, $productId, $link) {
                         )
                     );
                 } else {
-                    writeErr("Update page failed, uid:$user_id, pid:$productId");
+                    writeErr("Update page failed, uid:$id, pid:$productId");
                     throw new Exception("Delete page failed, id:$productId", 1010);
                 }
             }
@@ -300,6 +337,12 @@ function delete_page($user_id, $productId, $link) {
     }
 }
 
+/**
+ * List project by uid
+ * @param $id uid
+ * @param $link db
+ * @throws Exception
+ */
 function retrieve_project_list($id, $link) {
     if (isset($_GET["page"]))
         $page = $_GET["page"];
@@ -389,6 +432,11 @@ function retrieve_project_list($id, $link) {
 
 }
 
+/**
+ * List all the projects
+ * @param $link
+ * @throws Exception
+ */
 function retrieve_all_project_list($link) {
     if (isset($_GET["page"]))
         $page = $_GET["page"];
@@ -403,7 +451,6 @@ function retrieve_all_project_list($link) {
             writeErr("Invalid sorting field sort: " . $_GET["sort"]);
             throw new Exception("Invalid sorting field", 1000);
         }
-
     } else
         $sort = "product_id";
 

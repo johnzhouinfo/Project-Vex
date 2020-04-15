@@ -27,7 +27,6 @@ try {
                 writeInfo("Access Ticket Page Denied, uid: $id");
                 throw new Exception("You don't have permission.", 1010);
             }
-
         } else {
             $post_type = $_POST["type"];
             switch ($post_type) {
@@ -39,7 +38,6 @@ try {
                     break;
             }
         }
-
     } else {
         throw new Exception("You haven't logged in.", 1010);
     }
@@ -55,7 +53,15 @@ try {
     );
 }
 
-
+/**
+ * Create a ticket
+ * @param $name user's name
+ * @param $email email
+ * @param $title ticket's title
+ * @param $message ticket's msg
+ * @param $link db
+ * @throws Exception
+ */
 function create_ticket($name, $email, $title, $message, $link) {
     if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)
         $id = $_SESSION["id"];
@@ -72,6 +78,7 @@ function create_ticket($name, $email, $title, $message, $link) {
                 throw new Exception("Save Record in Database failed.", 102);
             } else {
                 $ticket_id = pg_fetch_row($result)[0];
+                //send email to user
                 sendMail($email, $message, $ticket_id);
                 writeInfo("Create ticket, uid: $id, tid: $ticket_id");
                 echo json_encode(
@@ -90,7 +97,12 @@ function create_ticket($name, $email, $title, $message, $link) {
     }
 }
 
-
+/**
+ * Remove ticket
+ * @param $id tid
+ * @param $link db
+ * @throws Exception
+ */
 function delete_ticket($id, $link) {
     if (!(isset($_SESSION["admin"]) && isset($_SESSION["admin"]) === true)) {
         writeInfo("Access Ticket-Delete Denied, tid:$id uid:" . $_SESSION["id"]);
@@ -120,6 +132,14 @@ function delete_ticket($id, $link) {
     }
 }
 
+/**
+ * Change ticket info
+ * @param $id tid
+ * @param $reply reply msg
+ * @param $solve true/false
+ * @param $link db
+ * @throws Exception
+ */
 function update_ticket($id, $reply, $solve, $link) {
     if (!(isset($_SESSION["admin"]) && isset($_SESSION["admin"]) === true)) {
         writeInfo("Access Ticket-Update Denied, tid:$id uid:" . $_SESSION["id"]);
@@ -157,6 +177,7 @@ function update_ticket($id, $reply, $solve, $link) {
                 throw new Exception("Update Record in Database failed. ", 102);
             } else {
                 writeInfo("Update Ticket, tid:$id, uid: " . $_SESSION["id"]);
+                //Send email to user
                 sendReplyMail($email, $msg, $reply, $_SESSION["name"], $id, $solve ? "Solved" : "Unsolved");
                 echo json_encode(
                     array(
@@ -173,6 +194,11 @@ function update_ticket($id, $reply, $solve, $link) {
     }
 }
 
+/**
+ * List all tickets
+ * @param $link
+ * @throws Exception
+ */
 function retrieve_ticket_list($link) {
     if (isset($_GET["page"]))
         $page = $_GET["page"];
@@ -253,10 +279,14 @@ function retrieve_ticket_list($link) {
         writeErr("Database Schema Exception: $sql");
         throw new Exception("Internal Server Error", 123);
     }
-
-
 }
 
+/**
+ * List specific ticket info
+ * @param $id tid
+ * @param $link db
+ * @throws Exception
+ */
 function retrieve_ticket($id, $link) {
 // The request is using the GET method
     $sql = "select * from vex_ticket where ticket_id = $1";

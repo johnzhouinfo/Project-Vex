@@ -35,9 +35,7 @@ try {
                 writeInfo("Access Component Page Denied, uid: " . $_SESSION["id"]);
                 throw new Exception("You don't have permission.", 1010);
             }
-
         }
-
     } else {
         throw new Exception("You haven't logged in.", 1010);
     }
@@ -53,6 +51,15 @@ try {
     );
 }
 
+/**
+ * Create component
+ * @param $name component name
+ * @param $icon component icon
+ * @param $html component html code
+ * @param $enable visibility
+ * @param $link db
+ * @throws Exception
+ */
 function create_component($name, $icon, $html, $enable, $link) {
     $sql = "INSERT INTO vex_component (component_name, icon, code, is_enable) VALUES ($1, $2, $3, $4) RETURNING component_id";
     if ($stmt = pg_prepare($link, "create_component", $sql)) {
@@ -80,6 +87,16 @@ function create_component($name, $icon, $html, $enable, $link) {
     }
 }
 
+/**
+ * Change component info
+ * @param $id
+ * @param $name
+ * @param $icon
+ * @param $html
+ * @param $enable
+ * @param $link
+ * @throws Exception
+ */
 function update_component($id, $name, $icon, $html, $enable, $link) {
     $sql = "UPDATE vex_component SET component_name = $1, icon = $2, code = $3, is_enable = $4 WHERE component_id = $5 AND is_delete = false";
     if ($stmt = pg_prepare($link, "update_component", $sql)) {
@@ -105,6 +122,12 @@ function update_component($id, $name, $icon, $html, $enable, $link) {
     }
 }
 
+/**
+ * Remove component
+ * @param $id
+ * @param $link
+ * @throws Exception
+ */
 function delete_component($id, $link) {
     $sql = "UPDATE vex_component SET is_delete = true WHERE component_id = $1 AND is_delete = false";
     if ($stmt = pg_prepare($link, "delete_component", $sql)) {
@@ -130,7 +153,11 @@ function delete_component($id, $link) {
     }
 }
 
-
+/**
+ * List components
+ * @param $link
+ * @throws Exception
+ */
 function retrieve_component_list($link) {
     $sql = "SELECT * FROM vex_component WHERE is_delete = false AND is_enable = true";
     if ($stmt = pg_prepare($link, "fetch_all_component", $sql)) {
@@ -160,6 +187,11 @@ function retrieve_component_list($link) {
     }
 }
 
+/**
+ * List all components
+ * @param $link
+ * @throws Exception
+ */
 function retrieve_component_list_with_page($link) {
     if (isset($_GET["page"]))
         $page = $_GET["page"];
@@ -250,6 +282,12 @@ function retrieve_component_list_with_page($link) {
 
 }
 
+/**
+ * List specific component
+ * @param $id
+ * @param $link
+ * @throws Exception
+ */
 function retrieve_component_detail_by_id($id, $link) {
     $sql = "SELECT * FROM vex_component WHERE component_id = $1";
     if ($stmt = pg_prepare($link, "fetch_component", $sql)) {

@@ -307,6 +307,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
         })
     });
 
+    //Update the user profile by sending the post request
     function updateProfile(event) {
         event.preventDefault();
         $("#profile-name-err").text("");
@@ -351,11 +352,13 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
         }
     }
 
+    //validate the inputed email
     function validateEmail(email) {
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
     }
 
+    //Update user password
     function updatePassword(event) {
         event.preventDefault();
         $("#old-password-err").text("");
@@ -411,6 +414,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
         });
     }
 
+    // Update the user icon
     function updateIcon(icon) {
         $.ajax({
             url: "../lib/account.php",
@@ -444,6 +448,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
         $("#changeBtn").click();
     });
 
+    //upload icon
     $("#changeBtn").on("change", uploadFile);
 
     function uploadFile(event) {
