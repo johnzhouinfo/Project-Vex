@@ -185,6 +185,13 @@ function resizeSelectBox(element) {
 }
 
 /**
+ * Hide the select-box
+ */
+function hideSelectedBox() {
+    $("#select-box").css("display", "none");
+}
+
+/**
  * A pre-code style insert into the iframe page
  * @returns CSS style code
  * @constructor
@@ -238,9 +245,12 @@ $("#parent-btn").on("click", function (event) {
  */
 $("#clone-btn").on("click", function (event) {
     event.preventDefault();
+    old_data = $(".drop").contents().find("body").clone();
     var clone = $(selectTarget).clone();
     $(selectTarget).after(clone);
     resizeSelectBox(selectTarget);
+    var new_data = $(".drop").contents().find("body").clone();
+    setUndoRedoEvent(old_data, new_data);
 });
 
 /**
@@ -248,10 +258,13 @@ $("#clone-btn").on("click", function (event) {
  */
 $("#delete-btn").on("click", function (event) {
     event.preventDefault();
+    old_data = $(".drop").contents().find("body").clone();
     $(selectTarget).remove();
     // $("#select-actions").css("display", "none");
     $("#select-box").css("display", "none");
     $(".drop").contents().find("[data-dragcontext-marker]").remove();
+    var new_data = $(".drop").contents().find("body").clone();
+    setUndoRedoEvent(old_data, new_data);
 });
 
 /**
@@ -645,11 +658,12 @@ function initChangeName(event) {
 }
 
 /**
- * Change the product name
+ * Change the product name form
  */
 $("#popup_save_name_BTN").on("click", function (event) {
     var id = $("#popup_change_name").attr("product-id");
     var isCreate = id == "";
+    //if the page is new, will not send request to backend for update name request
     if (isCreate) {
         $("#product-id-" + $("#popup_change_name").attr("product-id")).text($("#popup_change_name").val());
         $("#close-save-name-form").click();
@@ -683,7 +697,7 @@ $("#popup_save_name_BTN").on("click", function (event) {
 });
 
 /**
- * Select the template page
+ * Select the template page, highlight the selected element
  */
 $("#template-list > li > img").on("click", function (event) {
     $("#template-list li .highlight").attr("class", "");
@@ -691,7 +705,7 @@ $("#template-list > li > img").on("click", function (event) {
 });
 
 /**
- * Create the new product page
+ * Create the new product page form
  */
 $("#popup_create_page_BTN").on("click", function () {
     $("#page-name-error").text("");
@@ -701,6 +715,7 @@ $("#popup_create_page_BTN").on("click", function () {
         return;
     }
     var hasCreated = $("#product-list [new = 'true']");
+    //if there has unsaved page, popup window
     var hasUnsaved = undo_manager.hasUndo();
     if (hasCreated.length != 0) {
         swal({
@@ -750,11 +765,16 @@ $("#popup_create_page_BTN").on("click", function () {
 
 });
 
+/**
+ * Create page process, add page info in to the project list
+ * @param name page name
+ */
 function create_page(name) {
-
+    //retrieve the template information
     var result = $("#template-list li .highlight").attr("page-src");
     $(".drop").attr("src", result).attr("product-id", "");
     $(".product-list-name").css("color", "#000000");
+    //if user logged in, enable those btn in top-toolbar, else only enable the preview btn
     if (isLoggined) {
         $("#download-btn").removeAttr("disabled");
         $("#preview-btn").removeAttr("disabled");
@@ -795,12 +815,20 @@ function create_page(name) {
 
 }
 
+/**
+ * Open a new register page for user, if they click this btn,
+ * after they registered, they will redirect back to editor
+ */
 $("#register").on("click", function (event) {
     event.preventDefault();
     window.open("register.php?redirect=true");
     $("#home_login").click();
 });
 
+/**
+ * Open the Contact form,
+ * Fill the ID, name, email if user logged in, through the get request
+ */
 $("#help-btn").on("click", function () {
     $("#inputName").val("");
     $("#inputEmail").val("");
@@ -827,6 +855,9 @@ $("#help-btn").on("click", function () {
     $("#help-hidden-btn").click();
 });
 
+/**
+ * After click the contact submit btn, send request to backend and insert into vex_ticket table
+ */
 $("#popup_contact_submit").on("click", function () {
     var name = $("#inputName").val();
     var email = $("#inputEmail").val();
@@ -869,13 +900,18 @@ $("#popup_contact_submit").on("click", function () {
     }
 });
 
+/**
+ * Validate Email address
+ * @param email inputted email
+ * @returns {boolean}
+ */
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }
 
 
-// preview the component that user input
+// Preview btn onclick event, initial preview procedure
 $("#preview-btn").on("click", function () {
     var html = $(".drop").contents().find("html").clone();
     $(html).find("[data-reserved-styletag]").remove();
@@ -883,7 +919,11 @@ $("#preview-btn").on("click", function () {
     OpenWindowWithPost(html.html());
 });
 
-// Open a preview page through post request
+/**
+ * Using post request, open a preview page let user preview their page
+ * @param html
+ * @constructor
+ */
 function OpenWindowWithPost(html) {
     var form = document.createElement("form");
     form.setAttribute("method", "post");
@@ -902,17 +942,21 @@ function OpenWindowWithPost(html) {
     document.body.removeChild(form);
 }
 
+// Download btn onclick event, initial download procedure
 $("#download-btn").on("click", function () {
     var html = $(".drop").contents().find("html").clone();
     $(html).find("[data-reserved-styletag]").remove();
     $(html).find("[data-dragcontext-marker]").remove();
     var name = $(html).find("title").get(0).text;
     html = "<!DOCTYPE html><html>" + $(html).html() + "</html>"
-
     download(html, name);
 });
 
-// Download page
+/**
+ * Using post request, passing html code to download.php, and return the html file
+ * @param html html code
+ * @param name file name
+ */
 function download(html, name) {
     var form = document.createElement("form");
     form.setAttribute("method", "post");

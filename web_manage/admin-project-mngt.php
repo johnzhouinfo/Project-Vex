@@ -312,6 +312,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
         }
     }
 
+    //load project list
     function loadList() {
         $.ajax({
             url: "../lib/project.php/",
@@ -439,6 +440,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
             });
     }
 
+    //Popup change name window
     function changePageName(event) {
         event.stopPropagation();
         var id = $(event.target).attr("product-id");

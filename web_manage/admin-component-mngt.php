@@ -648,11 +648,8 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
             } else {
                 swal("File type incorrect", "We only support jpg, jpeg, png, svg format.", "error");
             }
-
         }
     }
-
-
 </script>
 </body>
 

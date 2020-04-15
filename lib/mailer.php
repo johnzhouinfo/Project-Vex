@@ -1,5 +1,11 @@
 <?php
-
+/*
+ * This class will handle mail system, which requires php mail() enabled
+ * NOTE: It is better using PHPMailer, since it provide a secure protocol (SMTPS),
+ *  PHP.mail() will only send unencrypted message.
+ * And I was trying to use PHPMailer lib for sending mails to user, but this lib doesn't work on sandcastle,
+ * since sandcastle disabled the 'httpd_can_network_connect'.
+ */
 function sendMail($email, $msg, $id) {
     $subject = "Ticket REQ-" . $id . " has been created.";
     $message = '<html><body>';

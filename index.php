@@ -3,7 +3,7 @@ session_start();
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -100,8 +100,8 @@ session_start();
         </div>
     </nav>
 </div>
-<div class="text-center d-flex highlight-clean" style="height: 100vh;padding: 143px;">
-    <div class="container-fluid text-center d-inline-flex" style="height: 123;padding: 0px 100px;width: 100%;">
+<div class="text-center d-flex highlight-clean" style="height: 88vh;padding: 143px;">
+    <div class="container-fluid text-center d-inline-flex" style="height: 123px;padding: 0px 100px;width: 100%;">
         <div class="text-center d-inline-block intro" style="padding: 107px;">
             <h1 class="display-4 text-center d-inline-flex">Vex&nbsp;</h1>
             <h3 class="text-left d-inline-flex" style="width: 416px;"><em>A Free Website Builder</em></h3>
@@ -109,37 +109,6 @@ session_start();
             <button class="btn btn-outline-secondary d-inline-flex" id="home_build_you_website" type="button">Build Your
                 Website
             </button>
-        </div>
-    </div>
-</div>
-<div class="features-clean">
-    <div class="container-fluid" style="background-color: rgba(228,216,244,0.6);">
-        <div class="intro">
-            <h2 class="text-center">Features</h2>
-            <p class="text-center">These texts are from the template I chose, do remember to replace them when
-                editing!!!</p>
-        </div>
-        <div class="row justify-content-center align-items-center features">
-            <div class="col-auto col-sm-6 col-lg-4 item"><i class="fa fa-map-marker icon"></i>
-                <h3 class="name">Works everywhere</h3>
-                <p class="description">Aenean tortor est, vulputate quis leo in, vehicula rhoncus lacus. Praesent
-                    aliquam in tellus eu gravida. Aliquam varius finibus est.</p>
-            </div>
-            <div class="col-auto col-sm-6 col-lg-4 item"><i class="fa fa-clock-o icon"></i>
-                <h3 class="name">Always available</h3>
-                <p class="description">Aenean tortor est, vulputate quis leo in, vehicula rhoncus lacus. Praesent
-                    aliquam in tellus eu gravida. Aliquam varius finibus est.</p>
-            </div>
-            <div class="col-auto col-sm-6 col-lg-4 item"><i class="fa fa-list-alt icon"></i>
-                <h3 class="name">Customizable</h3>
-                <p class="description">Aenean tortor est, vulputate quis leo in, vehicula rhoncus lacus. Praesent
-                    aliquam in tellus eu gravida. Aliquam varius finibus est.</p>
-            </div>
-            <div class="col-auto col-sm-6 col-lg-4 item"><i class="fa fa-plane icon"></i>
-                <h3 class="name">Fast</h3>
-                <p class="description">Aenean tortor est, vulputate quis leo in, vehicula rhoncus lacus. Praesent
-                    aliquam in tellus eu gravida. Aliquam varius finibus est.</p>
-            </div>
         </div>
     </div>
 </div>

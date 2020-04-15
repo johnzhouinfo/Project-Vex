@@ -364,6 +364,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
         }
     }
 
+    //load user list
     function loadList() {
         $.ajax({
             url: "../lib/account.php/",

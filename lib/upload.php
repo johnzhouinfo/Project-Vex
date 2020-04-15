@@ -1,4 +1,7 @@
 <?php
+/*
+ * This class will receive post request and save image into /img folder, and return path
+ */
 define('UPLOAD_DIR', '../img/');
 $file_parts = explode(";base64,", $_POST['data']);
 $file_base64 = base64_decode($file_parts[1]);

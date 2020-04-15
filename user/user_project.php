@@ -290,6 +290,7 @@ session_start();
         }
     }
 
+    //Load the project list
     function loadList() {
         $.ajax({
             url: "../lib/project.php/",
@@ -308,6 +309,7 @@ session_start();
                     $("#project-list").append(html);
                     total_page = dataResult.page;
 
+                    //convert json data to list
                     for (var i = 0; i < dataResult.project.length; i++) {
                         var isChecked = dataResult.project[i].is_live == "t" ? "checked" : "";
                         var html = "<tr>" +
@@ -336,12 +338,14 @@ session_start();
         })
     }
 
+    //sort
     $("#sort").on("change", function (event) {
         project_list_page = 1;
         sort = $("#sort").val();
         loadList();
     });
 
+    //Search by name
     $("#search").on("click", function () {
         project_list_page = 1;
         keyword = $("#search-field").val();
@@ -409,6 +413,7 @@ session_start();
             });
     }
 
+    //Popup change name window
     function changePageName(event) {
         event.stopPropagation();
         var id = $(event.target).attr("product-id");
@@ -419,6 +424,7 @@ session_start();
 
     }
 
+    //Change page's name
     $("#popup_save_name_BTN").on("click", function () {
         var name = $("#popup_change_name").val();
         var id = $("#change-name-product-id").val();

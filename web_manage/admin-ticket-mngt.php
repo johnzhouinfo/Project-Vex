@@ -419,6 +419,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
         }
     }
 
+    //Load ticket list
     function loadList() {
         $.ajax({
             url: "../lib/ticket.php/",
