@@ -24,9 +24,7 @@ $("#popup_loginBTN").on("click", function (event) {
                 password: password,
             },
             success: function (data) {
-
                 var data = JSON.parse(data);
-                console.log(data);
                 if (data.status) {
                     isLoggined = true;
                     $("#close-login-form").click();
@@ -105,7 +103,6 @@ $("#logout-btn").on("click", function () {
         async: true,
         timeout: 5000,
         success: function (data) {
-            console.log(data);
             isLoggined = false;
             var data = JSON.parse(data);
             if (data.status == true) {

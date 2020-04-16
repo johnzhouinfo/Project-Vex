@@ -458,13 +458,18 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
             },
             success: function (data) {
                 var dataResult = JSON.parse(data);
-                $("#staticID").val(id);
-                $("#staticUsername").val(dataResult.username.trim());
-                $("#inputName").val(dataResult.name.trim());
-                $("#inputEmail").val(dataResult.email.trim());
-                $("#user-enable").prop("checked", dataResult.enable === "t");
-                $("#user-admin").prop("checked", dataResult.type === "0");
-                $("#modify-user").click();
+                if (dataResult.status) {
+                    $("#staticID").val(id);
+                    $("#staticUsername").val(dataResult.username.trim());
+                    $("#inputName").val(dataResult.name.trim());
+                    $("#inputEmail").val(dataResult.email.trim());
+                    $("#user-enable").prop("checked", dataResult.enable === "t");
+                    $("#user-admin").prop("checked", dataResult.type === "0");
+                    $("#modify-user").click();
+                } else {
+                    swal("Failed!", "Error Code: " + data.code + "\nDescription: " + data.msg, "error");
+                }
+
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 swal("Server Error: " + textStatus, jqXHR.status + " " + errorThrown, "error");
@@ -503,14 +508,13 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
             },
             success: function (data) {
                 var dataResult = JSON.parse(data);
-                console.log(dataResult);
                 if (dataResult.status === true) {
                     swal("Success", "User Info has been updated", "success");
                     $("#inputPassword").val("");
                     $("#close-user-form").click();
                     loadList();
                 } else {
-                    swal("Update Failed!", dataResult.msg, "error");
+                    swal("Failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
                 }
 
             },

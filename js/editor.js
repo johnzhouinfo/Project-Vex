@@ -895,7 +895,7 @@ $("#popup_contact_submit").on("click", function () {
                     swal("Success", "The ticket has been created. Ticket ID: " + dataResult.ticket_id + ".\n We will reply via email soon.", "success");
                     $("#close-contact-form").click();
                 } else
-                    swal("Failed!", dataResult.msg, "error");
+                    swal("Save page failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
 
             }
         })

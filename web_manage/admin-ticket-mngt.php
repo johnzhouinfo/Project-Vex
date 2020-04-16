@@ -432,7 +432,6 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                 search: keyword,
             },
             success: function (data) {
-                console.log(data);
                 var dataResult = JSON.parse(data);
                 if (dataResult.status) {
                     $("#project-list").empty();
@@ -520,17 +519,21 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
             },
             success: function (data) {
                 var dataResult = JSON.parse(data);
-                console.log(dataResult);
-                $("#staticTitle").val(dataResult.data.title.trim());
-                $("#staticEmail").val(dataResult.data.email.trim());
-                $("#staticID").val(dataResult.data.user_id == null ? "Anonymous" : dataResult.data.user_id);
-                $("#staticName").val(dataResult.data.name.trim());
-                $("#staticUserMsg").val(dataResult.data.msg.trim());
-                $("#staticCreate").val(dataResult.data.create_time.trim());
-                $("#staticUpdate").val(dataResult.data.update_time == null ? "NEW" : dataResult.data.update_time.trim());
-                $("#inputReplyMsg").val(dataResult.data.reply == null ? "" : dataResult.data.reply.trim());
-                $("#solve-switch").prop("checked", dataResult.data.is_solve === "t");
-                $("#modify-user").click();
+                if (dataResult.status) {
+                    $("#staticTitle").val(dataResult.data.title.trim());
+                    $("#staticEmail").val(dataResult.data.email.trim());
+                    $("#staticID").val(dataResult.data.user_id == null ? "Anonymous" : dataResult.data.user_id);
+                    $("#staticName").val(dataResult.data.name.trim());
+                    $("#staticUserMsg").val(dataResult.data.msg.trim());
+                    $("#staticCreate").val(dataResult.data.create_time.trim());
+                    $("#staticUpdate").val(dataResult.data.update_time == null ? "NEW" : dataResult.data.update_time.trim());
+                    $("#inputReplyMsg").val(dataResult.data.reply == null ? "" : dataResult.data.reply.trim());
+                    $("#solve-switch").prop("checked", dataResult.data.is_solve === "t");
+                    $("#modify-user").click();
+                } else {
+                    swal("Failed!", "Error Code: " + data.code + "\nDescription: " + data.msg, "error");
+                }
+
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 swal("Server Error: " + textStatus, jqXHR.status + " " + errorThrown, "error");
@@ -559,7 +562,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                     $("#close-contact-form").click();
                     loadList();
                 } else {
-                    swal("Update Failed!", dataResult.msg, "error");
+                    swal("Update Failed!", "Error Code: " + data.code + "\nDescription: " + data.msg, "error");
                 }
 
             },
