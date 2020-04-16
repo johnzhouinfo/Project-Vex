@@ -845,7 +845,6 @@ $("#help-btn").on("click", function () {
             type: "user",
         },
         success: function (data) {
-            console.log(data);
             var dataResult = JSON.parse(data);
             if (dataResult.status) {
                 $("#inputName").val(dataResult.name.trim());

@@ -40,9 +40,7 @@ $("#popup_loginBTN").on("click", function (event) {
                     } else
                         $("#manage-btn").css("display", "none");
 
-                    console.log(event.originalEvent.view.location.pathname);
                     if (event.originalEvent.view.location.pathname.includes("/editor.php")) {
-                        console.log(data.project);
                         if ($(".drop").attr("src") !== "page.php?id=0" || $(".drop").attr("src") == "./page.php?id=0") {
                             $("#download-btn").removeAttr("disabled");
                             $("#preview-btn").removeAttr("disabled");
