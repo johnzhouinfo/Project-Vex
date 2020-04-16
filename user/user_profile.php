@@ -399,7 +399,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                     swal("Success!", "Your password has been changed!", "success");
                 } else {
                     switch (dataResult.code) {
-                        case 304:
+                        case 302:
                             $("#old-password-err").text(dataResult.msg);
                             break;
                         default:

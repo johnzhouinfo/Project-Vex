@@ -1410,7 +1410,7 @@ pg_close($link);
                     <div style="max-height: 300px; overflow: auto;">
                         <ul id="template-list" style="display: contents">
                             <li>
-                                <img id="template-default template" class="highlight" src="img/white.jpg" width="150"
+                                <img id="template-default" class="template highlight" src="img/white.jpg" width="150"
                                      height="100"
                                      page-src="./model/template/blank.html">
                                 <span>Blank</span>

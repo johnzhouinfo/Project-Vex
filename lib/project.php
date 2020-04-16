@@ -17,7 +17,7 @@ try {
                         retrieve_all_project_list($link);
                     else {
                         writeInfo("Access Project Page Denied, uid: $id");
-                        throw new Exception("You don't have permission.", 1010);
+                        throw new Exception("You don't have permission.", 305);
                     }
                     break;
             }
@@ -42,7 +42,7 @@ try {
         }
 
     } else {
-        throw new Exception("You haven't logged in.", 1010);
+        throw new Exception("You haven't logged in.", 300);
     }
     pg_close($link);
     exit;
@@ -83,12 +83,12 @@ function change_live($id, $productId, $value, $link) {
                     );
                 } else {
                     writeErr("Update live failed, id:$productId, status:$value");
-                    throw new Exception("Update live failed", 1010);
+                    throw new Exception("Update Failed", 410);
                 }
             }
         } else {
             writeErr("Database Schema Exception: $sql");
-            throw new Exception("Internal Server Error", 123);
+            throw new Exception("Internal Server Error", 500);
         }
 
     } else {
@@ -102,19 +102,19 @@ function change_live($id, $productId, $value, $link) {
                     echo json_encode(
                         array(
                             'status' => true,
-                            'msg' => "Update live successfully",
+                            'msg' => "Update Successfully",
                             'code' => 200,
                             'page_status' => $value,
                         )
                     );
                 } else {
                     writeErr("Update live failed, uid: $id pid:$productId, status:$value");
-                    throw new Exception("Update live failed", 1010);
+                    throw new Exception("Update Failed", 410);
                 }
             }
         } else {
             writeErr("Database Schema Exception: $sql");
-            throw new Exception("Internal Server Error", 123);
+            throw new Exception("Internal Server Error", 500);
         }
     }
 }
@@ -139,18 +139,18 @@ function rename_page($id, $productId, $name, $link) {
                     echo json_encode(
                         array(
                             'status' => true,
-                            'msg' => "Update page name successfully",
+                            'msg' => "Update Successfully",
                             'code' => 200,
                         )
                     );
                 } else {
                     writeErr("Update page name failed, uid:$id, pid:$productId, name:$name");
-                    throw new Exception("Update page name failed!", 1010);
+                    throw new Exception("Update Failed!", 411);
                 }
             }
         } else {
             writeErr("Database Schema Exception: $sql");
-            throw new Exception("Internal Server Error", 123);
+            throw new Exception("Internal Server Error", 500);
         }
     } else {
         //Make sure user can only change their own pages
@@ -163,18 +163,18 @@ function rename_page($id, $productId, $name, $link) {
                     echo json_encode(
                         array(
                             'status' => true,
-                            'msg' => "Update page name successfully",
+                            'msg' => "Update Successfully",
                             'code' => 200,
                         )
                     );
                 } else {
                     writeErr("Update page name failed, uid:$id, pid:$productId, name:$name");
-                    throw new Exception("Update page name failed!", 1010);
+                    throw new Exception("Update Failed!", 411);
                 }
             }
         } else {
             writeErr("Database Schema Exception: $sql");
-            throw new Exception("Internal Server Error", 123);
+            throw new Exception("Internal Server Error", 500);
         }
     }
 }
@@ -206,12 +206,12 @@ function save_page($id, $code, $name, $link) {
                 );
             } else {
                 writeErr("Save page failed, uid: $id, name:$name");
-                throw new Exception("Save page failed!", 1010);
+                throw new Exception("Save Failed!", 412);
             }
         }
     } else {
         writeErr("Database Schema Exception: $sql");
-        throw new Exception("Internal Server Error", 123);
+        throw new Exception("Internal Server Error", 500);
     }
 }
 
@@ -235,19 +235,19 @@ function update_page($id, $code, $productId, $link) {
                     echo json_encode(
                         array(
                             'status' => true,
-                            'msg' => "Update page successfully",
+                            'msg' => "Update Successfully",
                             'code' => 200,
                             'product_id' => pg_fetch_row($result)[0]
                         )
                     );
                 } else {
                     writeErr("Update page failed, uid:$id, pid:$productId");
-                    throw new Exception("Update page failed", 1010);
+                    throw new Exception("Update Failed", 413);
                 }
             }
         } else {
             writeErr("Database Schema Exception: $sql");
-            throw new Exception("Internal Server Error", 123);
+            throw new Exception("Internal Server Error", 500);
         }
     } else {
         //Make sure user can only change their own pages
@@ -260,19 +260,19 @@ function update_page($id, $code, $productId, $link) {
                     echo json_encode(
                         array(
                             'status' => true,
-                            'msg' => "Update page successfully",
+                            'msg' => "Update Successfully",
                             'code' => 200,
                             'product_id' => pg_fetch_row($result)[0]
                         )
                     );
                 } else {
                     writeErr("Update page failed, uid:$id, pid:$productId");
-                    throw new Exception("Update page failed", 1010);
+                    throw new Exception("Update Failed", 413);
                 }
             }
         } else {
             writeErr("Database Schema Exception: $sql");
-            throw new Exception("Internal Server Error", 123);
+            throw new Exception("Internal Server Error", 500);
         }
     }
 }
@@ -296,18 +296,18 @@ function delete_page($id, $productId, $link) {
                     echo json_encode(
                         array(
                             'status' => true,
-                            'msg' => "Delete page successfully",
+                            'msg' => "Delete Successfully",
                             'code' => 200,
                         )
                     );
                 } else {
                     writeErr("Update page failed, uid:$id, pid:$productId");
-                    throw new Exception("Delete page failed", 1010);
+                    throw new Exception("Delete Failed", 414);
                 }
             }
         } else {
             writeErr("Database Schema Exception: $sql");
-            throw new Exception("Internal Server Error", 123);
+            throw new Exception("Internal Server Error", 500);
         }
     } else {
         //Make sure user can only change their own pages
@@ -320,18 +320,18 @@ function delete_page($id, $productId, $link) {
                     echo json_encode(
                         array(
                             'status' => true,
-                            'msg' => "Delete page successfully",
+                            'msg' => "Delete Successfully",
                             'code' => 200,
                         )
                     );
                 } else {
-                    writeErr("Update page failed, uid:$id, pid:$productId");
-                    throw new Exception("Delete page failed, id:$productId", 1010);
+                    writeErr("Delete page failed, uid:$id, pid:$productId");
+                    throw new Exception("Delete Failed", 414);
                 }
             }
         } else {
             writeErr("Database Schema Exception: $sql");
-            throw new Exception("Internal Server Error", 123);
+            throw new Exception("Internal Server Error", 500);
         }
 
     }
@@ -356,7 +356,7 @@ function retrieve_project_list($id, $link) {
             $sort = $_GET["sort"];
         else {
             writeErr("Invalid Product Sorting Field: " . $_GET["sort"] . " uid: " . $_SESSION["id"]);
-            throw new Exception("Invalid sorting field", 1000);
+            throw new Exception("Invalid sorting field", 305);
         }
     } else
         $sort = "product_id";
@@ -375,7 +375,7 @@ function retrieve_project_list($id, $link) {
         if ($result = pg_execute($link, "fetch_user_total_num_of_page", array($id))) {
             if (!$result) {
                 writeErr("Count product list failed, uid: $id");
-                throw new Exception("Count product list failed!", 400);
+                throw new Exception("Fetch Failed!", 415);
             }
             $total_page = pg_fetch_row($result)[0];
             if ($total_page) {
@@ -403,7 +403,7 @@ function retrieve_project_list($id, $link) {
                     "%"), $page_size, (($page - 1) * $page_size)))) {
                     if (!$result) {
                         writeErr("Get product list failed, uid: $id");
-                        throw new Exception("Get product list failed!", 400);
+                        throw new Exception("Fetch Failed!", 415);
                     }
                     $projectResult = array();
                     while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
@@ -414,19 +414,19 @@ function retrieve_project_list($id, $link) {
                             'status' => true,
                             'page' => $page_count,
                             'project' => $projectResult,
-                            'msg' => "Fetch Pages Successfully.",
+                            'msg' => "Fetch Successfully.",
                             'code' => 200
                         )
                     );
                 }
             } else {
                 writeErr("Database Schema Exception: $sql");
-                throw new Exception("Internal Server Error", 123);
+                throw new Exception("Internal Server Error", 500);
             }
         }
     } else {
         writeErr("Database Schema Exception: $sql");
-        throw new Exception("Internal Server Error", 123);
+        throw new Exception("Internal Server Error", 500);
     }
 
 
@@ -449,7 +449,7 @@ function retrieve_all_project_list($link) {
             $sort = $_GET["sort"];
         else {
             writeErr("Invalid sorting field sort: " . $_GET["sort"]);
-            throw new Exception("Invalid sorting field", 1000);
+            throw new Exception("Invalid sorting field", 305);
         }
     } else
         $sort = "product_id";
@@ -468,7 +468,7 @@ function retrieve_all_project_list($link) {
         if ($result = pg_execute($link, "fetch_total_num_of_page", array())) {
             if (!$result) {
                 writeErr("Count all products list failed");
-                throw new Exception("Count all products list failed", 400);
+                throw new Exception("Fetch failed", 415);
             }
             $total_page = pg_fetch_row($result)[0];
             if ($total_page) {
@@ -493,7 +493,7 @@ function retrieve_all_project_list($link) {
                     "%"), $page_size, (($page - 1) * $page_size)))) {
                     if (!$result) {
                         writeErr("Get all product list failed");
-                        throw new Exception("Get all product list failed", 400);
+                        throw new Exception("Fetch failed", 415);
                     }
                     $projectResult = array();
                     while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
@@ -504,19 +504,19 @@ function retrieve_all_project_list($link) {
                             'status' => true,
                             'page' => $page_count,
                             'project' => $projectResult,
-                            'msg' => "Fetch all projects successfully.",
+                            'msg' => "Fetch Successfully.",
                             'code' => 200
                         )
                     );
                 }
             } else {
                 writeErr("Database Schema Exception: $sql");
-                throw new Exception("Internal Server Error", 123);
+                throw new Exception("Internal Server Error", 500);
             }
         }
     } else {
         writeErr("Database Schema Exception: $sql");
-        throw new Exception("Internal Server Error", 123);
+        throw new Exception("Internal Server Error", 500);
     }
 
 

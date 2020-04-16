@@ -16,8 +16,10 @@ try {
                 case "admin":
                     if ((isset($_SESSION["admin"]) && isset($_SESSION["admin"]) === true))
                         retrieve_all_user($link);
-                    else
-                        throw new Exception("You don't have permission", 400);
+                    else {
+                        writeInfo("Access User Page Denied, uid: " . $_SESSION["id"]);
+                        throw new Exception("You don't have permission", 304);
+                    }
                     break;
             }
 
@@ -41,7 +43,7 @@ try {
         pg_close($link);
         exit;
     } else {
-        throw new Exception("You haven't logged in.", 1010);
+        throw new Exception("You haven't logged in.", 300);
     }
 } catch (Exception $e) {
     echo json_encode(
@@ -67,8 +69,11 @@ function retrieve_all_user($link) {
         $valid_columns = array('user_id', 'username', 'email', 'type');
         if (in_array($_GET['sort'], $valid_columns))
             $sort = $_GET["sort"];
-        else
-            throw new Exception("Invalid sorting field", 1000);
+        else {
+            writeErr("Invalid User Sorting Field: " . $_GET["sort"] . " uid: " . $_SESSION["id"]);
+            throw new Exception("Invalid sorting field", 305);
+        }
+
     } else
         $sort = "user_id";
     if (isset($_GET["search"]))
@@ -81,8 +86,8 @@ function retrieve_all_user($link) {
         // Execute sql
         if ($result = pg_execute($link, "fetch_total_num_of_user", array())) {
             if (!$result) {
-                writeErr("Get User List FAILED");
-                throw new Exception("Get user list failed", 400);
+                writeErr("Fetch User Number Failed");
+                throw new Exception("Fetch Failed", 401);
             }
             $total_page = pg_fetch_row($result)[0];
             if ($total_page) {
@@ -108,8 +113,8 @@ function retrieve_all_user($link) {
                 if ($result = pg_execute($link, "fetch_users", array(("%" . $keyword .
                     "%"), $page_size, (($page - 1) * $page_size)))) {
                     if (!$result) {
-                        writeErr("Get user list failed");
-                        throw new Exception("Get user list failed", 400);
+                        writeErr("Get User List Failed");
+                        throw new Exception("Fetch Failed", 401);
                     }
                     $projectResult = array();
                     while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
@@ -120,19 +125,19 @@ function retrieve_all_user($link) {
                             'status' => true,
                             'page' => $page_count,
                             'project' => $projectResult,
-                            'msg' => "Fetch Users Successfully.",
+                            'msg' => "Fetch Successfully.",
                             'code' => 200
                         )
                     );
                 }
             } else {
                 writeErr("Database Schema Exception: $sql");
-                throw new Exception("Internal Server Error", 123);
+                throw new Exception("Internal Server Error", 500);
             }
         }
     } else {
         writeErr("Database Schema Exception: $sql");
-        throw new Exception("Internal Server Error", 123);
+        throw new Exception("Internal Server Error", 500);
     }
 
 }
@@ -161,19 +166,17 @@ function retrieve_profile($id, $link) {
                         'icon' => $result_array[3],
                         'type' => $result_array[4],
                         'enable' => $result_array[5],
-                        'msg' => "Fetch user info successfully.",
+                        'msg' => "Fetch Successfully.",
                         'code' => 200
                     )
                 );
             } else {
-                $uid = $_SESSION['id'];
-                writeErr("User doesn't exist, userId: $id, request by $uid");
-                throw new Exception("User doesn't exist, userId $id", 1000);
+                throw new Exception("User doesn't exist", 301);
             }
         }
     } else {
         writeErr("Database Schema Exception: $sql");
-        throw new Exception("Internal Server Error", 123);
+        throw new Exception("Internal Server Error", 500);
     }
 
 }
@@ -197,18 +200,18 @@ function update_profile($id, $name, $email, $link) {
                 echo json_encode(
                     array(
                         'status' => true,
-                        'msg' => "Update profile successfully",
+                        'msg' => "Update Successfully",
                         'code' => 200,
                     )
                 );
             } else {
                 writeErr("Update profile failed, id:$id");
-                throw new Exception("Update profile failed", 1010);
+                throw new Exception("Update Failed", 402);
             }
         }
     } else {
         writeErr("Database Schema Exception: $sql");
-        throw new Exception("Internal Server Error", 123);
+        throw new Exception("Internal Server Error", 500);
     }
 
 }
@@ -231,18 +234,18 @@ function update_user_icon($id, $icon, $link) {
                 echo json_encode(
                     array(
                         'status' => true,
-                        'msg' => "Update icon successfully",
+                        'msg' => "Update Successfully",
                         'code' => 200,
                     )
                 );
             } else {
                 writeErr("Update icon failed, id:$id");
-                throw new Exception("Update icon failed!", 1010);
+                throw new Exception("Update Failed!", 403);
             }
         }
     } else {
         writeErr("Database Schema Exception: $sql");
-        throw new Exception("Internal Server Error", 123);
+        throw new Exception("Internal Server Error", 500);
     }
 }
 
@@ -268,13 +271,13 @@ function update_password($id, $oldPassword, $newPassword, $link) {
                             echo json_encode(
                                 array(
                                     'status' => true,
-                                    'msg' => "Update password successfully",
+                                    'msg' => "Update Successfully",
                                     'code' => 200,
                                 )
                             );
                         } else {
                             writeErr("Update password failed, id:$id");
-                            throw new Exception("Update password failed", 1010);
+                            throw new Exception("Update Failed", 404);
                         }
                     }
                 }
@@ -283,14 +286,14 @@ function update_password($id, $oldPassword, $newPassword, $link) {
                     array(
                         'status' => false,
                         'msg' => "Old password doesn't match!",
-                        'code' => 304,
+                        'code' => 302,
                     )
                 );
             }
         }
     } else {
         writeErr("Database Schema Exception: $sql");
-        throw new Exception("Internal Server Error", 123);
+        throw new Exception("Internal Server Error", 500);
     }
 }
 
@@ -327,11 +330,11 @@ function update_user($id, $name, $email, $password, $enable, $admin, $link) {
                 if ($stmt2 = pg_prepare($link, "disable_user_all_page", $sql2)) {
                     if ($result2 = pg_execute($link, "disable_user_all_page", array($id))) {
                         pg_query("commit");
-                        writeInfo("Disable/Update User ID:$id, Name: $name, Email:$email, enable:$enable, admin:$admin");
+                        writeInfo("Disable User ID:$id, Name: $name, Email:$email, enable:$enable, admin:$admin");
                         echo json_encode(
                             array(
                                 'status' => true,
-                                'msg' => "Update User Info and Disable User successfully",
+                                'msg' => "Update Successfully",
                                 'code' => 200,
                             )
                         );
@@ -339,11 +342,11 @@ function update_user($id, $name, $email, $password, $enable, $admin, $link) {
                         //Case when failed at update at multi sql lines, it needs rollback to prevent data loss.
                         pg_query("rollback");
                         writeErr("Disable user's all page failed, User ID: $id");
-                        throw new Exception("Disable user's all page failed!", 102);
+                        throw new Exception("Disable failed!", 405);
                     }
                 } else {
                     writeErr("Database Schema Exception: $sql2");
-                    throw new Exception("Internal Server Error", 1010);
+                    throw new Exception("Internal Server Error", 500);
                 }
             } else {
                 if (pg_affected_rows($result) == 1) {
@@ -351,19 +354,19 @@ function update_user($id, $name, $email, $password, $enable, $admin, $link) {
                     echo json_encode(
                         array(
                             'status' => true,
-                            'msg' => "Update User Info successfully",
+                            'msg' => "Update successfully",
                             'code' => 200,
                         )
                     );
                 } else {
                     writeErr("Update user failed, id:$id");
-                    throw new Exception("Update user failed!", 1010);
+                    throw new Exception("Update Failed!", 402);
                 }
             }
         }
     } else {
         writeErr("Database Schema Exception: $sql");
-        throw new Exception("Internal Server Error", 123);
+        throw new Exception("Internal Server Error", 500);
     }
 
 
