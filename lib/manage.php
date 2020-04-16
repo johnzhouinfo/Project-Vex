@@ -41,20 +41,20 @@ function get_num_users($link) {
         if ($result = pg_execute($link, "fetch_total_num_of_user", array())) {
             if (!$result) {
                 writeErr("Get total number of user failed");
-                throw new Exception("Get total number of user failed", 400);
+                throw new Exception("Fetch Failed", 401);
             }
             echo json_encode(
                 array(
                     'status' => true,
                     'result' => pg_fetch_row($result)[0],
-                    'msg' => "Successfully Fetch Number of User.",
+                    'msg' => "Fetch Successfully.",
                     'code' => 200
                 )
             );
         }
     } else {
         writeErr("Database Schema Exception: $sql");
-        throw new Exception("Internal Server Error", 123);
+        throw new Exception("Internal Server Error", 500);
     }
 
 }
@@ -71,20 +71,20 @@ function get_num_pages($link) {
         if ($result = pg_execute($link, "fetch_total_num_of_page", array())) {
             if (!$result) {
                 writeErr("Get total number of page failed");
-                throw new Exception("Get total number of page failed", 400);
+                throw new Exception("Fetch Failed", 415);
             }
             echo json_encode(
                 array(
                     'status' => true,
                     'result' => pg_fetch_row($result)[0],
-                    'msg' => "Successfully Fetch Number of Page.",
+                    'msg' => "Fetch Successfully.",
                     'code' => 200
                 )
             );
         }
     } else {
         writeErr("Database Schema Exception: $sql");
-        throw new Exception("Internal Server Error", 123);
+        throw new Exception("Internal Server Error", 500);
     }
 
 }
@@ -101,20 +101,20 @@ function get_num_lives($link) {
         if ($result = pg_execute($link, "fetch_total_num_of_live", array())) {
             if (!$result) {
                 writeErr("Get total number of live failed");
-                throw new Exception("Get total number of live failed", 400);
+                throw new Exception("Fetch Failed", 420);
             }
             echo json_encode(
                 array(
                     'status' => true,
                     'result' => pg_fetch_row($result)[0],
-                    'msg' => "Successfully Fetch Number of Live.",
+                    'msg' => "Fetch Successfully.",
                     'code' => 200
                 )
             );
         }
     } else {
         writeErr("Database Schema Exception: $sql");
-        throw new Exception("Internal Server Error", 123);
+        throw new Exception("Internal Server Error", 500);
     }
 }
 
@@ -130,19 +130,19 @@ function get_num_tickets($link) {
         if ($result = pg_execute($link, "fetch_total_num_of_ticket", array())) {
             if (!$result) {
                 writeErr("Get total number of ticket failed");
-                throw new Exception("Get total number of ticket failed", 400);
+                throw new Exception("Fetch Failed", 419);
             }
             echo json_encode(
                 array(
                     'status' => true,
                     'result' => pg_fetch_row($result)[0],
-                    'msg' => "Successfully Fetch Number of Ticket.",
+                    'msg' => "Fetch Successfully.",
                     'code' => 200
                 )
             );
         }
     } else {
         writeErr("Database Schema Exception: $sql");
-        throw new Exception("Internal Server Error", 123);
+        throw new Exception("Internal Server Error", 500);
     }
 }

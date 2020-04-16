@@ -330,10 +330,14 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                 success: function (dataResult) {
                     console.log(dataResult);
                     var dataResult = JSON.parse(dataResult);
-                    $("#name_display_profile_usr_pg").text("Name: " + name);
-                    $("#email_display_profile_usr_pg").text("Email: " + email);
-                    $("#nav-name").text("Hi, " + name);
-                    swal("Success!", "Your profile has been updated!", "success");
+                    if (dataResult.status) {
+                        $("#name_display_profile_usr_pg").text("Name: " + name);
+                        $("#email_display_profile_usr_pg").text("Email: " + email);
+                        $("#nav-name").text("Hi, " + name);
+                        swal("Success!", "Your profile has been updated!", "success");
+                    } else {
+                        swal("Failed!", "Error Code: " + data.code + "\nDescription: " + data.msg, "error");
+                    }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
 
@@ -391,7 +395,6 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             },
             success: function (dataResult) {
                 var dataResult = JSON.parse(dataResult);
-                console.log(dataResult);
                 if (dataResult.status) {
                     $("#old-password").val("");
                     $("#new-password").val("");
@@ -399,11 +402,11 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                     swal("Success!", "Your password has been changed!", "success");
                 } else {
                     switch (dataResult.code) {
-                        case 304:
+                        case 302:
                             $("#old-password-err").text(dataResult.msg);
                             break;
                         default:
-                            swal("Error", dataResult.msg, "error");
+                            swal("Failed!", "Error Code: " + data.code + "\nDescription: " + data.msg, "error");
                             break;
                     }
                 }
@@ -428,14 +431,12 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             },
             success: function (dataResult) {
                 var dataResult = JSON.parse(dataResult);
-                console.log(dataResult);
                 if (dataResult.status) {
                     swal("Success!", "Your new avatar has been changed!", "success");
                     $("#profile_avatar").attr("src", icon);
                     $("#nav-avatar").attr("src", icon);
                 } else {
-                    swal("Error", dataResult.msg, "error");
-
+                    swal("Failed!", "Error Code: " + data.code + "\nDescription: " + data.msg, "error");
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -496,7 +497,6 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             async: true,
             timeout: 5000,
             success: function (data) {
-                console.log(data);
                 var data = JSON.parse(data);
                 if (data.status == true) {
                     window.location.href = "../login.php";

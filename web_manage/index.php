@@ -244,7 +244,6 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
             },
             success: function (data) {
                 var dataResult = JSON.parse(data);
-                console.log(dataResult);
                 if (dataResult.status) {
                     $("#user-size").text(dataResult.result.trim());
                 } else
@@ -268,7 +267,6 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
             },
             success: function (data) {
                 var dataResult = JSON.parse(data);
-                console.log(dataResult);
                 if (dataResult.status) {
                     $("#page-size").text(dataResult.result.trim());
                 } else
@@ -292,7 +290,6 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
             },
             success: function (data) {
                 var dataResult = JSON.parse(data);
-                console.log(dataResult);
                 if (dataResult.status) {
                     $("#live-size").text(dataResult.result.trim());
                 } else
@@ -316,7 +313,6 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
             },
             success: function (data) {
                 var dataResult = JSON.parse(data);
-                console.log(dataResult);
                 if (dataResult.status) {
                     $("#ticket-size").text(dataResult.result.trim());
                 } else

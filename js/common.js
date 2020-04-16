@@ -24,9 +24,7 @@ $("#popup_loginBTN").on("click", function (event) {
                 password: password,
             },
             success: function (data) {
-
                 var data = JSON.parse(data);
-                console.log(data);
                 if (data.status) {
                     isLoggined = true;
                     $("#close-login-form").click();
@@ -42,9 +40,7 @@ $("#popup_loginBTN").on("click", function (event) {
                     } else
                         $("#manage-btn").css("display", "none");
 
-                    console.log(event.originalEvent.view.location.pathname);
                     if (event.originalEvent.view.location.pathname.includes("/editor.php")) {
-                        console.log(data.project);
                         if ($(".drop").attr("src") !== "page.php?id=0" || $(".drop").attr("src") == "./page.php?id=0") {
                             $("#download-btn").removeAttr("disabled");
                             $("#preview-btn").removeAttr("disabled");
@@ -105,7 +101,6 @@ $("#logout-btn").on("click", function () {
         async: true,
         timeout: 5000,
         success: function (data) {
-            console.log(data);
             isLoggined = false;
             var data = JSON.parse(data);
             if (data.status == true) {

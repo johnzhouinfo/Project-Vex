@@ -25,7 +25,7 @@ try {
                 }
             } else {
                 writeInfo("Access Ticket Page Denied, uid: $id");
-                throw new Exception("You don't have permission.", 1010);
+                throw new Exception("You don't have permission.", 304);
             }
         } else {
             $post_type = $_POST["type"];
@@ -39,7 +39,7 @@ try {
             }
         }
     } else {
-        throw new Exception("You haven't logged in.", 1010);
+        throw new Exception("You haven't logged in.", 300);
     }
     pg_close($link);
     exit;
@@ -75,7 +75,7 @@ function create_ticket($name, $email, $title, $message, $link) {
         if ($result = pg_execute($link, "insert_ticket", array($id, $name, $email, $title, $message, date('Y-m-d h:i:s')))) {
             if (!$result || pg_affected_rows($result) == 0) {
                 writeErr("Save Ticket Record in Database failed. uid:$id, title:$title");
-                throw new Exception("Save Record in Database failed.", 102);
+                throw new Exception("Save Failed.", 416);
             } else {
                 $ticket_id = pg_fetch_row($result)[0];
                 //send email to user
@@ -93,7 +93,7 @@ function create_ticket($name, $email, $title, $message, $link) {
         }
     } else {
         writeErr("Database Schema Exception: $sql");
-        throw new Exception("Internal Server Error", 123);
+        throw new Exception("Internal Server Error", 500);
     }
 }
 
@@ -106,7 +106,7 @@ function create_ticket($name, $email, $title, $message, $link) {
 function delete_ticket($id, $link) {
     if (!(isset($_SESSION["admin"]) && isset($_SESSION["admin"]) === true)) {
         writeInfo("Access Ticket-Delete Denied, tid:$id uid:" . $_SESSION["id"]);
-        throw new Exception("You don't have permission.", 1010);
+        throw new Exception("You don't have permission.", 304);
     }
     $sql = "UPDATE vex_ticket SET is_delete = true WHERE ticket_id = $1 AND is_delete = false";
     if ($stmt = pg_prepare($link, "delete_ticket", $sql)) {
@@ -114,13 +114,13 @@ function delete_ticket($id, $link) {
         if ($result = pg_execute($link, "delete_ticket", array($id))) {
             if (!$result || pg_affected_rows($result) == 0) {
                 writeErr("Delete Record in Database failed. tid: $id, uid: " . $_SESSION["id"]);
-                throw new Exception("Delete Record in Database failed. ", 102);
+                throw new Exception("Delete Failed.", 102);
             } else {
                 writeInfo("Delete Ticket, tid: $id");
                 echo json_encode(
                     array(
                         'status' => true,
-                        'msg' => "Delete Ticket Successfully.",
+                        'msg' => "Delete Successfully.",
                         'code' => 200,
                     )
                 );
@@ -128,7 +128,7 @@ function delete_ticket($id, $link) {
         }
     } else {
         writeErr("Database Schema Exception: $sql");
-        throw new Exception("Internal Server Error", 123);
+        throw new Exception("Internal Server Error", 500);
     }
 }
 
@@ -143,7 +143,7 @@ function delete_ticket($id, $link) {
 function update_ticket($id, $reply, $solve, $link) {
     if (!(isset($_SESSION["admin"]) && isset($_SESSION["admin"]) === true)) {
         writeInfo("Access Ticket-Update Denied, tid:$id uid:" . $_SESSION["id"]);
-        throw new Exception("You don't have permission.", 1010);
+        throw new Exception("You don't have permission.", 304);
     }
     $email = "";
     $msg = "";
@@ -158,12 +158,12 @@ function update_ticket($id, $reply, $solve, $link) {
 
                 $msg = $result_array[1];
             } else {
-                throw new Exception("Ticket doesn't exist, ticketId $id", 1000);
+                throw new Exception("Ticket doesn't exist", 307);
             }
         }
     } else {
         writeErr("Database Schema Exception: $sql");
-        throw new Exception("Internal Server Error", 123);
+        throw new Exception("Internal Server Error", 500);
     }
 
     //Update ticket
@@ -174,7 +174,7 @@ function update_ticket($id, $reply, $solve, $link) {
         if ($result = pg_execute($link, "update_ticket", array($reply, $_SESSION["id"], $date, $solve, $id))) {
             if (!$result || pg_affected_rows($result) == 0) {
                 writeErr("Update Ticket failed, tid: $id, uid: " . $_SESSION["id"]);
-                throw new Exception("Update Record in Database failed. ", 102);
+                throw new Exception("Update Failed. ", 418);
             } else {
                 writeInfo("Update Ticket, tid:$id, uid: " . $_SESSION["id"]);
                 //Send email to user
@@ -182,7 +182,7 @@ function update_ticket($id, $reply, $solve, $link) {
                 echo json_encode(
                     array(
                         'status' => true,
-                        'msg' => "Update Ticket Successfully.",
+                        'msg' => "Update Successfully.",
                         'code' => 200,
                     )
                 );
@@ -190,7 +190,7 @@ function update_ticket($id, $reply, $solve, $link) {
         }
     } else {
         writeErr("Database Schema Exception: $sql");
-        throw new Exception("Internal Server Error", 123);
+        throw new Exception("Internal Server Error", 500);
     }
 }
 
@@ -211,7 +211,7 @@ function retrieve_ticket_list($link) {
             $sort = $_GET["sort"];
         else {
             writeErr("Invalid Ticket Sorting Field: " . $_GET["sort"] . " uid: " . $_SESSION["id"]);
-            throw new Exception("Invalid sorting field", 1000);
+            throw new Exception("Invalid sorting field", 305);
         }
 
     } else
@@ -231,7 +231,7 @@ function retrieve_ticket_list($link) {
         if ($result = pg_execute($link, "fetch_total_num_of_page", array())) {
             if (!$result) {
                 writeErr("Count all ticket list failed");
-                throw new Exception("Count all ticket list failed", 400);
+                throw new Exception("Fetch Failed", 419);
             }
             $total_page = pg_fetch_row($result)[0];
             if ($total_page) {
@@ -253,8 +253,8 @@ function retrieve_ticket_list($link) {
                 if ($result = pg_execute($link, "fetch_all_tickets", array(("%" . $keyword .
                     "%"), $page_size, (($page - 1) * $page_size)))) {
                     if (!$result) {
-                        writeErr("Get all ticket list failed");
-                        throw new Exception("Get all ticket list failed", 400);
+                        writeErr("Fetch all ticket list failed");
+                        throw new Exception("Fetch Failed", 419);
                     }
                     $projectResult = array();
                     while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
@@ -265,19 +265,19 @@ function retrieve_ticket_list($link) {
                             'status' => true,
                             'pages' => $page_count,
                             'project' => $projectResult,
-                            'msg' => "Login Successfully.",
+                            'msg' => "Fetch Successfully.",
                             'code' => 200
                         )
                     );
                 }
             } else {
                 writeErr("Database Schema Exception: $sql");
-                throw new Exception("Internal Server Error", 123);
+                throw new Exception("Internal Server Error", 500);
             }
         }
     } else {
         writeErr("Database Schema Exception: $sql");
-        throw new Exception("Internal Server Error", 123);
+        throw new Exception("Internal Server Error", 500);
     }
 }
 
@@ -299,16 +299,16 @@ function retrieve_ticket($id, $link) {
                     array(
                         'status' => true,
                         'data' => $result_array,
-                        'msg' => "Fetch Ticket successfully.",
+                        'msg' => "Fetch Successfully.",
                         'code' => 200
                     )
                 );
             } else {
-                throw new Exception("Ticket doesn't exist, ticketId $id", 1000);
+                throw new Exception("Ticket doesn't exist", 307);
             }
         }
     } else {
         writeErr("Database Schema Exception: $sql");
-        throw new Exception("Internal Server Error", 123);
+        throw new Exception("Internal Server Error", 500);
     }
 }

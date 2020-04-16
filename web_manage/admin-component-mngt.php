@@ -488,14 +488,16 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
             },
             success: function (data) {
                 var dataResult = JSON.parse(data);
-                console.log(dataResult);
-                $("#component-window").click();
-                $("#staticID").val(dataResult.component_id.trim());
-                $("#inputName").val(dataResult.component_name.trim());
-                $("#inputImage").attr("src", dataResult.icon === "" ? "../img/empty_avatar.png" : dataResult.icon.trim());
-                $("#component-code-field").val(dataResult.html.trim().replace(/&apos:/g, "'"));
-                $("#component-enable").prop("checked", dataResult.is_enable === "t");
-
+                if (dataResult.status) {
+                    $("#component-window").click();
+                    $("#staticID").val(dataResult.component_id.trim());
+                    $("#inputName").val(dataResult.component_name.trim());
+                    $("#inputImage").attr("src", dataResult.icon === "" ? "../img/empty_avatar.png" : dataResult.icon.trim());
+                    $("#component-code-field").val(dataResult.html.trim().replace(/&apos:/g, "'"));
+                    $("#component-enable").prop("checked", dataResult.is_enable === "t");
+                } else {
+                    swal("Failed!", "Error Code: " + data.code + "\nDescription: " + data.msg, "error");
+                }
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 swal("Server Error: " + textStatus, jqXHR.status + " " + errorThrown, "error");
@@ -573,7 +575,6 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                             id: componentId,
                         },
                         success: function (data) {
-                            console.log(data);
                             var data = JSON.parse(data);
                             if (data.status == true) {
                                 setTimeout(function () {
@@ -630,9 +631,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                             extension: extension,
                         },
                         success: function (data) {
-                            console.log(data);
                             var data = JSON.parse(data);
-
                             if (data.status == true) {
                                 var hostname = window.location.href.slice(0, window.location.href.indexOf("/web_manage"));
                                 console.log(hostname);
@@ -641,6 +640,9 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                                 swal("Failed!", "Error Code: " + data.code + "\nDescription: " + data.msg, "error");
                             }
                         },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            swal("Server Error: " + textStatus, jqXHR.status + " " + errorThrown, "error");
+                        }
                     });
 
                 });

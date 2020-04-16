@@ -601,7 +601,6 @@ function saveOrUpdate(event) {
             var data = JSON.parse(data);
             if (data.status == true) {
                 swal("Saved!", "Your page has been saved!", "success");
-                console.log(data.product_id);
                 if (isCreate) {
                     var productId = data.product_id;
                     $("#product-list [new = 'true'] .product-list-name").attr("id", "product-id-" + productId).attr("productId", productId);
@@ -700,8 +699,8 @@ $("#popup_save_name_BTN").on("click", function (event) {
  * Select the template page, highlight the selected element
  */
 $("#template-list > li > img").on("click", function (event) {
-    $("#template-list li .highlight").attr("class", "");
-    $(event.target).attr("class", "highlight");
+    $("#template-list li .highlight").removeClass("highlight");
+    $(event.target).addClass("highlight");
 });
 
 /**
@@ -812,8 +811,8 @@ function create_page(name) {
     undo_manager.clear();
     $("#product-list").append(html);
     $("#popup_new_page_name").val("");
-    $("#template-list li .highlight").attr("class", "");
-    $("#template-list #template-default").attr("class", "highlight");
+    $("#template-list li .highlight").removeClass("highlight");
+    $("#template-list #template-default").addClass("highlight");
     $("#close-new-page-form").click();
 
 }
@@ -846,7 +845,6 @@ $("#help-btn").on("click", function () {
             type: "user",
         },
         success: function (data) {
-            console.log(data);
             var dataResult = JSON.parse(data);
             if (dataResult.status) {
                 $("#inputName").val(dataResult.name.trim());
@@ -896,7 +894,7 @@ $("#popup_contact_submit").on("click", function () {
                     swal("Success", "The ticket has been created. Ticket ID: " + dataResult.ticket_id + ".\n We will reply via email soon.", "success");
                     $("#close-contact-form").click();
                 } else
-                    swal("Failed!", dataResult.msg, "error");
+                    swal("Save page failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
 
             }
         })
