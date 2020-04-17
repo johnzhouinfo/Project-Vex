@@ -19,31 +19,37 @@ if (!$componentResult) {
 
 //Open project from the user_profile or admin_project_mngt URL with get request.
 if (isset($_GET["id"])) {
-    $pageId = $_GET["id"];
+    //make sure user entered a valid number
+    $pageId = is_numeric($_GET["id"]) ? $_GET["id"] : 0;
+    //user must logged in
     if (isset($_SESSION["loggedin"])) {
         if (isset($_SESSION["admin"]) && isset($_SESSION["admin"]) === true) {
-            $sql = "SELECT * from vex_product WHERE product_id = $pageId AND is_delete = false";
+            $sql = "SELECT * from vex_product WHERE product_id = $1 AND is_delete = false";
+            $insertion = array($pageId);
         } else {
-            $sql = "SELECT * from vex_product WHERE product_id = $pageId AND user_id = $userId AND is_delete = false";
+            $sql = "SELECT * from vex_product WHERE product_id = $1 AND user_id = $2 AND is_delete = false";
+            $insertion = array($pageId, $userId);
         }
-        $loadPageResult = pg_query($link, $sql);
-        echo "<script>
-			document.addEventListener('DOMContentLoaded',function() {
-				
-				document.getElementById('download-btn').removeAttribute('disabled');
-				document.getElementById('save-btn').removeAttribute('disabled');
-				document.getElementById('preview-btn').removeAttribute('disabled');
-            
-            });
-            </script>";
+        if ($stmt = pg_prepare($link, "load_page", $sql)) {
+            // Execute sql
+            if ($result = pg_execute($link, "load_page", $insertion)) {
+                $loadPageResult = pg_fetch_row($result)[0];
+            } else {
+                $loadPageResult = array();
+            }
+        } else {
+            writeErr("Database Schema Exception: $sql");
+            echo "<script>setTimeout(function() {
+                      swal(\"Failed!\", \"ERR_CODE: 500, Internal Server Error!\", \"error\");
+                    },100)</script>";
+            $pageId = 0;
+        }
     } else {
         echo "<script>setTimeout(function() {
-                      swal(\"Failed!\", \"You don't have permission!\", \"error\");
+                      swal(\"Failed!\", \"You haven\'t logged in!\", \"error\");
                     },100)</script>";
         $pageId = 0;
     }
-
-
 }
 
 pg_close($link);
@@ -328,8 +334,8 @@ pg_close($link);
                 </div>
             </div>
             <?php
-            if (isset($_GET["id"])) {
-                if (pg_num_rows($loadPageResult) == 0) {
+            if (isset($_GET["id"]) && isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+                if (count($loadPageResult) == 0) {
                     if (isset($_SESSION["admin"])) {
                         echo "<script>setTimeout(function() {swal('Failed!', 'Page doesn\'t exist!', 'error');},100)</script>";
                         echo "<iframe class=\"drop\" style=\"width:100%;height:100%;\" src=\"page.php?id=0\" product-id=\"\"></iframe>";
@@ -338,8 +344,13 @@ pg_close($link);
                         echo "<iframe class=\"drop\" style=\"width:100%;height:100%;\" src=\"page.php?id=0\" product-id=\"\"></iframe>";
                     }
                 } else {
-                    $pageId = $_GET["id"];
                     echo "<iframe class=\"drop\" style=\"width:100%;height:100%;\" src=\"page.php?id=$pageId\" product-id=\"$pageId\"></iframe>";
+                    echo "<script>document.addEventListener('DOMContentLoaded',function() {
+                            document.getElementById('download-btn').removeAttribute('disabled');
+				            document.getElementById('save-btn').removeAttribute('disabled');
+				            document.getElementById('preview-btn').removeAttribute('disabled');
+                            });
+                         </script>";
                 }
             } else {
                 echo "<iframe class=\"drop\" style=\"width:100%;height:100%;\" src=\"page.php?id=0\" product-id=\"\"></iframe>";
