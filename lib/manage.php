@@ -26,7 +26,13 @@ try {
     pg_close($link);
     exit;
 } catch (Exception $e) {
-
+    echo json_encode(
+        array(
+            'status' => false,
+            'msg' => $e->getMessage(),
+            'code' => $e->getCode()
+        )
+    );
 }
 
 /**
