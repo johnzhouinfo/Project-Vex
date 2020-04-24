@@ -52,6 +52,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $_SESSION["id"] = $user_id;
                             $_SESSION["name"] = $name;
                             $_SESSION["icon"] = $icon;
+                            //Log
+                            if (!is_dir("log")) {
+                                //Create our directory if it does not exist
+                                mkdir("log");
+                            }
+                            $date = date('h:i:s');
+                            file_put_contents('log/log_' . date("j.n.Y") .
+                                '.log', "[INFO] $date: User Logged in, uid: $user_id\n", FILE_APPEND);
                             // If the user is administrator or not
                             if ($result_array[5] == 0) {
                                 $_SESSION["admin"] = true;
@@ -70,7 +78,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // Display an error message if username doesn't exist
                     $username_err = "Username doesn't exist.";
                 }
+            } else {
+                //Log login error
+                if (!is_dir("log")) {
+                    //Create our directory if it does not exist
+                    mkdir("log");
+                }
+                $date = date('h:i:s');
+                file_put_contents('log/err_log_' . date("j.n.Y") .
+                    '.log', "[ERROR] $date: User Failed to Login, username:$username\n", FILE_APPEND);
             }
+        } else {
+            //Log schema error
+            if (!is_dir("log")) {
+                //Create our directory if it does not exist
+                mkdir("log");
+            }
+            $date = date('h:i:s');
+            file_put_contents('log/err_log_' . date("j.n.Y") .
+                '.log', "[ERROR] $date: Database Schema Exception: $sql\n", FILE_APPEND);
         }
     }
 // Close statement
