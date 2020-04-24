@@ -86,8 +86,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt = pg_prepare($link, "insert_user", $sql)) {
             // Attempt to execute the prepared statement
             if ($result = pg_execute($link, "insert_user", array($username, hash("sha256", trim($_POST["password"])), $username, trim($_POST["email"]), date('Y-m-d h:i:s')))) {
+                //log file
+                $id = pg_fetch_row($result)[0];
+                if (!is_dir("log")) {
+                    //Create our directory if it does not exist
+                    mkdir("log");
+                }
+                $date = date('h:i:s');
+                file_put_contents('log/log_' . date("j.n.Y") .
+                    '.log', "[INFO] $date: Created User, uid: $id\n", FILE_APPEND);
                 // Redirect to login page
-                writeInfo("Created User, uid:" . pg_fetch_row($result)[0]);
                 if (isset($_GET["redirect"]) && $_GET["redirect"] == "true") {
                     echo "<script>setTimeout(function() {
                       swal(\"Success!\", \"This page will close at 5 sec.\", \"success\");
@@ -105,11 +113,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     },5000);</script>";
                 }
             } else {
-                writeErr("Create User Failed!, username:$username");
+                //Log error
+                if (!is_dir("log")) {
+                    //Create our directory if it does not exist
+                    mkdir("log");
+                }
+                $date = date('h:i:s');
+                file_put_contents('log/err_log_' . date("j.n.Y") .
+                    '.log', "[ERROR] $date: Create User Failed!, username:$username\n", FILE_APPEND);
                 echo "<script>setTimeout(function() {
-                      swal(\"Failed!\", \"Create User Failed! Please Try again.\", \"Error\");
+                      swal(\"Failed!\", \"Create User Failed! Please Try again.\", \"error\");
                     },100)</script>";
             }
+        } else {
+            //Log schema error
+            if (!is_dir("log")) {
+                //Create our directory if it does not exist
+                mkdir("log");
+            }
+            $date = date('h:i:s');
+            file_put_contents('log/err_log_' . date("j.n.Y") .
+                '.log', "[ERROR] $date: Database Schema Exception: $sql\n", FILE_APPEND);
+            echo "<script>setTimeout(function() {
+                      swal(\"Failed!\", \"Internal Server Error! Please Try again Later.\", \"error\");
+                    },100)</script>";
         }
     }
     // Close connection

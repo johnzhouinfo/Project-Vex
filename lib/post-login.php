@@ -18,6 +18,7 @@ try {
                     if (hash("sha256", $password) === trim($result_array[2])) {
                         // Checking the user who has been blocked or not
                         if (trim($result_array[8]) == 't') {
+                            writeInfo("User logged in, uid: $user_id");
                             $_SESSION["loggedin"] = true;
                             $_SESSION["username"] = $username;
                             $_SESSION["id"] = $user_id;
@@ -63,13 +64,18 @@ try {
                     // Display an error message if username doesn't exist
                     throw new Exception("The username does not exist.", 301);
                 }
+            } else {
+                writeErr("User Failed to Login, username:$username");
+                throw new Exception("User Failed to Login!", 304);
             }
-            pg_close($link);
+        } else {
+            writeErr("Database Schema Exception: $sql");
+            throw new Exception("Internal Server Error", 123);
         }
     } else {
-        writeErr("Database Schema Exception: $sql");
-        throw new Exception("Internal Server Error", 123);
+        throw new Exception("You already logged in", 304);
     }
+    pg_close($link);
 } catch (Exception $e) {
     echo json_encode(
         array(
