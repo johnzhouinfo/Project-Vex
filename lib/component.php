@@ -224,10 +224,11 @@ function retrieve_component_list_with_page($link) {
     if ($page <= 0)
         $page = 1;
     $page_size = 5;
-    $sql = "SELECT count(*) AS amount FROM vex_component WHERE is_delete = false";
+    $sql = "SELECT count(*) AS amount FROM vex_component WHERE is_delete = false AND upper(component_name) LIKE upper($1)";
     if ($stmt = pg_prepare($link, "fetch_component_total_num", $sql)) {
         // Execute sql
-        if ($result = pg_execute($link, "fetch_component_total_num", array())) {
+        if ($result = pg_execute($link, "fetch_component_total_num", array(("%" . $keyword .
+            "%")))) {
             if (!$result) {
                 writeErr("Count component list failed");
                 throw new Exception("Fetch Failed", 407);

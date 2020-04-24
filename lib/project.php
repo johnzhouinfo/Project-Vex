@@ -369,10 +369,11 @@ function retrieve_project_list($id, $link) {
     if ($page <= 0)
         $page = 1;
     $page_size = 5;
-    $sql = "SELECT count(*) AS amount FROM vex_product WHERE user_id = $1 AND is_delete = false";
+    $sql = "SELECT count(*) AS amount FROM vex_product WHERE user_id = $1 AND is_delete = false AND UPPER(product_name) LIKE UPPER($2)";
     if ($stmt = pg_prepare($link, "fetch_user_total_num_of_page", $sql)) {
         // Execute sql
-        if ($result = pg_execute($link, "fetch_user_total_num_of_page", array($id))) {
+        if ($result = pg_execute($link, "fetch_user_total_num_of_page", array($id, ("%" . $keyword .
+            "%")))) {
             if (!$result) {
                 writeErr("Count product list failed, uid: $id");
                 throw new Exception("Fetch Failed!", 415);
@@ -462,10 +463,11 @@ function retrieve_all_project_list($link) {
     if ($page <= 0)
         $page = 1;
     $page_size = 5;
-    $sql = "SELECT count(*) AS amount FROM vex_product WHERE is_delete = false";
+    $sql = "SELECT count(*) AS amount FROM vex_product WHERE is_delete = false AND UPPER(product_name) LIKE UPPER($1)";
     if ($stmt = pg_prepare($link, "fetch_total_num_of_page", $sql)) {
         // Execute sql
-        if ($result = pg_execute($link, "fetch_total_num_of_page", array())) {
+        if ($result = pg_execute($link, "fetch_total_num_of_page", array(("%" . $keyword .
+            "%")))) {
             if (!$result) {
                 writeErr("Count all products list failed");
                 throw new Exception("Fetch failed", 415);

@@ -225,10 +225,11 @@ function retrieve_ticket_list($link) {
     if ($page <= 0)
         $page = 1;
     $page_size = 5;
-    $sql = "SELECT count(*) AS amount FROM vex_ticket WHERE is_delete = false";
+    $sql = "SELECT count(*) AS amount FROM vex_ticket WHERE is_delete = false AND upper(title) LIKE upper($1)";
     if ($stmt = pg_prepare($link, "fetch_total_num_of_page", $sql)) {
         // Execute sql
-        if ($result = pg_execute($link, "fetch_total_num_of_page", array())) {
+        if ($result = pg_execute($link, "fetch_total_num_of_page", array(("%" . $keyword .
+            "%")))) {
             if (!$result) {
                 writeErr("Count all ticket list failed");
                 throw new Exception("Fetch Failed", 419);
@@ -263,7 +264,7 @@ function retrieve_ticket_list($link) {
                     echo json_encode(
                         array(
                             'status' => true,
-                            'pages' => $page_count,
+                            'page' => $page_count,
                             'project' => $projectResult,
                             'msg' => "Fetch Successfully.",
                             'code' => 200
