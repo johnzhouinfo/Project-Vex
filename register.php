@@ -122,9 +122,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 file_put_contents('log/err_log_' . date("j.n.Y") .
                     '.log', "[ERROR] $date: Create User Failed!, username:$username\n", FILE_APPEND);
                 echo "<script>setTimeout(function() {
-                      swal(\"Failed!\", \"Create User Failed! Please Try again.\", \"Error\");
+                      swal(\"Failed!\", \"Create User Failed! Please Try again.\", \"error\");
                     },100)</script>";
             }
+        } else {
+            //Log schema error
+            if (!is_dir("log")) {
+                //Create our directory if it does not exist
+                mkdir("log");
+            }
+            $date = date('h:i:s');
+            file_put_contents('log/err_log_' . date("j.n.Y") .
+                '.log', "[ERROR] $date: Database Schema Exception: $sql\n", FILE_APPEND);
+            echo "<script>setTimeout(function() {
+                      swal(\"Failed!\", \"Internal Server Error! Please Try again Later.\", \"error\");
+                    },100)</script>";
         }
     }
     // Close connection

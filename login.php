@@ -87,6 +87,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $date = date('h:i:s');
                 file_put_contents('log/err_log_' . date("j.n.Y") .
                     '.log', "[ERROR] $date: User Failed to Login, username:$username\n", FILE_APPEND);
+                echo "<script>setTimeout(function() {
+                      swal(\"Failed!\", \"Login Failed! Please Try again.\", \"error\");
+                    },100)</script>";
             }
         } else {
             //Log schema error
@@ -97,6 +100,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $date = date('h:i:s');
             file_put_contents('log/err_log_' . date("j.n.Y") .
                 '.log', "[ERROR] $date: Database Schema Exception: $sql\n", FILE_APPEND);
+            echo "<script>setTimeout(function() {
+                      swal(\"Failed!\", \"Internal Server Error! Please Try again Later.\", \"error\");
+                    },100)</script>";
         }
     }
 // Close statement
@@ -120,6 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="lib/css/Registration-Form-with-Photo.css">
     <link rel="stylesheet" href="lib/css/styles.css">
     <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="lib/css/sweetalert.css">
     <link rel="icon" href="img/Vex_Three.gif">
 </head>
 
@@ -186,6 +193,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 <script src="lib/js/jquery.min.js"></script>
 <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="lib/js/sweetalert.min.js"></script>
 </body>
 
 </html>
