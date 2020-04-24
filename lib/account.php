@@ -81,10 +81,10 @@ function retrieve_all_user($link) {
     if ($page <= 0)
         $page = 1;
     $page_size = 5;
-    $sql = "SELECT count(*) AS amount FROM vex_user";
+    $sql = "SELECT count(*) AS amount FROM vex_user WHERE upper(username) LIKE upper($1)";
     if ($stmt = pg_prepare($link, "fetch_total_num_of_user", $sql)) {
         // Execute sql
-        if ($result = pg_execute($link, "fetch_total_num_of_user", array())) {
+        if ($result = pg_execute($link, "fetch_total_num_of_user", array(("%" . $keyword . "%")))) {
             if (!$result) {
                 writeErr("Fetch User Number Failed");
                 throw new Exception("Fetch Failed", 401);
