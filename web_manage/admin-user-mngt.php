@@ -174,9 +174,9 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                                 <div class="text-md-right d-flex float-right dataTables_filter" id="dataTable_filter">
                                     <input class="border rounded-0" type="search" id="search-field"
                                            style="font-size: 14px;background-color: rgb(246,248,254);padding: 4px 8px;"
-                                           placeholder="Search Users">
+                                           placeholder="Search Username">
                                     <button class="btn btn-outline-dark border rounded-0"
-                                            id="Search" data-toggle="tooltip"
+                                            id="search" data-toggle="tooltip"
                                             data-bs-tooltip="" title="Search" type="button" style="font-size: 12px;"><i
                                                 class="fa fa-search"></i></button>
                                 </div>
