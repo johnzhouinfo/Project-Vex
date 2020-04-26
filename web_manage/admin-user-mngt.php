@@ -406,7 +406,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                     $('[data-toggle="tooltip"]').tooltip();
                     pagination(total_page);
                 } else
-                    swal("Failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
+                    swal("Failed!", "ERR_CODE: " + dataResult.code + "\n" + dataResult.msg, "error");
 
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -467,7 +467,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                     $("#user-admin").prop("checked", dataResult.type === "0");
                     $("#modify-user").click();
                 } else {
-                    swal("Failed!", "Error Code: " + data.code + "\nDescription: " + data.msg, "error");
+                    swal("Failed!", "Error Code: " + dataResult.code + "\nDescription: " + dataResult.msg, "error");
                 }
 
             },
@@ -514,7 +514,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                     $("#close-user-form").click();
                     loadList();
                 } else {
-                    swal("Failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
+                    swal("Failed!", "ERR_CODE: " + dataResult.code + "\n" + dataResult.msg, "error");
                 }
 
             },

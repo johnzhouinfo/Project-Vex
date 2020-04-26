@@ -329,7 +329,7 @@ session_start();
                     $('[data-toggle="tooltip"]').tooltip();
                     pagination(total_page);
                 } else
-                    swal("Failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
+                    swal("Failed!", "ERR_CODE: " + dataResult.code + "\n" + dataResult.msg, "error");
 
             },
             error: function (jqXHR, textStatus, errorThrown) {

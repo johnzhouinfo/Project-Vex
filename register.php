@@ -251,7 +251,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
     <div class="form-group">
         <button class="btn btn-primary btn-block text-center border rounded d-block" id="login_pg_signUp_btn"
-                type="submit" style="background-color: rgb(137,112,235);height: 40px;padding: 0px;">Sign up
+                type="submit" style="background-color: #007bff;height: 40px;padding: 0px;">Sign up
         </button>
     </div>
     </form>

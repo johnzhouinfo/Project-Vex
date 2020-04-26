@@ -336,7 +336,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                         $("#nav-name").text("Hi, " + name);
                         swal("Success!", "Your profile has been updated!", "success");
                     } else {
-                        swal("Failed!", "Error Code: " + data.code + "\nDescription: " + data.msg, "error");
+                        swal("Failed!", "Error Code: " + dataResult.code + "\nDescription: " + dataResult.msg, "error");
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -406,7 +406,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                             $("#old-password-err").text(dataResult.msg);
                             break;
                         default:
-                            swal("Failed!", "Error Code: " + data.code + "\nDescription: " + data.msg, "error");
+                            swal("Failed!", "Error Code: " + dataResult.code + "\nDescription: " + dataResult.msg, "error");
                             break;
                     }
                 }
@@ -436,7 +436,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
                     $("#profile_avatar").attr("src", icon);
                     $("#nav-avatar").attr("src", icon);
                 } else {
-                    swal("Failed!", "Error Code: " + data.code + "\nDescription: " + data.msg, "error");
+                    swal("Failed!", "Error Code: " + dataResult.code + "\nDescription: " + dataResult.msg, "error");
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
