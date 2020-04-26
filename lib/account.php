@@ -350,7 +350,8 @@ function update_user($id, $name, $email, $password, $enable, $admin, $link) {
                 }
             } else {
                 if (pg_affected_rows($result) == 1) {
-                    writeInfo("Update User Info ID:$id, Name: $name, Email:$email, enable:$enable, admin:$admin");
+                    $is_admin = $admin == "0" ? "true" : "false";
+                    writeInfo("Update User Info ID:$id, Name: $name, Email:$email, enable:$enable, admin:$is_admin");
                     echo json_encode(
                         array(
                             'status' => true,

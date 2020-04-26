@@ -247,7 +247,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                 if (dataResult.status) {
                     $("#user-size").text(dataResult.result.trim());
                 } else
-                    swal("Failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
+                    swal("Failed!", "ERR_CODE: " + dataResult.code + "\n" + dataResult.msg, "error");
 
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -270,7 +270,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                 if (dataResult.status) {
                     $("#page-size").text(dataResult.result.trim());
                 } else
-                    swal("Failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
+                    swal("Failed!", "ERR_CODE: " + dataResult.code + "\n" + dataResult.msg, "error");
 
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -293,7 +293,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                 if (dataResult.status) {
                     $("#live-size").text(dataResult.result.trim());
                 } else
-                    swal("Failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
+                    swal("Failed!", "ERR_CODE: " + dataResult.code + "\n" + dataResult.msg, "error");
 
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -316,7 +316,7 @@ if ((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) &&
                 if (dataResult.status) {
                     $("#ticket-size").text(dataResult.result.trim());
                 } else
-                    swal("Failed!", "ERR_CODE: " + data.code + "\n" + data.msg, "error");
+                    swal("Failed!", "ERR_CODE: " + dataResult.code + "\n" + dataResult.msg, "error");
 
             },
             error: function (jqXHR, textStatus, errorThrown) {
