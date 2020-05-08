@@ -153,7 +153,7 @@ function update_ticket($id, $reply, $solve, $link) {
         // Execute sql
         if ($result = pg_execute($link, "get_reply_ticket", array($id))) {
             if (pg_num_rows($result) == 1) {
-                $result_array = pg_fetch_array($result, null, PGSQL_ASSOC);
+                $result_array = pg_fetch_row($result);
                 $email = trim($result_array[0]);
 
                 $msg = $result_array[1];
@@ -246,6 +246,9 @@ function retrieve_ticket_list($link) {
                 }
             } else {
                 $page_count = 1;
+            }
+            if ($page > $page_count) {
+                $page = $page_count;
             }
 
             $sql = "SELECT ticket_id, title, name, create_time, is_solve FROM vex_ticket WHERE is_delete = false AND upper(title) LIKE upper($1) ORDER BY $sort LIMIT $2 OFFSET $3";
